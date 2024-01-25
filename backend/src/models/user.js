@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
+const comment = require("./comment");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
     // required: [false, "Name is required!"],
-    unique: true,
     trim: true,
     lowercase: true,
   },
@@ -25,6 +25,9 @@ const userSchema = new mongoose.Schema({
   },
   phoneNumber: {
     type: String,
+  },
+  comment: {
+    type: [{ comment }],
   },
   address: {
     type: String,

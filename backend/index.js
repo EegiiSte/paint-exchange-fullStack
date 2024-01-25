@@ -2,8 +2,6 @@ require("dotenv").config();
 const cors = require("cors");
 const mongoose = require("mongoose");
 
-const PORT = process.env.PORT || 3000;
-
 const express = require("express");
 
 const app = express();
@@ -14,10 +12,18 @@ app.use(express.json());
 //Use to enabke CORS
 app.use(
   cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: ["http://localhost:3000"],
+    credentials: true,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    optionsSuccessStatus: 204,
   })
 );
+
+const usersRouter = require("./src/routes/users");
+const productsRouter = require("./src/routes/products");
+const accountsRouter = require("./src/routes/accounts");
+
+const port = process.env.PORT || 3000;
 
 //\middleware -- logging ---> saving user activity
 app.use((req, res, next) => {
@@ -33,22 +39,21 @@ app.get("/", (req, res) => {
   res.send("Hello World! Egi!");
 });
 
+// test
+app.use("/users", usersRouter);
+
 // middleware ---> error handling
 app.use((req, res, next) => {
   res.status(404).json({ message: "Page not found" });
   next();
 });
 
-// app.listen(PORT, () => {
-//   console.log(`server listening on port http://localhost:${PORT}`);
-// });
-
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(
     console.log("Connect to MongoDB successfully!"),
-    app.listen(PORT, () => {
-      console.log(`server is running at http://localhost:${PORT}`);
+    app.listen(port, () => {
+      console.log(`server is running at http://localhost:${port}`);
     })
   )
   .catch((error) => console.log(error));
