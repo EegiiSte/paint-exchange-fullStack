@@ -27,44 +27,29 @@ export const Home = () => {
           display: "flex",
           justifyContent: "start",
           backgroundColor: theme === "light" ? "" : "",
+          backgroundImage:
+            // "url(https://en.idei.club/uploads/posts/2023-03/thumbs/1679322173_en-idei-club-p-paint-can-design-dizain-krasivo-20.jpg)",
+            "url(https://www.platinumpaintingfortworth.com/blog/wp-content/uploads/2022/01/AdobeStock_245457611__1641564239_93239.jpg)",
+          // "url()",
+          backgroundSize: "100vw",
           paddingTop: "30px",
           paddingLeft: "30px",
         }}
       >
-        <QRCode
-          zIndex="100"
-          color={theme === "light" ? "black" : "white"}
-          bgColor={theme === "light" ? "white" : "black"}
-          value={
-            theme === "light"
-              ? "https://fullstack-leap-frontend-six.vercel.app"
-              : "https://fullstack-leap-frontend-six.vercel.app"
-          }
-        />
+        <div
+          style={{
+            width: "50%",
+          }}
+        >
+          <h1
+            style={{
+              fontSize: "50px",
+            }}
+          >
+            Do you have any left paint in your storage?
+          </h1>
+        </div>
       </div>
     </div>
   );
 };
-
-// <div>
-//           <MatrixBG />
-
-//           <div
-//             zIndex="1"
-//             className="padding-top-10"
-//             style={{
-//               width: "100%",
-//               height: "100vh",
-//               display: "flex",
-//               justifyContent: "center",
-//               paddingTop: "30px",
-//             }}
-//           >
-//             <QRCode
-//               zIndex="100"
-//               color={theme === "light" ? "black" : "white"}
-//               bgColor={theme === "light" ? "white" : "black"}
-//               value="https://fullstack-leap-frontend-six.vercel.app"
-//             />
-//           </div>
-//         </div>

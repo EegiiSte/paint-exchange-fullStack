@@ -1,0 +1,24 @@
+.Header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  width: calc(100vw - 100px);
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.Header_Left {
+  cursor: pointer;
+}
+
+.Header_Right {
+  min-width: 120px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.Header_Right-Item {
+  padding-left: 20px;
+}
