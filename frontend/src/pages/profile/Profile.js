@@ -4,45 +4,18 @@ import React, { useState } from "react";
 import { Header } from "../../component";
 import { MatrixBG } from "../../component/matrix";
 import { useThemeContext, useUserContext } from "../../context";
+import { useProfileIconContext } from "../../context/ProfileIconContext";
 import { ProfileEditModal } from "./ProfileEditModal";
 
 const Profile = () => {
   const { theme } = useThemeContext();
   const { currentUser } = useUserContext();
+  const { profileIcons, profilePicUrl, setProfilePicUrl, selectProfilePic } =
+    useProfileIconContext();
+
   // console.log("Profile-currentUser", currentUser);
 
-  const profileIcons = [
-    {
-      name: "painterMan",
-      url: "https://cdn-icons-png.flaticon.com/512/4315/4315116.png",
-    },
-    {
-      name: "Merlin",
-      url: "https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/marilyn_monroe_artist_avatar-1024.png",
-    },
-    {
-      name: "artist",
-      url: "https://cdn-icons-png.flaticon.com/512/6371/6371098.png",
-    },
-    {
-      name: "einstein",
-      url: "https://cdn-icons-png.flaticon.com/512/7314/7314372.png",
-    },
-    {
-      name: "munhjin",
-      url: "https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png",
-    },
-    {
-      name: "facelessWomen",
-      url: "https://cdn-icons-png.flaticon.com/512/4060/4060136.png",
-    },
-    { name: "painterMan", url: "" },
-  ];
-
   const [editProfilePicModal, setEditProfilePicModal] = useState(false);
-  const [profilePicUrl, setProfilePicUrl] = useState(
-    currentUser.user.profilePicUrl
-  );
 
   const showModal = () => {
     setEditProfilePicModal(true);
@@ -50,10 +23,6 @@ const Profile = () => {
 
   const handleCancelEditPic = () => {
     setEditProfilePicModal(false);
-  };
-
-  const selectProfilePic = (pic) => {
-    setProfilePicUrl(pic);
   };
 
   //state for edit modal
@@ -84,13 +53,19 @@ const Profile = () => {
           display: "flex",
           justifyContent: "space-evenly",
           color: theme === "light" ? "black" : "white",
+          backgroundImage:
+            // "url(https://www.paintingcontractorsneworleansla.com/cloud/Slideshow/3b.jpg)",
+            "url(https://assets-global.website-files.com/5f3ba8af4d346a5337f0d782/604f6599c1ed39f645f71787_footer-back.jpg)",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          height: "calc(100vh - 80px)",
         }}
       >
         <div
           // className="box-shadow-gray"
           style={{
-            border: "1px solid white",
-            backgroundColor: theme === "light" ? "white" : "#0000007c",
+            border: "1px solid black",
+            backgroundColor: theme === "light" ? "#e4e5e5d5" : "#0000007c",
             height: "70vh",
             width: "55%",
             borderRadius: "10px",

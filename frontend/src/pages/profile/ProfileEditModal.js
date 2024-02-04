@@ -58,7 +58,7 @@ export const ProfileEditModal = (props) => {
 
   const inputPress = (e) => {
     const { value, name } = e.target;
-    setDisabledSubmitButton(value === currentUser.user[name]);
+    setDisabledSubmitButton(value === currentUser?.user[name]);
   };
 
   const onFinish = async (values) => {

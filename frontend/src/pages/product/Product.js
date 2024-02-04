@@ -79,6 +79,12 @@ export const Product = () => {
         style={{
           flexDirection: "column",
           // backgroundColor: theme === "light" ? "#cbdaf0a8" : "#cbdaf0a8",
+          backgroundImage:
+            // "url(https://www.paintingcontractorsneworleansla.com/cloud/Slideshow/3b.jpg)",
+            "url(https://highlanderdeco.com/wp-content/uploads/2019/08/colors-containers-contemporary-1571174-1024x683.jpg)",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backdropFilter: "blur(30px)",
         }}
       >
         <Header />
@@ -96,40 +102,36 @@ export const Product = () => {
             color: theme === "light" ? "black" : "white",
           }}
         >
-          This is Single Product page
-          {currentUser.user.email === singleProduct.userProduct?.email ? (
-            <Flex className="gap-10" wrap="wrap" gap="small">
-              <Button
-                block
-                onClick={handleOpen}
-                style={{
-                  backgroundColor: theme === "light" ? "white" : "#0000006c",
-                  color: theme === "light" ? "black" : "white",
-                }}
-              >
-                Edit
-              </Button>
-              <Button
-                block
-                onClick={handleOpenDelete}
-                style={{
-                  backgroundColor: theme === "light" ? "white" : "#0000006c",
-                  color: theme === "light" ? "black" : "white",
-                }}
-              >
-                Delete
-              </Button>
-            </Flex>
-          ) : (
-            <div />
-          )}
+          <Flex className="gap-10" wrap="wrap" gap="small">
+            <Button
+              block
+              onClick={handleOpen}
+              style={{
+                backgroundColor: theme === "light" ? "white" : "#0000006c",
+                color: theme === "light" ? "black" : "white",
+              }}
+            >
+              Edit
+            </Button>
+            <Button
+              block
+              onClick={handleOpenDelete}
+              style={{
+                backgroundColor: theme === "light" ? "white" : "#0000006c",
+                color: theme === "light" ? "black" : "white",
+              }}
+            >
+              Delete
+            </Button>
+          </Flex>
+          )
         </div>
         {singleProduct && (
           <div
             // className="box-shadow-gray"
             style={{
               border: "1px solid white",
-              backgroundColor: theme === "light" ? "white" : "#0000007c",
+              backgroundColor: theme === "light" ? "#e4e5e5d5" : "#0000007c",
               height: "70vh",
               width: "55%",
               borderRadius: "10px",
@@ -193,10 +195,13 @@ export const Product = () => {
                 <Image
                   preview={false}
                   height={"50px"}
-                  src={singleProduct?.userProduct.profilePicUrl}
+                  // src={singleProduct?.userProduct.profilePicUrl}
+                  src={
+                    " https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg?size=338&ext=jpg&ga=GA1.1.1448711260.1706745600&semt=ais"
+                  }
                   style={{ borderRadius: "50%", border: "1px solid black" }}
                 />{" "}
-                : {singleProduct?.userProduct.email}
+                : {}
               </p>
             </div>
             <div

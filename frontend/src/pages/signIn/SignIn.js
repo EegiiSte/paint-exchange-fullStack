@@ -7,11 +7,12 @@ import { MatrixBG } from "../../component/matrix";
 import { useNotificationContext } from "../../context/NotificationContext";
 import { useThemeContext } from "../../context/ThemeContext";
 import { useUserContext } from "../../context/UserContext";
+import "./SignIn.css";
 
 export const SignIn = (props) => {
   const { signIn } = useUserContext();
   const { successNotification, errorNotification } = useNotificationContext();
-  const { setTheme, theme, textStyle, backgroundStyle } = useThemeContext();
+  const { theme, textStyle } = useThemeContext();
 
   const [signinLoading, setSigninLoading] = useState(false);
 
@@ -68,12 +69,15 @@ export const SignIn = (props) => {
         <MatrixBG />
       )}
       <div
+        className="signBox"
         style={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "end",
           alignItems: "center",
           width: "100%",
           height: "calc(100vh - 80px)",
+          backgroundImage:
+            "url(https://www.paintingcontractorsneworleansla.com/cloud/Slideshow/3b.jpg)",
         }}
       >
         <div

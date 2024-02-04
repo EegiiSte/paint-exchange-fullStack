@@ -1,10 +1,8 @@
 require("dotenv").config();
-const cors = require("cors");
-const mongoose = require("mongoose");
-
 const express = require("express");
-
 const app = express();
+const mongoose = require("mongoose");
+const cors = require("cors");
 
 // Used to parse JSON bodies
 app.use(express.json());
@@ -41,6 +39,7 @@ app.get("/", (req, res) => {
 
 // test
 app.use("/users", usersRouter);
+app.use("/products", productsRouter);
 
 // middleware ---> error handling
 app.use((req, res, next) => {

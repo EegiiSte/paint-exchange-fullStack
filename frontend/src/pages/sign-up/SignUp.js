@@ -1,12 +1,14 @@
-import { Button, Checkbox, Form, Input, Select } from "antd";
+import { Button, Checkbox, Form, Image, Input, Select } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../../component";
 import { MatrixBG } from "../../component/matrix";
 import { useNotificationContext } from "../../context/NotificationContext";
+import { useProfileIconContext } from "../../context/ProfileIconContext";
 import { useThemeContext } from "../../context/ThemeContext";
 import { useUserContext } from "../../context/UserContext";
+import "./SignUp.css";
 
 const { Option } = Select;
 
@@ -43,9 +45,11 @@ const tailFormItemLayout = {
 export const SignUp = () => {
   const { signUp } = useUserContext();
   const { successNotification, errorNotification } = useNotificationContext();
+  const { profileIcons, profilePicUrl, setProfilePicUrl, selectProfilePic } =
+    useProfileIconContext();
 
   const [signinLoading, setSigninLoading] = useState(false);
-  const { setTheme, theme } = useThemeContext();
+  const { setTheme, theme, textStyle } = useThemeContext();
 
   const navigate = useNavigate();
 
@@ -68,6 +72,7 @@ export const SignUp = () => {
           name: values.name,
           email: values.email,
           password: values.password,
+          profilePicUrl: profilePicUrl,
         }
       );
 
@@ -109,177 +114,239 @@ export const SignUp = () => {
       ) : (
         <MatrixBG />
       )}
-      <h1
-        style={{
-          paddingTop: "100px",
-          paddingBottom: "10px",
-          color: theme === "light" ? "black" : "white",
-        }}
-      >
-        Sign Up
-      </h1>
-      <Form
-        {...formItemLayout}
-        form={form}
-        name="register"
-        onFinish={onFinish}
-        initialValues={{
-          prefix: "1",
-        }}
-        style={{
-          maxWidth: 600,
-        }}
-        scrollToFirstError
-      >
-        <Form.Item
-          name="name"
-          label={
-            <span
-              style={{
-                color: theme === "light" ? "black" : "white",
-              }}
-            >
-              Name
-            </span>
-          }
-          // initialValue={"test13"}
-          initialValue={process.env.NODE_ENV === "development" ? "test13" : ""}
-          tooltip="What do you want others to call you?"
-          rules={[
+      <div className="signupBox">
+        <div
+          className="d-flex just-c align-c flex-direction-c "
+          style={
+            (textStyle,
             {
-              required: true,
-              message: "Please input your nickname!",
-              whitespace: true,
-            },
-          ]}
+              height: "60%",
+              width: "60%",
+            })
+          }
         >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="email"
-          label={
-            <span
-              style={{
-                color: theme === "light" ? "black" : "white",
-              }}
-            >
-              E-mail
-            </span>
-          }
-          initialValue={
-            process.env.NODE_ENV === "development" ? "test13@gmail.com" : ""
-          }
-          rules={[
-            {
-              type: "email",
-              message: "The input is not valid E-mail!",
-            },
-            {
-              required: true,
-              message: "Please input your E-mail!",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          name="password"
-          label={
-            <span
-              style={{
-                color: theme === "light" ? "black" : "white",
-              }}
-            >
-              Password
-            </span>
-          }
-          // initialValue={"12345678aaa$$R"}
-          initialValue={
-            process.env.NODE_ENV === "development" ? "12345678aaa$$R" : ""
-          }
-          rules={[
-            {
-              required: true,
-              message: "Please input your password!",
-            },
-            {
-              simbols: true,
-              message: "must included simbols!",
-            },
-            {
-              minlength: 6,
-              message: "minimium must include 6 characters",
-            },
-          ]}
-          hasFeedback
-        >
-          <Input.Password />
-        </Form.Item>
-        <Form.Item
-          name="confirm"
-          label={
-            <span
-              style={{
-                color: theme === "light" ? "black" : "white",
-              }}
-            >
-              Confirm Password
-            </span>
-          }
-          dependencies={["password"]}
-          hasFeedback
-          // initialValue={"12345678aaa$$R"}
-          initialValue={
-            process.env.NODE_ENV === "development" ? "12345678aaa$$R" : ""
-          }
-          rules={[
-            {
-              required: true,
-              message: "Please confirm your password!",
-            },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue("password") === value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(
-                  new Error("The new password that you entered do not match!")
-                );
-              },
-            }),
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-          name="agreement"
-          valuePropName="checked"
-          rules={[
-            {
-              validator: (_, value) =>
-                value
-                  ? Promise.resolve()
-                  : Promise.reject(new Error("Should accept agreement")),
-            },
-          ]}
-          {...tailFormItemLayout}
-        >
-          <Checkbox
-            style={{
-              color: theme === "light" ? "black" : "white",
+          <Form
+            {...formItemLayout}
+            form={form}
+            name="register"
+            onFinish={onFinish}
+            initialValues={{
+              prefix: "1",
             }}
+            style={{
+              maxWidth: 600,
+            }}
+            scrollToFirstError
           >
-            I have read the <a href="">agreement</a>
-          </Checkbox>
-        </Form.Item>
-        <Form.Item {...tailFormItemLayout}>
-          <Button loading={signinLoading} type="primary" htmlType="submit">
-            Register
-          </Button>
-        </Form.Item>
-      </Form>
+            <h1
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                paddingTop: "100px",
+                paddingBottom: "10px",
+                color: theme === "light" ? "black" : "white",
+              }}
+            >
+              Sign Up
+            </h1>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "end",
+                width: "100%",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                  marginBottom: "10px",
+                  width: "84%",
+                }}
+              >
+                <div>
+                  <Image preview={false} height={"80px"} src={profilePicUrl} />
+                  <p>Profile Pic :</p>
+                </div>
+                <div
+                  style={{
+                    border: "1px solid gray",
+                    borderRadius: "5px",
+                    display: "flex",
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    width: "60%",
+                  }}
+                >
+                  {profileIcons.map((profileIcon) => (
+                    <div>
+                      <Image
+                        preview={false}
+                        height={"60px"}
+                        src={profileIcon.url}
+                        onClick={() => selectProfilePic(profileIcon.url)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <Form.Item
+              name="name"
+              label={
+                <span
+                  style={{
+                    color: theme === "light" ? "black" : "white",
+                  }}
+                >
+                  Name
+                </span>
+              }
+              // initialValue={"test13"}
+              initialValue={
+                process.env.NODE_ENV === "development" ? "test13" : ""
+              }
+              tooltip="What do you want others to call you?"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your nickname!",
+                  whitespace: true,
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="email"
+              label={
+                <span
+                  style={{
+                    color: theme === "light" ? "black" : "white",
+                  }}
+                >
+                  E-mail
+                </span>
+              }
+              initialValue={
+                process.env.NODE_ENV === "development" ? "test13@gmail.com" : ""
+              }
+              rules={[
+                {
+                  type: "email",
+                  message: "The input is not valid E-mail!",
+                },
+                {
+                  required: true,
+                  message: "Please input your E-mail!",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item
+              name="password"
+              label={
+                <span
+                  style={{
+                    color: theme === "light" ? "black" : "white",
+                  }}
+                >
+                  Password
+                </span>
+              }
+              // initialValue={"12345678aaa$$R"}
+              initialValue={
+                process.env.NODE_ENV === "development" ? "12345678aaa$$R" : ""
+              }
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your password!",
+                },
+                {
+                  simbols: true,
+                  message: "must included simbols!",
+                },
+                {
+                  minlength: 6,
+                  message: "minimium must include 6 characters",
+                },
+              ]}
+              hasFeedback
+            >
+              <Input.Password />
+            </Form.Item>
+            <Form.Item
+              name="confirm"
+              label={
+                <span
+                  style={{
+                    color: theme === "light" ? "black" : "white",
+                  }}
+                >
+                  Confirm Password : ................
+                </span>
+              }
+              dependencies={["password"]}
+              hasFeedback
+              // initialValue={"12345678aaa$$R"}
+              initialValue={
+                process.env.NODE_ENV === "development" ? "12345678aaa$$R" : ""
+              }
+              rules={[
+                {
+                  required: true,
+                  message: "Please confirm your password!",
+                },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue("password") === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(
+                      new Error(
+                        "The new password that you entered do not match!"
+                      )
+                    );
+                  },
+                }),
+              ]}
+            >
+              <Input.Password />
+            </Form.Item>
+
+            <Form.Item
+              name="agreement"
+              valuePropName="checked"
+              rules={[
+                {
+                  validator: (_, value) =>
+                    value
+                      ? Promise.resolve()
+                      : Promise.reject(new Error("Should accept agreement")),
+                },
+              ]}
+              {...tailFormItemLayout}
+            >
+              <Checkbox
+                style={{
+                  color: theme === "light" ? "black" : "white",
+                }}
+              >
+                I have read the <a href="">agreement</a>
+              </Checkbox>
+            </Form.Item>
+            <Form.Item {...tailFormItemLayout}>
+              <Button loading={signinLoading} type="primary" htmlType="submit">
+                Register
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
+      </div>
     </div>
   );
 };

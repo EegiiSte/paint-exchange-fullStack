@@ -3,40 +3,48 @@ const mongoose = require("mongoose");
 const productSchema = new mongoose.Schema(
   {
     name: {
-      type: "string",
+      type: String,
       required: [true, "Product name is required"],
     },
     userEmail: {
-      type: "string",
+      type: String,
     },
+
     price: {
-      type: "number",
+      type: Number,
       required: [true, "Product price is required"],
     },
     description: {
-      type: "string",
+      type: String,
       required: [true, "Product description is required"],
     },
     category: {
-      type: "string",
+      type: String,
       required: [true, "Product category is required"],
     },
 
     userId: {
-      type: "string",
+      type: String,
       required: [true, "Product userId is required"],
     },
     type: {
-      type: "string",
+      type: String,
       enum: ["public", "private"],
       required: [true, "Product visibility is required"],
     },
     image: {
-      type: "string",
+      type: String,
     },
-    userPicUrl: {
-      type: "string",
-    },
+    // userProduct: [
+    //   {
+    //     userPicUrl: {
+    //       type: String,
+    //     },
+    //     userEmail: {
+    //       type: String,
+    //     },
+    //   },
+    // ],
   },
   { timestamps: true }
 );
