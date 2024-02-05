@@ -35,11 +35,11 @@ export const Product = () => {
 
   const selectedProduct = products.find((product) => product._id === id);
 
-  console.log("Product-->selectedProduct", selectedProduct);
+  // console.log("Product-->selectedProduct", selectedProduct);
 
   const [singleProduct, setSingleProduct] = useState([]);
 
-  console.log("Product-->singleProduct", singleProduct);
+  // console.log("Product-->singleProduct", singleProduct);
 
   useEffect(() => {
     const fetchProducts = async () => {

@@ -40,6 +40,7 @@ app.get("/", (req, res) => {
 // test
 app.use("/users", usersRouter);
 app.use("/products", productsRouter);
+app.use("/account", accountsRouter);
 
 // middleware ---> error handling
 app.use((req, res, next) => {

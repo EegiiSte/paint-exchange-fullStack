@@ -45,7 +45,7 @@ const tailFormItemLayout = {
 export const SignUp = () => {
   const { signUp } = useUserContext();
   const { successNotification, errorNotification } = useNotificationContext();
-  const { profileIcons, profilePicUrl, setProfilePicUrl, selectProfilePic } =
+  const { profileIcons, profilePicUrl, selectProfilePic } =
     useProfileIconContext();
 
   const [signinLoading, setSigninLoading] = useState(false);
@@ -56,12 +56,6 @@ export const SignUp = () => {
   const [form] = Form.useForm();
 
   const onFinish = async (values) => {
-    // console.log(
-    //   "Received values of form: ",
-    //   values.name,
-    //   values.password,
-    //   values.email
-    // );
     setSigninLoading(true);
     try {
       // throw new Error("test error");
@@ -79,8 +73,8 @@ export const SignUp = () => {
       const data = await response.data;
       localStorage.setItem("user", JSON.stringify(data));
 
-      console.log("SignUp-data", data);
-      console.log("SignUp-data", data.newUser);
+      // console.log("SignUp-data", data);
+      // console.log("SignUp-data", data.newUser);
 
       if (data) {
         signUp(data);
@@ -183,6 +177,7 @@ export const SignUp = () => {
                     <div>
                       <Image
                         preview={false}
+                        style={{ cursor: "pointer" }}
                         height={"60px"}
                         src={profileIcon.url}
                         onClick={() => selectProfilePic(profileIcon.url)}
@@ -257,7 +252,6 @@ export const SignUp = () => {
                   Password
                 </span>
               }
-              // initialValue={"12345678aaa$$R"}
               initialValue={
                 process.env.NODE_ENV === "development" ? "12345678aaa$$R" : ""
               }
@@ -287,7 +281,7 @@ export const SignUp = () => {
                     color: theme === "light" ? "black" : "white",
                   }}
                 >
-                  Confirm Password : ................
+                  Confirm Password
                 </span>
               }
               dependencies={["password"]}

@@ -7,6 +7,7 @@ import {
   useThemeContext,
   useUserContext,
 } from "../../context";
+import { useProfileIconContext } from "../../context/ProfileIconContext";
 const formItemLayout = {
   labelCol: {
     xs: {
@@ -42,17 +43,19 @@ export const ProfileEditModal = (props) => {
   const {
     handleClose,
     open,
-    profilePicUrl,
-    setProfilePicUrl,
-    profileIcons,
-    selectProfilePic,
+    // profilePicUrl,
+    // setProfilePicUrl,
+    // profileIcons,
+    // selectProfilePic,
   } = props;
 
   const { successNotification, errorNotification } = useNotificationContext();
   const [signinLoading, setSigninLoading] = useState(false);
   const [disabledSubmitButton, setDisabledSubmitButton] = useState(true);
   const { theme } = useThemeContext();
-  const { currentUser, updateUser } = useUserContext();
+  const { updateUser, currentUser } = useUserContext();
+  const { profileIcons, profilePicUrl, setProfilePicUrl, selectProfilePic } =
+    useProfileIconContext();
 
   const [form] = Form.useForm();
 
@@ -60,6 +63,8 @@ export const ProfileEditModal = (props) => {
     const { value, name } = e.target;
     setDisabledSubmitButton(value === currentUser?.user[name]);
   };
+
+  // console.log("ProfileEditModal-profilePicUrl", profilePicUrl);
 
   const onFinish = async (values) => {
     setSigninLoading(true);
@@ -87,7 +92,7 @@ export const ProfileEditModal = (props) => {
       const data = await response.data;
       localStorage.setItem("user", JSON.stringify(data));
 
-      console.log("ProfileEditModal--data", data);
+      // console.log("ProfileEditModal--data", data);
 
       if (data) {
         successNotification(
@@ -140,6 +145,7 @@ export const ProfileEditModal = (props) => {
               <div>
                 <Image
                   preview={false}
+                  style={{ cursor: "pointer" }}
                   height={"60px"}
                   src={profileIcon.url}
                   onClick={() => selectProfilePic(profileIcon.url)}
@@ -293,7 +299,7 @@ export const ProfileEditModal = (props) => {
                 message: "Please input your password!",
               },
               {
-                simbols: true,
+                symbols: true,
                 message: "must included simbols!",
               },
               {

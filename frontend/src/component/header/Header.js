@@ -68,11 +68,19 @@ export const Header = () => {
 
         <div className="Header-Right">
           <div className="Header-Right_Item">
-            <Link to="/profile" style={textStyle}>
+            <div
+              onClick={() => navigate(`/profile/${currentUser.user.userId}`)}
+              style={
+                (textStyle,
+                {
+                  cursor: "pointer",
+                })
+              }
+            >
               {currentUser.user
                 ? currentUser.user.email
                 : currentUser.newUser.email}
-            </Link>
+            </div>
           </div>
         </div>
         <div className="Header-Right">

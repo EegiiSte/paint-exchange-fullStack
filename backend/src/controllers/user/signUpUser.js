@@ -10,7 +10,7 @@ const CreateToken = (id) => {
 
 const signUpUser = async (req, res) => {
   //Destructure email and password from req.body
-  const { name, email, password } = req.body;
+  const { name, email, password, profilePicUrl } = req.body;
   if (!email || !password || !name) {
     res.status(400).send("Please provide email and password, name");
     return;
@@ -45,6 +45,7 @@ const signUpUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      profilePicUrl,
     });
     const token = CreateToken(newUser._id);
 

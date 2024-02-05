@@ -178,7 +178,7 @@ export const Products = () => {
                       }
                       style={{ borderRadius: "50%", border: "1px solid black" }}
                     />
-                    : {}
+                    : {product.email}
                   </p>
                 </div>
                 <div

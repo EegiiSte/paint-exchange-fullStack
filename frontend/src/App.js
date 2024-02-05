@@ -5,7 +5,7 @@ import { Home, Product, Products } from "./pages";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { useUserContext } from "./context/UserContext";
 import "./mainStyle.css";
-import Profile from "./pages/profile/Profile";
+import ProfilePage from "./pages/profile/ProfilePage";
 
 export const App = () => {
   const { currentUser, userContextLoading } = useUserContext();
@@ -32,8 +32,8 @@ export const App = () => {
           element={currentUser ? <Products /> : <Navigate to="/sign-in" />}
         />
         <Route
-          path="/profile"
-          element={currentUser ? <Profile /> : <Navigate to="/" />}
+          path="/profile/:id"
+          element={currentUser ? <ProfilePage /> : <Navigate to="/" />}
         />
         <Route
           path="/products/:id"

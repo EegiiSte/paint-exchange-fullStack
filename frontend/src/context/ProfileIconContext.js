@@ -1,5 +1,4 @@
 import { createContext, useContext, useState } from "react";
-import { useMediaQuery } from "@mui/material";
 import { useUserContext } from "./UserContext";
 
 const ProfileIconContext = createContext();
@@ -7,6 +6,7 @@ const ProfileIconContext = createContext();
 export const ProfileIconContextProvider = (props) => {
   const { children } = props;
   const { currentUser } = useUserContext();
+  // console.log("ProfileIconContextProvider- currentUser", currentUser);
 
   const profileIcons = [
     {
@@ -33,10 +33,13 @@ export const ProfileIconContextProvider = (props) => {
       name: "facelessWomen",
       url: "https://cdn-icons-png.flaticon.com/512/4060/4060136.png",
     },
-    { name: "painterMan", url: "" },
+    {
+      name: "painterMan",
+      url: "https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg?size=338&ext=jpg&ga=GA1.1.1448711260.1706745600&semt=ais",
+    },
   ];
 
-  const [profilePicUrl, setProfilePicUrl] = useState();
+  const [profilePicUrl, setProfilePicUrl] = useState("");
 
   const selectProfilePic = (pic) => {
     setProfilePicUrl(pic);
