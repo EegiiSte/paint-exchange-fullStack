@@ -1,14 +1,18 @@
 const Product = require("../../models/product");
 
 const getAllProduct = async (req, res) => {
-  const userId = req.user._id;
+  const userId = req?.user?._id;
 
   try {
     const sort = { createdAt: -1 };
     const products = await Product.find({
-      $or: [{ userId }, { type: "public" }],
+      $or: [{ user: userId }, { type: "public" }],
     })
-    .sort(sort);
+      .populate({
+        path: "user",
+        select: ["email", "profilePicUrl", "name"],
+      })
+      .sort(sort);
 
     if (!products) {
       res.status(404).json({ message: "Product not found" });

@@ -74,11 +74,7 @@ export const MobileHeader = () => {
 
         <div className="Header-Right">
           <div className="Header-Right_Item">
-            <div style={textStyle}>
-              {currentUser.user
-                ? currentUser.user.email
-                : currentUser.newUser.email}
-            </div>
+            <div style={textStyle}>{currentUser.user.email}</div>
           </div>
         </div>
         <div className="Header-Right">

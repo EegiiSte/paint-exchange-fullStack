@@ -6,8 +6,22 @@
   width: calc(100vw - 100px);
   padding-left: 50px;
   padding-right: 50px;
+  gap: 30px;
 }
+.HeaderMenuBox {
+  display: flex;
+  justify-content: end;
+  align-items: center;
 
+  gap: 30px;
+}
+.HeaderMenuLeft {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  gap: 30px;
+}
 .Header_Left {
   cursor: pointer;
 }

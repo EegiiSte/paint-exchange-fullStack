@@ -48,6 +48,8 @@ export const SignUp = () => {
   const { profileIcons, profilePicUrl, selectProfilePic } =
     useProfileIconContext();
 
+  // console.log("SugnUp: signUp", signUp);
+
   const [signinLoading, setSigninLoading] = useState(false);
   const { setTheme, theme, textStyle } = useThemeContext();
 
@@ -73,15 +75,12 @@ export const SignUp = () => {
       const data = await response.data;
       localStorage.setItem("user", JSON.stringify(data));
 
-      // console.log("SignUp-data", data);
-      // console.log("SignUp-data", data.newUser);
+      console.log("SignUp-data", data);
 
       if (data) {
         signUp(data);
 
-        successNotification(
-          `Sign Up successfully, Hello ${data.newUser.email}`
-        );
+        successNotification(`Sign Up successfully, Hello ${data.user.email}`);
         setSigninLoading(false);
         navigate("/");
       } else {

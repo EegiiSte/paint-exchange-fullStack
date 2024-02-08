@@ -10,13 +10,17 @@ import { ProfileEditModal } from "./ProfileEditModal";
 export const Profile = (props) => {
   const { user } = props;
 
+  // console.log("Profile-user", user);
+  // console.log("Profile-user.name", user.user?.name);
+  // console.log("Profile-user.products", user.user.products);
+
   const { theme } = useThemeContext();
   const { currentUser } = useUserContext();
 
   const { profileIcons, profilePicUrl, setProfilePicUrl, selectProfilePic } =
     useProfileIconContext();
 
-  selectProfilePic(currentUser.user.profilePicUrl);
+  //   selectProfilePic(currentUser.user.profilePicUrl);
   // console.log("Profile-currentUser", currentUser);
 
   const [editProfilePicModal, setEditProfilePicModal] = useState(false);
@@ -66,7 +70,7 @@ export const Profile = (props) => {
         >
           <div
             style={{
-              height: "90%",
+              height: "100%",
               margin: "1%",
               borderRadius: "5px",
               display: "flex",
@@ -77,7 +81,7 @@ export const Profile = (props) => {
           >
             <div
               style={{
-                height: "90%",
+                height: "100%",
                 margin: "1%",
                 borderRadius: "5px",
                 overflow: "hidden",
@@ -87,17 +91,17 @@ export const Profile = (props) => {
             >
               <Image
                 preview={false}
-                height={"100%"}
+                // height={"100%"}
+                height={"400px"}
                 // width={"100%"}
                 style={{
                   borderRadius: "50%",
                   border:
                     theme === "light" ? " 1px solid black" : " 1px solid white",
                 }}
-                src={profilePicUrl}
+                src={user.user?.profilePicUrl}
               />
             </div>
-            <Button icon={<EditOutlined />} onClick={showModal} />
           </div>
           <div
             style={{
@@ -120,19 +124,12 @@ export const Profile = (props) => {
                 gap: "20px",
               }}
             >
-              <div>Name : {user.user ? user.user.name : user.newUser.name}</div>
-              <div>
-                Email : {user.user ? user.user.email : user.newUser.email}
-              </div>
-              <div>
-                Phone Number :{" "}
-                {user.user ? user.user.phoneNumber : user.newUser.phoneNumber}
-              </div>
-              <div>
-                Address :{user.user ? user.user.address : user.newUser.address}
-              </div>
+              <div>Name : {user.user?.name}</div>
+              <div>Email : {user.user?.email}</div>
+              <div>Phone Number : {user.user?.phoneNumber}</div>
+              <div>Address :{user.user?.address}</div>
             </div>
-            {user.user.email === currentUser.user.email ? (
+            {user.user?.email === currentUser.user.email ? (
               <Button icon={<EditOutlined />} onClick={handleOpen} />
             ) : (
               <div />

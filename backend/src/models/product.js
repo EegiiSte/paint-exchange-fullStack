@@ -23,9 +23,10 @@ const productSchema = new mongoose.Schema(
       required: [true, "Product category is required"],
     },
 
-    userId: {
-      type: String,
-      required: [true, "Product userId is required"],
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "User is required!"],
     },
     type: {
       type: String,

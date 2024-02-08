@@ -1,4 +1,4 @@
-import { Switch } from "antd";
+import { Image, Switch } from "antd";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useNotificationContext } from "../../context/NotificationContext";
@@ -12,6 +12,8 @@ export const Header = () => {
 
   const { currentUser, signOut, userContextLoading } = useUserContext();
   const { successNotification } = useNotificationContext();
+
+  // console.log(`Header: user`, currentUser);
 
   const { setProducts } = useProductsContext();
 
@@ -39,94 +41,97 @@ export const Header = () => {
     return <div>Loading</div>;
   }
 
-  if (!userContextLoading && currentUser) {
+  if (!userContextLoading) {
     return (
       <div
         className="Header box-shadow-gray"
         style={(textStyle, backgroundStyle)}
       >
-        <Switch
-          checkedChildren="Black Theme"
-          unCheckedChildren="Light Theme"
-          checked={theme === "dark" ? true : false}
-          onChange={handleChange}
-          // size="small"
-        />
-
-        <div className="Header-Left">
-          <Link to="/" style={textStyle}>
-            Home
-          </Link>
+        <div style={{ ...textStyle, fontSize: "20px" }}>
+          <Image
+            preview={false}
+            height={"40px"}
+            style={{
+              borderRadius: "50%",
+              border: "1px solid black",
+              backgroundColor: theme === "light" ? "" : "white",
+            }}
+            src={
+              theme === "light"
+                ? "https://firebasestorage.googleapis.com/v0/b/fullstack-leap.appspot.com/o/B98FC9C9-A603-44B7-B4AA-568942F44225.PNG?alt=media&token=d1a6a0ba-d0aa-4848-925a-740a6bf7dfe0"
+                : "https://firebasestorage.googleapis.com/v0/b/fullstack-leap.appspot.com/o/4C884CB0-7FA6-49F5-91E2-EF94CE7AD167.PNG?alt=media&token=675700ab-d8b5-430f-b1fa-c175b559889c"
+            }
+          />
+          AINT
         </div>
-        <div className="Header-Right">
-          <div className="Header-Right_Item">
-            <Link to="/products" style={textStyle}>
-              Products
+        <div className="HeaderMenuBox">
+          <div className="Header-Left">
+            <Link to="/" style={textStyle}>
+              Home
             </Link>
           </div>
-        </div>
-
-        <div className="Header-Right">
-          <div className="Header-Right_Item">
+          {currentUser ? (
             <div
-              onClick={() => navigate(`/profile/${currentUser.user.userId}`)}
-              style={
-                (textStyle,
-                {
-                  cursor: "pointer",
-                })
-              }
+              className="HeaderMenuLeft"
+              style={(textStyle, backgroundStyle)}
             >
-              {currentUser.user
-                ? currentUser.user.email
-                : currentUser.newUser.email}
+              <div className="Header-Right">
+                <div className="Header-Right_Item">
+                  <Link to="/products" style={textStyle}>
+                    Products
+                  </Link>
+                </div>
+              </div>
+
+              <div className="Header-Right">
+                <div className="Header-Right_Item">
+                  <div
+                    onClick={() => navigate(`/profile/${currentUser.user._id}`)}
+                    style={{ ...textStyle, cursor: "pointer" }}
+                  >
+                    {currentUser.user.email}
+                  </div>
+                </div>
+              </div>
+              <div className="Header-Right">
+                <div className="Header-Right_Item">
+                  <Link onClick={handleLogOut} style={textStyle}>
+                    Sign Out
+                  </Link>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="Header-Right">
-          <div className="Header-Right_Item">
-            <Link onClick={handleLogOut} style={textStyle}>
-              Sign Out
-            </Link>
-          </div>
+          ) : (
+            <div
+              className="HeaderMenuLeft"
+              style={(textStyle, backgroundStyle)}
+            >
+              <div className="Header-Right">
+                <div className="Header-Right_Item">
+                  <Link to="/sign-in" style={textStyle}>
+                    Sign In
+                  </Link>
+                </div>
+              </div>
+
+              <div className="Header-Right">
+                <div className="Header-Right_Item">
+                  <Link to="/sign-up" style={textStyle}>
+                    Sign Up
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
+          <Switch
+            checkedChildren="Black Theme"
+            unCheckedChildren="Light Theme"
+            checked={theme === "dark" ? true : false}
+            onChange={handleChange}
+            // size="small"
+          />
         </div>
       </div>
     );
   }
-
-  return (
-    <div
-      className="Header box-shadow-gray"
-      style={(textStyle, backgroundStyle)}
-    >
-      <Switch
-        checkedChildren="Black Theme"
-        unCheckedChildren="Light Theme"
-        checked={theme === "dark" ? true : false}
-        onChange={handleChange}
-        // size="small"
-      />
-      <div className="Header-Left">
-        <Link to="/" style={textStyle}>
-          Home
-        </Link>
-      </div>
-
-      <div className="Header-Right">
-        <div className="Header-Right_Item">
-          <Link to="/sign-in" style={textStyle}>
-            Sign In
-          </Link>
-        </div>
-      </div>
-
-      <div className="Header-Right">
-        <div className="Header-Right_Item">
-          <Link to="/sign-up" style={textStyle}>
-            Sign Up
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
 };

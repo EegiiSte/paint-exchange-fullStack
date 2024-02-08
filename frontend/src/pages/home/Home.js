@@ -1,7 +1,5 @@
-import { QRCode } from "antd";
 import React from "react";
 import { Header } from "../../component";
-import { MatrixBG } from "../../component/matrix/MatrixBG.js";
 import { useThemeContext } from "../../context/ThemeContext";
 import "./Home.css";
 
@@ -17,7 +15,6 @@ export const Home = () => {
       }}
     >
       <Header />
-      {theme === "light" ? <div /> : <MatrixBG />}
       <div
         className="padding-top-10 mainBox"
         zIndex="1"
@@ -27,9 +24,6 @@ export const Home = () => {
           display: "flex",
           justifyContent: "start",
           backgroundColor: theme === "light" ? "" : "",
-
-          // paddingTop: "30px",
-          // paddingLeft: "30px",
         }}
       >
         <div
@@ -42,7 +36,7 @@ export const Home = () => {
               fontSize: "50px",
             }}
           >
-            Do you have leftover paint in your storage?
+            Do you have paint?
           </h1>
         </div>
       </div>

@@ -3,16 +3,37 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Header } from "../../component";
 import { useThemeContext, useUserContext } from "../../context";
+import { useProfileIconContext } from "../../context/ProfileIconContext";
 import { Profile } from "./Profile";
+import { ProfileAllUsers } from "./ProfileAllUsers";
+import { ProfileProducts } from "./ProfileProducts";
 
 const ProfilePage = () => {
   const { id } = useParams();
-  // const userId = id;
+
   const { theme } = useThemeContext();
   const { currentUser } = useUserContext();
-  const [singleUserData, setSingleUserData] = useState(null);
 
-  console.log("ProfilePage-id", id);
+  const [singleUserData, setSingleUserData] = useState({});
+
+  const { setProfilePicUrl } = useProfileIconContext();
+
+  // console.log("ProfilePage-singleUserData.user", singleUserData.user);
+  // console.log(
+  //   "ProfilePage-singleUserData.singleUser",
+  //   singleUserData?.singleUser
+  // );
+  // console.log("ProfilePage-singleUserData", singleUserData);
+  // console.log("ProfilePage-singleUserData.products", singleUserData?.products);
+  // console.log("ProfilePage-id", id);
+
+  // const singleUser = singleUserData;
+  // const singleData = singleUserData?.user?.products;
+  // console.log("ProfilePage-singleUser", singleUser);
+  // console.log("ProfilePage-singleData", singleData);
+
+  const [allUsersData, setAllUsersData] = useState([]);
+  console.log("ProfilePage-allUserData ", allUsersData);
 
   useEffect(() => {
     const getSingleUserData = async () => {
@@ -27,21 +48,35 @@ const ProfilePage = () => {
           }
         );
 
-        const data = await response.data;
-        setSingleUserData(data);
+        const usersData = await axios.get(
+          // `https://fullstack-backend-pm5t.onrender.com/users/`,
+          "http://localhost:8080/users/",
+          {
+            headers: {
+              Authorization: `Bearer ${currentUser.token}`,
+            },
+          }
+        );
 
-        console.log("ProfilePage-data", data);
+        const data = await response.data;
+        const allUsersData = await usersData.data;
+        setSingleUserData(data);
+        setAllUsersData(allUsersData);
+        setProfilePicUrl(data.user.profilePicUrl);
+
+        // console.log("ProfilePage-data", data);
       } catch (error) {
         console.log(error);
       }
-      if (currentUser) {
-        getSingleUserData();
-      }
-
-      return () => {};
     };
-  }, [currentUser]);
-  console.log("ProfilePage-singleUser", singleUserData);
+    getSingleUserData();
+
+    return () => {
+      getSingleUserData();
+    };
+  }, [id]);
+
+  // console.log("ProfilePage-singleUser", singleUserData);
 
   return (
     <div
@@ -73,7 +108,7 @@ const ProfilePage = () => {
       >
         <div
           style={{
-            width: "98%",
+            width: "90%",
             display: "flex",
             justifyContent: "center",
             // margin: "20px",
@@ -85,29 +120,38 @@ const ProfilePage = () => {
               border: "1px solid black",
               borderRadius: "10px",
               padding: "20px",
-              width: "76vw",
+              // width: "50%",
             }}
           >
-            <Profile user={currentUser} />
+            <Profile user={singleUserData} />
           </section>
           <section
             style={{
               border: "1px solid black",
               borderRadius: "10px",
               padding: "20px",
-              width: "76vw",
+              width: "50%",
               backdropFilter: "saturate(180%) blur(15px)",
             }}
-          ></section>
+          >
+            {" "}
+            <ProfileProducts singleUser={singleUserData} />
+          </section>
           <section
             style={{
               border: "1px solid black",
               borderRadius: "10px",
               padding: "20px",
-              width: "76vw",
+              width: "20%",
               backdropFilter: "saturate(180%) blur(15px)",
             }}
-          ></section>
+          >
+            {" "}
+            <ProfileAllUsers
+              allUsersData={allUsersData}
+              singleUser={singleUserData}
+            />
+          </section>
         </div>
       </div>
     </div>

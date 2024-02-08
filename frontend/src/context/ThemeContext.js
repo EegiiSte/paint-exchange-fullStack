@@ -8,7 +8,7 @@ export const ThemeContextProvider = (props) => {
   const initialTheme = localStorage.getItem("theme") || "light";
   const [theme, setTheme] = useState(initialTheme);
 
-  console.log("ThemeContextProvider - theme", theme);
+  // console.log("ThemeContextProvider - theme", theme);
 
   const textStyle = {
     textDecoration: "none",

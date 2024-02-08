@@ -141,8 +141,8 @@ export const ProfileEditModal = (props) => {
               width: "60%",
             }}
           >
-            {profileIcons.map((profileIcon) => (
-              <div>
+            {profileIcons.map((profileIcon, index) => (
+              <div key={index}>
                 <Image
                   preview={false}
                   style={{ cursor: "pointer" }}
@@ -179,11 +179,7 @@ export const ProfileEditModal = (props) => {
               </span>
             }
             // initialValue={"test13"}
-            initialValue={
-              currentUser.user
-                ? currentUser.user.name
-                : currentUser.newUser.name
-            }
+            initialValue={currentUser.user.name}
             rules={[
               {
                 required: false,
@@ -206,11 +202,7 @@ export const ProfileEditModal = (props) => {
                 Current E-mail
               </span>
             }
-            initialValue={
-              currentUser.user
-                ? currentUser.user.email
-                : currentUser.newUser.email
-            }
+            initialValue={currentUser.user.email}
             rules={[
               {
                 type: "email",
@@ -236,11 +228,7 @@ export const ProfileEditModal = (props) => {
               </span>
             }
             // initialValue={"test13"}
-            initialValue={
-              currentUser.user
-                ? currentUser.user.phoneNumber
-                : currentUser.newUser.phoneNumber
-            }
+            initialValue={currentUser.user.phoneNumber}
             rules={[
               {
                 required: false,
@@ -263,11 +251,7 @@ export const ProfileEditModal = (props) => {
               </span>
             }
             // initialValue={"test13"}
-            initialValue={
-              currentUser.user
-                ? currentUser.user.address
-                : currentUser.newUser.address
-            }
+            initialValue={currentUser.user.address}
             rules={[
               {
                 required: false,

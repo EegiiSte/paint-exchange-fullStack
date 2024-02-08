@@ -1,6 +1,30 @@
-import React from "react";
+import {
+  DeleteFilled,
+  DeleteOutlined,
+  EditFilled,
+  EditOutlined,
+} from "@ant-design/icons";
+import { Button, Flex, Image, Tag } from "antd";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  useProductsContext,
+  useThemeContext,
+  useUserContext,
+} from "../../context";
+import "./Product.css";
 
-export const AllProducts = () => {
+export const AllProducts = (props) => {
+  const { handleOpen, handleClose, filteredArray, handleOpenDelete } = props;
+
+  const navigate = useNavigate();
+
+  const { products } = useProductsContext();
+  const { theme, textStyle } = useThemeContext();
+  const { currentUser } = useUserContext();
+
+  console.log("AllProducts: products", products);
+
   return (
     <div>
       <Flex
@@ -24,10 +48,16 @@ export const AllProducts = () => {
                 height: 320,
                 borderRadius: "10px",
                 overflow: "hidden",
-                backgroundColor: theme === "light" ? "white" : "",
+                // backgroundColor: theme === "light" ? "white" : "",
+                // backgroundColor: "white",
+                backdropFilter: "saturate(180%) blur(15px)",
               }}
             >
-              <div className="d-flex align-c just-c" style={{ height: "10%" }}>
+              <div
+                className="d-flex align-c just-c"
+                style={{ height: "10%", cursor: "pointer" }}
+                onClick={() => navigate(`/profile/${product.user._id}`)}
+              >
                 <p
                   style={{
                     fontSize: "12px",
@@ -36,12 +66,10 @@ export const AllProducts = () => {
                   <Image
                     preview={false}
                     height={"25px"}
-                    src={
-                      " https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg?size=338&ext=jpg&ga=GA1.1.1448711260.1706745600&semt=ais"
-                    }
+                    src={product.user.profilePicUrl}
                     style={{ borderRadius: "50%", border: "1px solid black" }}
                   />
-                  : {}
+                  : {product.user.email}
                 </p>
               </div>
               <div
@@ -55,10 +83,7 @@ export const AllProducts = () => {
               >
                 <Image height={"100%"} src={product.image} />
               </div>
-              <div
-                className="d-flex align-c just-start"
-                // style={{ height: "10%" }}
-              >
+              <div className="d-flex align-c just-start">
                 <Tag color={product.type === "public" ? "success" : "cyan"}>
                   {product.type}
                 </Tag>
@@ -71,7 +96,6 @@ export const AllProducts = () => {
                   <div
                     style={{
                       width: "80%",
-
                       justifyContent: "space-between",
                     }}
                     onClick={() => navigate(`/products/${product._id}`)}
@@ -85,10 +109,7 @@ export const AllProducts = () => {
                   </div>
                 </div>
               </div>
-              {product.userEmail ===
-              (currentUser.user
-                ? currentUser.user.email
-                : currentUser.newUser.email) ? (
+              {product.user.email === currentUser.user.email ? (
                 <div
                   style={{
                     width: "100%",

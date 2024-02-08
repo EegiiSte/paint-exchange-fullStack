@@ -37,7 +37,7 @@ const signInUser = async (req, res) => {
       profilePicUrl: user.profilePicUrl,
       phoneNumber: user.phoneNumber,
       address: user.address,
-      userId: user._id,
+      _id: user._id,
     },
     token,
   });

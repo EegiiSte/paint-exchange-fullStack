@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useUserContext } from "./UserContext";
 
 const ProfileIconContext = createContext();
@@ -44,6 +44,10 @@ export const ProfileIconContextProvider = (props) => {
   const selectProfilePic = (pic) => {
     setProfilePicUrl(pic);
   };
+
+  useEffect(() => {
+    // setProfilePicUrl("");
+  }, []);
 
   return (
     <ProfileIconContext.Provider

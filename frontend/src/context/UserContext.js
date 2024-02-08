@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { isTokenExpired } from "../utils";
 import { useNotificationContext } from "./NotificationContext";
@@ -10,7 +11,7 @@ export const UserProvider = (props) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [singleUser, setSingleUser] = useState(null);
 
-  console.log("UserProvider-currentUser ", currentUser);
+  // console.log("UserProvider-currentUser ", currentUser);
   // console.log("UserProvider-singleUser ", singleUser);
 
   const [userContextLoading, setUserContextLoading] = useState(true);
@@ -53,17 +54,6 @@ export const UserProvider = (props) => {
     localStorage.removeItem("user");
     setCurrentUser(null);
   };
-
-  // const getSingleUser = async (id) => {
-  //   const response = await axios.get(
-  //     // "https://fullstack-backend-pm5t.onrender.com/products",
-  //     `http://localhost:8080/users/${id}`
-  //   );
-
-  //   const data = await response.data;
-
-  //   return data.user.email;
-  // };
 
   return (
     <userContext.Provider

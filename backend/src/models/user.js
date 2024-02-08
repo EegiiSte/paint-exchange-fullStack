@@ -30,5 +30,11 @@ const userSchema = new mongoose.Schema({
   address: {
     type: String,
   },
+  products: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+    },
+  ],
 });
 module.exports = mongoose.model("User", userSchema);
