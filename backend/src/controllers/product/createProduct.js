@@ -10,10 +10,6 @@ const createProduct = async (req, res) => {
     });
   }
   try {
-    // return res.status(201).json({
-    //   message: "You are creating a new product",
-    // });
-
     const product = await Product.create({
       name,
       price,

@@ -1,28 +1,25 @@
-import {
-  DeleteFilled,
-  DeleteOutlined,
-  EditFilled,
-  EditOutlined,
-} from "@ant-design/icons";
-import { Button, Flex, Image, Tag } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Avatar, Button, Card, Flex, Image, Input, Tag } from "antd";
 import React, { useState } from "react";
-import { useThemeContext, useUserContext } from "../../context";
 import { useNavigate } from "react-router-dom";
-import { EditProductModal2 } from "../product/modal/EditProductModal2";
+import { useThemeContext, useUserContext } from "../../context";
 import { DeleteProductModal } from "../product/modal/DeleteProductModal";
+import { EditProductModal2 } from "../product/modal/EditProductModal2";
 import { CreateProductModal } from "../products/CreateProductModal";
+const { Meta } = Card;
 
 export const ProfileProducts = (props) => {
   const { singleUser } = props;
 
   const products = singleUser?.user?.products;
 
-  // console.log("ProfileProducts-singleUser", singleUser);
+  console.log("ProfileProducts-singleUser", singleUser);
   // console.log("ProfileProducts-products", products);
 
   const { theme, textStyle } = useThemeContext();
   const navigate = useNavigate();
   const { currentUser } = useUserContext();
+  console.log("ProfileProducts-currentUser", currentUser);
 
   const [openCreate, setOpenCreate] = React.useState(false);
   const handleOpenCreate = () => setOpenCreate(true);
@@ -75,114 +72,94 @@ export const ProfileProducts = (props) => {
         vertical
         gap="middle"
         align="center"
-        justify="center"
+        justify="start"
         style={{
           padding: 20,
         }}
       >
-        <div className=" d-flex flex-direction-c just-c align-c">
-          <input
+        <Flex align="center" justify="start">
+          <Input
             onChange={handleInputSearch}
             // value={searchValue}
             placeholder="Search by name"
             style={{
-              height: "40px",
-              width: "500px",
+              height: "45px",
             }}
-            // placeholder="Search"
-          ></input>
-          <Button
-            block
-            onClick={handleOpenCreate}
-            style={{
-              height: "46px",
-              width: "200px ",
-              ...textStyle,
-              backgroundColor: theme === "light" ? "white" : "#0000007c",
-            }}
-          >
-            Create Product
-          </Button>
-        </div>
-        {filteredArray?.map((product, index) => (
-          <div
-            className=" d-flex flex-direction-c just-s-evenly "
-            key={index}
-            style={{
-              ...textStyle,
-              border: "1px solid white",
-              width: 240,
-              height: 320,
-              borderRadius: "10px",
-              overflow: "hidden",
-              backgroundColor: theme === "light" ? "white" : "",
-            }}
-          >
-            <div
+          ></Input>
+
+          {currentUser.user?.email === singleUser.user?.email ? (
+            <Button
+              block
+              onClick={handleOpenCreate}
               style={{
-                height: "40%",
-                overflow: "hidden",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                height: "46px",
+                width: "200px ",
+                ...textStyle,
+                backgroundColor: theme === "light" ? "white" : "#0000007c",
               }}
             >
-              <Image height={"100%"} src={product.image} />
-            </div>
-            <div
-              className="d-flex align-c just-start"
-              // style={{ height: "10%" }}
+              Create Product
+            </Button>
+          ) : (
+            <div />
+          )}
+        </Flex>
+        <Flex gap="middle" align="start" justify="start" wrap="wrap">
+          {filteredArray?.map((product, index) => (
+            <Card
+              key={index}
+              style={{
+                width: 200,
+              }}
+              cover={
+                <Image
+                  preview={false}
+                  alt="example"
+                  src={product.image}
+                  onClick={() => navigate(`/products/${product._id}`)}
+                />
+              }
+              actions={[
+                currentUser.user.email === singleUser.user.email ? (
+                  <Flex justify="space-evenly">
+                    <EditOutlined
+                      key="edit"
+                      onClick={() => handleOpen(product)}
+                    />
+
+                    <DeleteOutlined
+                      key="delete"
+                      onClick={() => handleOpenDelete(product)}
+                    />
+                  </Flex>
+                ) : (
+                  <div />
+                ),
+              ]}
             >
-              <Tag color={product.type === "public" ? "success" : "cyan"}>
+              <Tag
+                style={{
+                  marginBottom: 20,
+                }}
+                color={product.type === "public" ? "success" : "cyan"}
+              >
                 {product.type}
               </Tag>
-            </div>
-            <div
-              className="d-flex flex-direction-c just-c"
-              style={{ height: "30%", overflow: "hidden" }}
-            >
-              <div className="d-flex flex-direction-c just-c align-c">
-                <div
-                  style={{
-                    width: "80%",
-
-                    justifyContent: "space-between",
-                  }}
-                  onClick={() => navigate(`/products/${product._id}`)}
-                >
-                  <p>Name : {product.name}</p>
-                  <p>Price : ${product.price}</p>
-                  <p style={{ height: "10" }}>
-                    Description : {product.description}
-                  </p>
-                  <p>Category : {product.category}</p>
-                </div>
-              </div>
-            </div>
-            {singleUser?.user?.email === currentUser.user.email ? (
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "space-evenly",
-                }}
-              >
-                <Button
-                  icon={theme === "light" ? <EditOutlined /> : <EditFilled />}
-                  onClick={() => handleOpen(product)}
-                />
-                <Button
-                  icon={
-                    theme === "light" ? <DeleteOutlined /> : <DeleteFilled />
-                  }
-                  onClick={() => handleOpenDelete(product)}
-                />
-              </div>
-            ) : (
-              <div />
-            )}
-          </div>
-        ))}
+              <Meta
+                title={product.name}
+                description={
+                  <div onClick={() => navigate(`/products/${product._id}`)}>
+                    <p>Price : ${product.price}</p>
+                    <p style={{ height: "10" }}>
+                      Description : {product.description}
+                    </p>
+                    <p>Category : {product.category}</p>
+                  </div>
+                }
+              ></Meta>
+            </Card>
+          ))}
+        </Flex>
       </Flex>
       <EditProductModal2
         handleClose={handleClose}

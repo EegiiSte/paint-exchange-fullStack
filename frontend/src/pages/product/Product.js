@@ -1,4 +1,4 @@
-import { Button, Flex, Image, Tag } from "antd";
+import { Button, Flex, Image, Tag, Avatar, Card, Divider, Input } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -10,10 +10,16 @@ import { useUserContext } from "../../context/UserContext";
 import { DeleteProductModal } from "./modal/DeleteProductModal";
 import { EditProductModal2 } from "./modal/EditProductModal2";
 
+import { useNavigate } from "react-router-dom";
+import { DeleteOutlined, EditOutlined, SendOutlined } from "@ant-design/icons";
+
 import "./Product.css";
+const { Meta } = Card;
 
 export const Product = () => {
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   //state for edit modal
   const [open, setOpen] = useState(false);
@@ -35,7 +41,7 @@ export const Product = () => {
 
   const selectedProduct = products.find((product) => product._id === id);
 
-  // console.log("Product-->selectedProduct", selectedProduct);
+  console.log("Product-->selectedProduct", selectedProduct);
 
   const [singleProduct, setSingleProduct] = useState([]);
 
@@ -74,157 +80,130 @@ export const Product = () => {
     return <div>...Loading Products</div>;
   } else {
     return (
-      <div
-        className="align-c d-flex "
-        style={{
-          flexDirection: "column",
-          // backgroundColor: theme === "light" ? "#cbdaf0a8" : "#cbdaf0a8",
-          backgroundImage:
-            // "url(https://www.paintingcontractorsneworleansla.com/cloud/Slideshow/3b.jpg)",
-            "url(https://highlanderdeco.com/wp-content/uploads/2019/08/colors-containers-contemporary-1571174-1024x683.jpg)",
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-          backdropFilter: "blur(30px)",
-        }}
-      >
+      <Flex gap="middle" vertical align="center" className="align-c d-flex ">
         <Header />
         {theme === "light" ? (
           <div style={{ backgroundColor: "#cbdaf0a8" }} />
         ) : (
           <MatrixBG />
         )}
-        <div
-          className="padding-top-10 "
+        <Flex
+          vertical
+          gap="middle"
           style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-evenly",
-            color: theme === "light" ? "black" : "white",
+            borderRadius: "10px",
+            backgroundColor: "white",
+            borderRadius: "10px",
           }}
         >
-          <Flex className="gap-10" wrap="wrap" gap="small">
-            <Button
-              block
-              onClick={handleOpen}
-              style={{
-                backgroundColor: theme === "light" ? "white" : "#0000006c",
-                color: theme === "light" ? "black" : "white",
-              }}
-            >
-              Edit
-            </Button>
-            <Button
-              block
-              onClick={handleOpenDelete}
-              style={{
-                backgroundColor: theme === "light" ? "white" : "#0000006c",
-                color: theme === "light" ? "black" : "white",
-              }}
-            >
-              Delete
-            </Button>
-          </Flex>
-          )
-        </div>
-        {singleProduct && (
-          <div
-            // className="box-shadow-gray"
+          <Flex
+            gap="middle"
+            horizental
             style={{
               border: "1px solid white",
-              backgroundColor: theme === "light" ? "#e4e5e5d5" : "#0000007c",
-              height: "70vh",
-              width: "55%",
+              backgroundColor: "white",
               borderRadius: "10px",
-              padding: "20px",
-              margin: "20px",
-              display: "flex",
-              alignItems: "center",
-              flexDirection: "row",
+              padding: "10px",
             }}
           >
-            <div
-              className="d-flex flex-direction-c just-s-evenly "
-              style={{
-                width: "50%",
-                height: "100%",
-                color: theme === "light" ? "black" : "white",
-              }}
-            >
-              <div className="d-flex align-c just-start">
-                <Tag
-                  color={
-                    singleProduct.product?.type === "public"
-                      ? "success"
-                      : "cyan"
-                  }
-                >
-                  {singleProduct.product?.type}
-                </Tag>
-              </div>
-              <div
-                className="d-flex flex-direction-c just-c align-start "
-                style={{ gap: "10px" }}
-              >
-                <p>
-                  <div className="d-flex flex-direction-row">
-                    <p>Name :</p>
-                    <p>{singleProduct.product?.name}</p>
-                  </div>
-                </p>
-                <p>
-                  <div className="d-flex flex-direction-row">
-                    <p>Price : $</p>
-                    <p>{singleProduct.product?.price}</p>
-                  </div>
-                </p>
-                <p>
-                  <div className="d-flex flex-direction-row">
-                    <p>Category :</p> {singleProduct.product?.category}
-                  </div>
-                </p>
-                <div className="d-flex flex-direction-c gap-10">
-                  <span>Description : </span>
-                  <span>{singleProduct.product?.description}</span>
-                </div>
-              </div>
-              <p
+            <Flex>
+              <Image
                 style={{
-                  fontSize: "12px",
+                  borderRadius: "10px",
                 }}
-              >
-                <Image
-                  preview={false}
-                  height={"50px"}
-                  // src={singleProduct?.userProduct.profilePicUrl}
-                  src={
-                    " https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg?size=338&ext=jpg&ga=GA1.1.1448711260.1706745600&semt=ais"
-                  }
-                  style={{ borderRadius: "50%", border: "1px solid black" }}
-                />{" "}
-                : {}
-              </p>
-            </div>
-            <div
-              className="d-flex flex-direction-c just-s-evenly "
+                alt="example"
+                src={selectedProduct.image}
+              />
+            </Flex>
+            <Card
               style={{
-                width: "50%",
-                height: "100%",
-                color: theme === "light" ? "black" : "white",
-                fontSize: "150%",
+                width: 440,
+              }}
+              // cover={<img alt="example" src={selectedProduct.image} />}
+              actions={[
+                selectedProduct.user.email === currentUser.user.email ? (
+                  <Flex justify="space-evenly">
+                    <EditOutlined
+                      key="edit"
+                      onClick={() => handleOpen(selectedProduct)}
+                    />
+
+                    <DeleteOutlined
+                      key="delete"
+                      onClick={() => handleOpenDelete(selectedProduct)}
+                    />
+                  </Flex>
+                ) : (
+                  <div />
+                ),
+              ]}
+            >
+              <Meta
+                avatar={
+                  <Flex
+                    horizental="true"
+                    align="center"
+                    gap="middle"
+                    style={{ cursor: "pointer" }}
+                    onClick={() =>
+                      navigate(`/profile/${selectedProduct.user._id}`)
+                    }
+                  >
+                    <Avatar src={selectedProduct.user.profilePicUrl} />
+                    <p>{selectedProduct.user.email}</p>
+                  </Flex>
+                }
+              />
+              <Divider dashed />
+              <Meta
+                title={selectedProduct.name}
+                description={
+                  <div
+                    onClick={() => navigate(`/products/${selectedProduct._id}`)}
+                  >
+                    <p>Price : ${selectedProduct.price}</p>
+                    <p style={{ height: "10" }}>
+                      Description : {selectedProduct.description}
+                    </p>
+                    <p>Category : {selectedProduct.category}</p>
+                  </div>
+                }
+              />
+            </Card>
+          </Flex>
+          <Flex
+            vertical
+            style={{
+              paddingLeft: "20px",
+              paddingRight: "20px",
+            }}
+          >
+            <Flex horizental gap="middle">
+              <Input />
+              <SendOutlined />
+            </Flex>
+            <Flex
+              horizental
+              gap="middle"
+              style={{
+                padding: "10px",
               }}
             >
-              <img
+              <Avatar src={selectedProduct.user.profilePicUrl} />
+              <Flex
+                align="center"
+                justify="start"
                 style={{
+                  border: "1px solid lightgray",
+                  width: "100%",
                   borderRadius: "5px",
                 }}
-                src={selectedProduct?.image}
-                alt={"productImage"}
-                // width="350px"
-                // height="150px"
-              />
-            </div>
-          </div>
-        )}
+              >
+                <p>comment</p>
+              </Flex>
+            </Flex>
+          </Flex>
+        </Flex>
 
         <EditProductModal2
           handleClose={handleClose}
@@ -239,10 +218,108 @@ export const Product = () => {
           openDelete={openDelete}
           id={id}
         />
-      </div>
+      </Flex>
     );
   }
 };
+
+// <div
+//             // className="box-shadow-gray"
+//             style={{
+//               border: "1px solid white",
+//               backgroundColor: theme === "light" ? "#e4e5e5d5" : "#0000007c",
+//               height: "70vh",
+//               width: "55%",
+//               borderRadius: "10px",
+//               padding: "20px",
+//               margin: "20px",
+//               display: "flex",
+//               alignItems: "center",
+//               flexDirection: "row",
+//             }}
+//           >
+//             <div
+//               className="d-flex flex-direction-c just-s-evenly "
+//               style={{
+//                 width: "50%",
+//                 height: "100%",
+//                 color: theme === "light" ? "black" : "white",
+//               }}
+//             >
+//               <div className="d-flex align-c just-start">
+//                 <Tag
+//                   color={
+//                     singleProduct.product?.type === "public"
+//                       ? "success"
+//                       : "cyan"
+//                   }
+//                 >
+//                   {singleProduct.product?.type}
+//                 </Tag>
+//               </div>
+//               <div
+//                 className="d-flex flex-direction-c just-c align-start "
+//                 style={{ gap: "10px" }}
+//               >
+//                 <p>
+//                   <div className="d-flex flex-direction-row">
+//                     <p>Name :</p>
+//                     <p>{singleProduct.product?.name}</p>
+//                   </div>
+//                 </p>
+//                 <p>
+//                   <div className="d-flex flex-direction-row">
+//                     <p>Price : $</p>
+//                     <p>{singleProduct.product?.price}</p>
+//                   </div>
+//                 </p>
+//                 <p>
+//                   <div className="d-flex flex-direction-row">
+//                     <p>Category :</p> {singleProduct.product?.category}
+//                   </div>
+//                 </p>
+//                 <div className="d-flex flex-direction-c gap-10">
+//                   <span>Description : </span>
+//                   <span>{singleProduct.product?.description}</span>
+//                 </div>
+//               </div>
+//               <p
+//                 style={{
+//                   fontSize: "12px",
+//                 }}
+//               >
+//                 <Image
+//                   preview={false}
+//                   height={"50px"}
+//                   // src={singleProduct?.userProduct.profilePicUrl}
+//                   src={
+//                     " https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg?size=338&ext=jpg&ga=GA1.1.1448711260.1706745600&semt=ais"
+//                   }
+//                   style={{ borderRadius: "50%", border: "1px solid black" }}
+//                 />{" "}
+//                 : {}
+//               </p>
+//             </div>
+//             <div
+//               className="d-flex flex-direction-c just-s-evenly "
+//               style={{
+//                 width: "50%",
+//                 height: "100%",
+//                 color: theme === "light" ? "black" : "white",
+//                 fontSize: "150%",
+//               }}
+//             >
+//               <img
+//                 style={{
+//                   borderRadius: "5px",
+//                 }}
+//                 src={selectedProduct?.image}
+//                 alt={"productImage"}
+//                 // width="350px"
+//                 // height="150px"
+//               />
+//             </div>
+//           </div>
 
 // <EditProductModal
 // handleClose={handleClose}

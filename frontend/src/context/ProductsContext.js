@@ -10,6 +10,10 @@ export const ProductContexProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [productContextLoading, setProductContextLoading] = useState(true);
 
+  const [isUpdeted, setIsUpdeted] = useState(0);
+
+  console.log("ProductContexProvider:isUpdeted", isUpdeted);
+
   useEffect(() => {
     if (!userContextLoading) {
       const fetchProducts = async () => {
@@ -39,7 +43,7 @@ export const ProductContexProvider = ({ children }) => {
     } else {
       setProducts([]);
     }
-  }, [currentUser, userContextLoading]);
+  }, [currentUser, userContextLoading, isUpdeted]);
 
   const Set_Products = (products) => {
     setProducts(products);
@@ -47,6 +51,7 @@ export const ProductContexProvider = ({ children }) => {
 
   const Create_Product = async (product) => {
     setProducts([product, ...products]);
+    setIsUpdeted(isUpdeted + 1);
   };
 
   const Update_Product = async (updatedProduct) => {
@@ -58,6 +63,7 @@ export const ProductContexProvider = ({ children }) => {
       }
     });
     setProducts(updatedProducts);
+    setIsUpdeted(isUpdeted + 1);
   };
 
   const Delete_Product = async (id) => {

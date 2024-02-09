@@ -78,6 +78,8 @@ export const EditProductModal2 = (props) => {
 
       const data = await response.data;
 
+      console.log("EditProductModal2: response", data);
+
       Update_Product(data);
 
       successNotification("Product edited successfully");

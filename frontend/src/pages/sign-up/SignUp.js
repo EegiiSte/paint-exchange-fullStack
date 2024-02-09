@@ -8,6 +8,7 @@ import { useNotificationContext } from "../../context/NotificationContext";
 import { useProfileIconContext } from "../../context/ProfileIconContext";
 import { useThemeContext } from "../../context/ThemeContext";
 import { useUserContext } from "../../context/UserContext";
+import { uploadImage } from "../../utils";
 import "./SignUp.css";
 
 const { Option } = Select;
@@ -57,8 +58,16 @@ export const SignUp = () => {
 
   const [form] = Form.useForm();
 
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const [file, setFile] = useState();
+
   const onFinish = async (values) => {
     setSigninLoading(true);
+    const imageUrl = await uploadImage(file);
+
     try {
       // throw new Error("test error");
       const response = await axios.post(
@@ -68,7 +77,7 @@ export const SignUp = () => {
           name: values.name,
           email: values.email,
           password: values.password,
-          profilePicUrl: profilePicUrl,
+          profilePicUrl: imageUrl,
         }
       );
 
@@ -102,11 +111,6 @@ export const SignUp = () => {
   return (
     <div className="d-flex align-c flex-direction-c just-c">
       <Header />
-      {theme === "light" ? (
-        <div style={{ backgroundColor: "#cbdaf0a8" }} />
-      ) : (
-        <MatrixBG />
-      )}
       <div className="signupBox">
         <div
           className="d-flex just-c align-c flex-direction-c "
@@ -142,50 +146,14 @@ export const SignUp = () => {
             >
               Sign Up
             </h1>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "end",
-                width: "100%",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  flexDirection: "row",
-                  marginBottom: "10px",
-                  width: "84%",
-                }}
-              >
-                <div>
-                  <Image preview={false} height={"80px"} src={profilePicUrl} />
-                  <p>Profile Pic :</p>
-                </div>
-                <div
-                  style={{
-                    border: "1px solid gray",
-                    borderRadius: "5px",
-                    display: "flex",
-                    flexDirection: "row",
-                    flexWrap: "wrap",
-                    width: "60%",
-                  }}
-                >
-                  {profileIcons.map((profileIcon) => (
-                    <div>
-                      <Image
-                        preview={false}
-                        style={{ cursor: "pointer" }}
-                        height={"60px"}
-                        src={profileIcon.url}
-                        onClick={() => selectProfilePic(profileIcon.url)}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <Form.Item label="Profile Picture" name="image">
+              <input
+                name="Image"
+                onChange={handleFileChange}
+                placeholder="choose file"
+                type="file"
+              ></input>
+            </Form.Item>
             <Form.Item
               name="name"
               label={

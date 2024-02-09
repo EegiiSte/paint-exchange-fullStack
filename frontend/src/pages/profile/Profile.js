@@ -1,5 +1,5 @@
 import { EditOutlined } from "@ant-design/icons";
-import { Button, Image, Modal } from "antd";
+import { Button, Flex, Image, Modal } from "antd";
 import React, { useState } from "react";
 import { Header } from "../../component";
 import { MatrixBG } from "../../component/matrix";
@@ -40,39 +40,26 @@ export const Profile = (props) => {
     setOpen(false);
   };
   return (
-    <div>
-      <div
-        // className="box-shadow-gray"
-        style={{
-          border: "1px solid black",
-          //   backgroundColor: theme === "light" ? "#e4e5e5d5" : "#0000007c",
-          //   height: "50%",
-          borderRadius: "10px",
-          padding: "20px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "start",
-          flexDirection: "column",
-          width: "90%",
-          backdropFilter: "saturate(180%) blur(15px)",
-        }}
-      >
-        <div
+    <Flex align="start">
+      <Flex align="center" justify="center">
+        <Flex
+          align="center"
+          justify="center"
           style={{
-            border: "1px solid red",
-            height: "100%",
-            // width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
+            border: "1px solid black",
+            borderRadius: "10px",
+            // height: "100%",
+            // // width: "100%",
+            // display: "flex",
+            // justifyContent: "center",
+            // alignItems: "center",
+            // flexDirection: "column",
           }}
         >
           <div
             style={{
               height: "100%",
               margin: "1%",
-              borderRadius: "5px",
               display: "flex",
               direction: "row",
               alignItems: "center",
@@ -83,7 +70,7 @@ export const Profile = (props) => {
               style={{
                 height: "100%",
                 margin: "1%",
-                borderRadius: "5px",
+                // borderRadius: "20%",
                 overflow: "hidden",
                 display: "flex",
                 justifyContent: "center",
@@ -91,21 +78,21 @@ export const Profile = (props) => {
             >
               <Image
                 preview={false}
-                // height={"100%"}
-                height={"400px"}
-                // width={"100%"}
-                style={{
-                  borderRadius: "50%",
-                  border:
-                    theme === "light" ? " 1px solid black" : " 1px solid white",
-                }}
+                height={"200px"}
+                style={
+                  {
+                    // borderRadius: "50%",
+                    // border:
+                    //   theme === "light" ? " 1px solid black" : " 1px solid white",
+                  }
+                }
                 src={user.user?.profilePicUrl}
               />
             </div>
           </div>
           <div
             style={{
-              border: "1px solid black",
+              // border: "1px solid black",
               width: "80%",
               margin: "1%",
               borderRadius: "5px",
@@ -135,8 +122,8 @@ export const Profile = (props) => {
               <div />
             )}
           </div>
-        </div>
-      </div>
+        </Flex>
+      </Flex>
       <Modal
         title="Basic Modal"
         open={editProfilePicModal}
@@ -173,6 +160,6 @@ export const Profile = (props) => {
         setProfilePicUrl={setProfilePicUrl}
         selectProfilePic={selectProfilePic}
       />
-    </div>
+    </Flex>
   );
 };

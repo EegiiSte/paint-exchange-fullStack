@@ -62,7 +62,7 @@ export const Header = () => {
                 : "https://firebasestorage.googleapis.com/v0/b/fullstack-leap.appspot.com/o/4C884CB0-7FA6-49F5-91E2-EF94CE7AD167.PNG?alt=media&token=675700ab-d8b5-430f-b1fa-c175b559889c"
             }
           />
-          AINT
+          PaintEX
         </div>
         <div className="HeaderMenuBox">
           <div className="Header-Left">

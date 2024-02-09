@@ -36,7 +36,7 @@ export const Home = () => {
               fontSize: "50px",
             }}
           >
-            Do you have paint?
+            Welcome
           </h1>
         </div>
       </div>

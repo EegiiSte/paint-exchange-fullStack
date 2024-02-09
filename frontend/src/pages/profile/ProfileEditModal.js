@@ -8,6 +8,7 @@ import {
   useUserContext,
 } from "../../context";
 import { useProfileIconContext } from "../../context/ProfileIconContext";
+import { uploadImage } from "../../utils";
 const formItemLayout = {
   labelCol: {
     xs: {
@@ -40,22 +41,13 @@ const tailFormItemLayout = {
 };
 
 export const ProfileEditModal = (props) => {
-  const {
-    handleClose,
-    open,
-    // profilePicUrl,
-    // setProfilePicUrl,
-    // profileIcons,
-    // selectProfilePic,
-  } = props;
+  const { handleClose, open } = props;
 
   const { successNotification, errorNotification } = useNotificationContext();
   const [signinLoading, setSigninLoading] = useState(false);
   const [disabledSubmitButton, setDisabledSubmitButton] = useState(true);
   const { theme } = useThemeContext();
   const { updateUser, currentUser } = useUserContext();
-  const { profileIcons, profilePicUrl, setProfilePicUrl, selectProfilePic } =
-    useProfileIconContext();
 
   const [form] = Form.useForm();
 
@@ -63,8 +55,16 @@ export const ProfileEditModal = (props) => {
     const { value, name } = e.target;
     setDisabledSubmitButton(value === currentUser?.user[name]);
   };
+  const [newImageUrl, setNewImageUrl] = useState(
+    currentUser.user.profilePicUrl
+  );
 
-  // console.log("ProfileEditModal-profilePicUrl", profilePicUrl);
+  const handleFileChange = async (e) => {
+    const imageUrl = await uploadImage(e.target.files[0]);
+    setNewImageUrl(imageUrl);
+  };
+
+  console.log("ProfileEditModal-newImageUrl", newImageUrl);
 
   const onFinish = async (values) => {
     setSigninLoading(true);
@@ -78,7 +78,9 @@ export const ProfileEditModal = (props) => {
           password: values.password,
           newEmail: values.email,
           newPassword: values.newPassword,
-          profilePicUrl: profilePicUrl,
+          profilePicUrl: newImageUrl
+            ? newImageUrl
+            : currentUser.user.profilePicUrl,
           phoneNumber: values.phoneNumber,
           address: values.address,
         },
@@ -119,41 +121,6 @@ export const ProfileEditModal = (props) => {
   return (
     <div>
       <Modal handleClose={handleClose} open={open}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            flexDirection: "row",
-            marginBottom: "10px",
-          }}
-        >
-          <div>
-            <Image preview={false} height={"80px"} src={profilePicUrl} />
-            <p>Profile Pic</p>
-          </div>
-          <div
-            style={{
-              border: "1px solid gray",
-              borderRadius: "5px",
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              width: "60%",
-            }}
-          >
-            {profileIcons.map((profileIcon, index) => (
-              <div key={index}>
-                <Image
-                  preview={false}
-                  style={{ cursor: "pointer" }}
-                  height={"60px"}
-                  src={profileIcon.url}
-                  onClick={() => selectProfilePic(profileIcon.url)}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
         <Form
           {...formItemLayout}
           form={form}
@@ -167,6 +134,19 @@ export const ProfileEditModal = (props) => {
           }}
           scrollToFirstError
         >
+          <Form.Item label="Profile Picture" name="image">
+            <input
+              name="Image"
+              onChange={handleFileChange}
+              placeholder="choose file"
+              type="file"
+            ></input>
+            <Image
+              height="60px"
+              width="60px"
+              src={newImageUrl ? newImageUrl : currentUser.user.profilePicUrl}
+            />
+          </Form.Item>
           <Form.Item
             name="name"
             label={
@@ -382,7 +362,6 @@ export const ProfileEditModal = (props) => {
               onClick={() => {
                 handleClose();
                 setDisabledSubmitButton(true);
-                setProfilePicUrl(currentUser.user.profilePicUrl);
               }}
               style={{ width: "100%" }}
             >

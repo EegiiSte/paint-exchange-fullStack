@@ -1,4 +1,4 @@
-import { Button, Flex, Image, Tag, Tooltip } from "antd";
+import { Button, Flex, Image, Input, Tag, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../../component/header/Header";
@@ -95,37 +95,38 @@ export const Products = () => {
       <div
         className=" d-flex flex-direction-c just-start width-100pr padding-top-10"
         style={{
-          backgroundImage:
-            theme === "light"
-              ? // ? "url(https://img.freepik.com/premium-photo/paint-cans-paint-brushes-how-choose-perfect-interior-paint-color-good-health_109549-2530.jpg)"
-                "url(https://hydeparkpaintandpaper.com/wp-content/uploads/2019/01/Paint-brush-sitting-on-top-of-paint-can.jpg)"
-              : // ? "url()"
-                "url(https://media.istockphoto.com/id/643650778/photo/white-paint-and-brush.jpg?s=612x612&w=0&k=20&c=14fe78GgCBDEyIGUhW2ZB9Hvv7KK_w4ZssEjd_I9KS0=)",
-          //: "url()",
-          backgroundPosition: "center",
-          backgroundSize: "cover",
+          // backgroundImage:
+          //   theme === "light"
+          //     ? // ? "url(https://img.freepik.com/premium-photo/paint-cans-paint-brushes-how-choose-perfect-interior-paint-color-good-health_109549-2530.jpg)"
+          //       "url(https://hydeparkpaintandpaper.com/wp-content/uploads/2019/01/Paint-brush-sitting-on-top-of-paint-can.jpg)"
+          //     : // ? "url()"
+          //       "url(https://media.istockphoto.com/id/643650778/photo/white-paint-and-brush.jpg?s=612x612&w=0&k=20&c=14fe78GgCBDEyIGUhW2ZB9Hvv7KK_w4ZssEjd_I9KS0=)",
+          // //: "url()",
+          // backgroundPosition: "center",
+          // backgroundSize: "cover",
           height: "calc(100vh - 80px)",
         }}
       >
-        <div
-          className=" d-flex flex-direction-c just-s-evenly width-100pr "
+        <Flex
+          align="center"
+          justify="center"
           style={{
             textShadow:
               theme === "light" ? "0px 0px 0px black" : "0px 0px 4px black",
             ...textStyle,
           }}
         >
-          <div className=" d-flex flex-direction-row just-s-evenly">
-            <input
+          <Flex align="center" justify="center">
+            <Input
               onChange={handleInputSearch}
               // value={searchValue}
               placeholder="Search by name"
               style={{
-                height: "40px",
-                width: "500px",
+                height: "45px",
+                // width: "100%",
               }}
               // placeholder="Search"
-            ></input>
+            ></Input>
             <Button
               block
               onClick={handleOpenCreate}
@@ -138,8 +139,8 @@ export const Products = () => {
             >
               Create Product
             </Button>
-          </div>
-        </div>
+          </Flex>
+        </Flex>
         <Flex
           wrap="wrap"
           gap="middle"

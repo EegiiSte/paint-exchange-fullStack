@@ -1,3 +1,4 @@
+import { Flex } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -83,7 +84,6 @@ const ProfilePage = () => {
       className="align-c d-flex "
       style={{
         flexDirection: "column",
-        backgroundColor: theme === "light" ? "#f8fc03" : "#cbdaf0a8",
       }}
     >
       <Header />
@@ -95,64 +95,62 @@ const ProfilePage = () => {
           display: "flex",
           justifyContent: "space-evenly",
           color: theme === "light" ? "black" : "white",
-          backgroundImage:
-            // "url(https://www.paintingcontractorsneworleansla.com/cloud/Slideshow/3b.jpg)",
-            // "url(https://assets-global.website-files.com/5f3ba8af4d346a5337f0d782/604f6599c1ed39f645f71787_footer-back.jpg)",
-            "url(https://img.freepik.com/premium-photo/top-view-paint-can_23-2149705374.jpg)",
-          // "url(https://img.freepik.com/premium-photo/cans-paints-brushes-yellow-surface_185193-11722.jpg?size=626&ext=jpg)",
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-          height: "calc(100vh - 80px)",
+          // backgroundImage:
+          //   // "url(https://www.paintingcontractorsneworleansla.com/cloud/Slideshow/3b.jpg)",
+          //   // "url(https://assets-global.website-files.com/5f3ba8af4d346a5337f0d782/604f6599c1ed39f645f71787_footer-back.jpg)",
+          //   "url(https://img.freepik.com/premium-photo/top-view-paint-can_23-2149705374.jpg)",
+          // // "url(https://img.freepik.com/premium-photo/cans-paints-brushes-yellow-surface_185193-11722.jpg?size=626&ext=jpg)",
+          // backgroundPosition: "center",
+          // backgroundSize: "cover",
+          // height: "calc(100vh - 80px)",
           padding: "20px",
         }}
       >
-        <div
+        <Flex
+          gap="middle"
+          justify="center"
           style={{
-            width: "90%",
-            display: "flex",
-            justifyContent: "center",
-            // margin: "20px",
-            gap: "10px",
+            width: "100%",
           }}
         >
-          <section
+          <Flex
+            gap="middle"
+            vertical
             style={{
-              border: "1px solid black",
+              // border: "1px solid black",
               borderRadius: "10px",
-              padding: "20px",
+              // padding: "20px",
               // width: "50%",
             }}
           >
             <Profile user={singleUserData} />
-          </section>
+            <section
+              style={{
+                border: "1px solid black",
+                borderRadius: "10px",
+                padding: "20px",
+                // backdropFilter: "saturate(180%) blur(15px)",
+              }}
+            >
+              <ProfileAllUsers
+                allUsersData={allUsersData}
+                singleUser={singleUserData}
+              />
+            </section>
+          </Flex>
           <section
             style={{
               border: "1px solid black",
               borderRadius: "10px",
               padding: "20px",
               width: "50%",
-              backdropFilter: "saturate(180%) blur(15px)",
+              // backdropFilter: "saturate(180%) blur(15px)",
             }}
           >
             {" "}
             <ProfileProducts singleUser={singleUserData} />
           </section>
-          <section
-            style={{
-              border: "1px solid black",
-              borderRadius: "10px",
-              padding: "20px",
-              width: "20%",
-              backdropFilter: "saturate(180%) blur(15px)",
-            }}
-          >
-            {" "}
-            <ProfileAllUsers
-              allUsersData={allUsersData}
-              singleUser={singleUserData}
-            />
-          </section>
-        </div>
+        </Flex>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { Flex, Image } from "antd";
+import { Avatar, Card, Divider, Flex, Image, Input } from "antd";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useThemeContext, useUserContext } from "../../context";
@@ -37,19 +37,38 @@ export const ProfileAllUsers = (props) => {
         }}
       >
         <div className=" d-flex flex-direction-c just-c align-c">
-          <input
+          <Input
             onChange={handleInputSearch}
-            // value={searchValue}
             placeholder="Search by name"
             style={{
-              height: "40px",
-              width: "100%",
+              height: "45px",
             }}
-            // placeholder="Search"
-          ></input>
+          ></Input>
         </div>
         {filteredArray?.map((user, index) => (
-          <div
+          <Flex
+            key={index}
+            style={{ cursor: "pointer" }}
+            horizental
+            align="center"
+            justify="start"
+            gap="middle"
+            onClick={() => navigate(`/profile/${user._id}`)}
+          >
+            <Avatar src={user.profilePicUrl} />
+            <Flex vertical>
+              <Flex>{user.name}</Flex>
+            </Flex>
+          </Flex>
+        ))}
+      </Flex>
+    </div>
+  );
+};
+
+/*
+
+<div
             className=" d-flex flex-direction-c just-s-evenly "
             key={index}
             style={{
@@ -95,9 +114,4 @@ export const ProfileAllUsers = (props) => {
                 </div>
               </div>
             </div>
-          </div>
-        ))}
-      </Flex>
-    </div>
-  );
-};
+          </div>*/
