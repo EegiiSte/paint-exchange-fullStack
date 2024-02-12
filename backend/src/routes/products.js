@@ -12,7 +12,6 @@ const auth = require("../middleware/auth");
 const { getAllProduct } = require("../controllers/product/getAllProduct");
 
 const router = express.Router();
-const Product = require("../models/product");
 
 //get auth//
 

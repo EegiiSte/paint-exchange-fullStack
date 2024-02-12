@@ -3,7 +3,10 @@ import ReactDOM from "react-dom/client";
 import { App } from "./App";
 import { NotificationProvider } from "./context/NotificationContext";
 import { ProductContexProvider } from "./context/ProductsContext";
-import { ProfileIconContextProvider } from "./context/ProfileIconContext";
+import {
+  ProfileContextProvider,
+  ProfileIconContextProvider,
+} from "./context/ProfileContext";
 import { ThemeContextProvider } from "./context/ThemeContext";
 import { UserProvider } from "./context/UserContext";
 import "./index.css";
@@ -16,11 +19,11 @@ root.render(
     <ThemeContextProvider>
       <NotificationProvider>
         <UserProvider>
-          <ProfileIconContextProvider>
-            <ProductContexProvider>
+          <ProductContexProvider>
+            <ProfileContextProvider>
               <App />
-            </ProductContexProvider>
-          </ProfileIconContextProvider>
+            </ProfileContextProvider>
+          </ProductContexProvider>
         </UserProvider>
       </NotificationProvider>
     </ThemeContextProvider>

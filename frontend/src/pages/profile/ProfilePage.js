@@ -3,8 +3,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Header } from "../../component";
-import { useThemeContext, useUserContext } from "../../context";
-import { useProfileIconContext } from "../../context/ProfileIconContext";
+import {
+  useProfileContext,
+  useThemeContext,
+  useUserContext,
+} from "../../context";
 import { Profile } from "./Profile";
 import { ProfileAllUsers } from "./ProfileAllUsers";
 import { ProfileProducts } from "./ProfileProducts";
@@ -15,28 +18,22 @@ const ProfilePage = () => {
   const { theme } = useThemeContext();
   const { currentUser } = useUserContext();
 
-  const [singleUserData, setSingleUserData] = useState({});
+  const [singleUserData, setSingleUserData] = useState(currentUser);
+  // console.log("ProfilePage-singleUserData ", singleUserData);
 
-  const { setProfilePicUrl } = useProfileIconContext();
+  const [loagingUsers, setLoagingUsers] = useState(true);
+  // console.log("ProfilePage-loagingUsers ", loagingUsers);
 
-  // console.log("ProfilePage-singleUserData.user", singleUserData.user);
-  // console.log(
-  //   "ProfilePage-singleUserData.singleUser",
-  //   singleUserData?.singleUser
-  // );
-  // console.log("ProfilePage-singleUserData", singleUserData);
-  // console.log("ProfilePage-singleUserData.products", singleUserData?.products);
-  // console.log("ProfilePage-id", id);
-
-  // const singleUser = singleUserData;
-  // const singleData = singleUserData?.user?.products;
-  // console.log("ProfilePage-singleUser", singleUser);
-  // console.log("ProfilePage-singleData", singleData);
+  const { setSelectedUserId } = useProfileContext();
 
   const [allUsersData, setAllUsersData] = useState([]);
   console.log("ProfilePage-allUserData ", allUsersData);
 
   useEffect(() => {
+    setLoagingUsers(true);
+
+    setSelectedUserId(id);
+
     const getSingleUserData = async () => {
       try {
         const response = await axios.get(
@@ -60,10 +57,21 @@ const ProfilePage = () => {
         );
 
         const data = await response.data;
-        const allUsersData = await usersData.data;
         setSingleUserData(data);
+        localStorage.setItem("singleUserDataLocal", JSON.stringify(data));
+
+        // setProfilePicUrl(data.user.profilePicUrl);
+
+        const allUsersData = await usersData.data;
         setAllUsersData(allUsersData);
-        setProfilePicUrl(data.user.profilePicUrl);
+        localStorage.setItem("allUsers", JSON.stringify(allUsersData));
+
+        // const singleUserDataFiltered = allUsersData.filter((user) =>
+        //   user._id.includes(id)
+        // );
+        // setSingleUserData(singleUserDataFiltered);
+
+        setLoagingUsers(false);
 
         // console.log("ProfilePage-data", data);
       } catch (error) {
@@ -77,7 +85,11 @@ const ProfilePage = () => {
     };
   }, [id]);
 
-  // console.log("ProfilePage-singleUser", singleUserData);
+  // const singleUserDataFiltered = allUsersData.filter((user) =>
+  //   user._id.includes(id)
+  // );
+
+  // console.log("ProfilePage-singleUser2", singleUserData);
 
   return (
     <div
@@ -123,7 +135,12 @@ const ProfilePage = () => {
               // width: "50%",
             }}
           >
-            <Profile user={singleUserData} />
+            <Profile
+              id={id}
+              allUsersData={allUsersData}
+              loagingUsers={loagingUsers}
+              user={singleUserData}
+            />
             <section
               style={{
                 border: "1px solid black",
@@ -133,6 +150,8 @@ const ProfilePage = () => {
               }}
             >
               <ProfileAllUsers
+                singleUserData={singleUserData}
+                loagingUsers={loagingUsers}
                 allUsersData={allUsersData}
                 singleUser={singleUserData}
               />
@@ -148,7 +167,13 @@ const ProfilePage = () => {
             }}
           >
             {" "}
-            <ProfileProducts singleUser={singleUserData} />
+            <ProfileProducts
+              id={id}
+              singleUserData={singleUserData}
+              loagingUsers={loagingUsers}
+              setLoagingUsers={setLoagingUsers}
+              singleUser={singleUserData}
+            />
           </section>
         </Flex>
       </div>

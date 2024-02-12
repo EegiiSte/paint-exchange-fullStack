@@ -6,9 +6,6 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: [true, "Product name is required"],
     },
-    userEmail: {
-      type: String,
-    },
 
     price: {
       type: Number,
@@ -36,6 +33,13 @@ const productSchema = new mongoose.Schema(
     image: {
       type: String,
     },
+
+    comments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ProductComment",
+      },
+    ],
   },
   { timestamps: true }
 );

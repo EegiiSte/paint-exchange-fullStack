@@ -7,7 +7,7 @@ import {
   useThemeContext,
   useUserContext,
 } from "../../context";
-import { useProfileIconContext } from "../../context/ProfileIconContext";
+import { useProfileIconContext } from "../../context/ProfileContext";
 import { uploadImage } from "../../utils";
 const formItemLayout = {
   labelCol: {
@@ -64,7 +64,7 @@ export const ProfileEditModal = (props) => {
     setNewImageUrl(imageUrl);
   };
 
-  console.log("ProfileEditModal-newImageUrl", newImageUrl);
+  // console.log("ProfileEditModal-newImageUrl", newImageUrl);
 
   const onFinish = async (values) => {
     setSigninLoading(true);

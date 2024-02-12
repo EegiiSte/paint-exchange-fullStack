@@ -1,11 +1,10 @@
-import { Button, Checkbox, Form, Image, Input, Select } from "antd";
+import { Button, Checkbox, Form, Input, Select } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../../component";
-import { MatrixBG } from "../../component/matrix";
 import { useNotificationContext } from "../../context/NotificationContext";
-import { useProfileIconContext } from "../../context/ProfileIconContext";
+import { useProfileContext } from "../../context/ProfileContext";
 import { useThemeContext } from "../../context/ThemeContext";
 import { useUserContext } from "../../context/UserContext";
 import { uploadImage } from "../../utils";
@@ -46,8 +45,7 @@ const tailFormItemLayout = {
 export const SignUp = () => {
   const { signUp } = useUserContext();
   const { successNotification, errorNotification } = useNotificationContext();
-  const { profileIcons, profilePicUrl, selectProfilePic } =
-    useProfileIconContext();
+  const { profileIcons, profilePicUrl, selectProfilePic } = useProfileContext();
 
   // console.log("SugnUp: signUp", signUp);
 

@@ -11,10 +11,13 @@ export const ProductContexProvider = ({ children }) => {
   const [productContextLoading, setProductContextLoading] = useState(true);
 
   const [isUpdeted, setIsUpdeted] = useState(0);
+  const [loadingProducts, setoadingProducts] = useState(true);
+  const [filteredArray, setFilteredArray] = useState([]);
 
-  console.log("ProductContexProvider:isUpdeted", isUpdeted);
+  // console.log("ProductContexProvider:isUpdeted", isUpdeted);
 
   useEffect(() => {
+    setProductContextLoading(true);
     if (!userContextLoading) {
       const fetchProducts = async () => {
         try {
@@ -31,6 +34,8 @@ export const ProductContexProvider = ({ children }) => {
           const data = await response.data;
 
           setProducts(data);
+          localStorage.setItem("products", JSON.stringify(data));
+          setFilteredArray(data);
           setProductContextLoading(false);
         } catch (error) {
           console.log(error);
@@ -71,6 +76,18 @@ export const ProductContexProvider = ({ children }) => {
     setProducts(updatedProducts);
   };
 
+  // console.log("Products-filteredArray", filteredArray);
+  const [searchValue, setSearchValue] = useState("");
+
+  useEffect(() => {
+    setoadingProducts(true);
+    const newPacientes = products.filter((product) =>
+      product.name.toLowerCase().includes(searchValue.toLowerCase())
+    );
+
+    setFilteredArray(newPacientes);
+    setoadingProducts(false);
+  }, [searchValue]);
   return (
     <ProductsContext.Provider
       value={{
@@ -81,6 +98,10 @@ export const ProductContexProvider = ({ children }) => {
         Delete_Product,
         products,
         productContextLoading,
+        filteredArray,
+        loadingProducts,
+        setSearchValue,
+        searchValue,
       }}
     >
       {children}

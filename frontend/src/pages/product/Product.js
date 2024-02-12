@@ -94,6 +94,8 @@ export const Product = () => {
             borderRadius: "10px",
             backgroundColor: "white",
             borderRadius: "10px",
+            border: "1px solid red",
+            width: "60%",
           }}
         >
           <Flex
@@ -113,6 +115,7 @@ export const Product = () => {
                 }}
                 alt="example"
                 src={selectedProduct.image}
+                height={"300px"}
               />
             </Flex>
             <Card

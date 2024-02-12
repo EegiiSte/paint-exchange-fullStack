@@ -1,25 +1,26 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Avatar, Button, Card, Flex, Image, Input, Tag } from "antd";
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useThemeContext, useUserContext } from "../../context";
+import { useProductsContext } from "../../context/ProductsContext";
 import { DeleteProductModal } from "../product/modal/DeleteProductModal";
 import { EditProductModal2 } from "../product/modal/EditProductModal2";
 import { CreateProductModal } from "../products/CreateProductModal";
 const { Meta } = Card;
 
 export const ProfileProducts = (props) => {
-  const { singleUser } = props;
+  const { singleUser, id } = props;
+  const products = singleUser?.user.products;
 
-  const products = singleUser?.user?.products;
-
-  console.log("ProfileProducts-singleUser", singleUser);
-  // console.log("ProfileProducts-products", products);
+  // console.log("ProfileProducts-singleUser", singleUser);
+  // console.log("ProfileProducts-products", singleUser.user.products);
 
   const { theme, textStyle } = useThemeContext();
   const navigate = useNavigate();
   const { currentUser } = useUserContext();
-  console.log("ProfileProducts-currentUser", currentUser);
+  // console.log("ProfileProducts-currentUser", currentUser);
 
   const [openCreate, setOpenCreate] = React.useState(false);
   const handleOpenCreate = () => setOpenCreate(true);
@@ -30,17 +31,66 @@ export const ProfileProducts = (props) => {
   const [openDelete, setOpenDelete] = useState(false);
   const [newImageUrl, setNewImageUrl] = useState("");
 
-  const [filteredArray, setFilteredArray] = useState(products);
+  const [loagingUsers, setLoagingUsers] = useState(true);
+  // console.log("ProfilePage-loagingUsers ", loagingUsers);
+
+  const [filteredProducts, setFilteredProducts] = useState(products);
+
+  const [searchProductValue, setSearchProductValue] = useState("");
 
   const handleInputSearch = (e) => {
     const value = e.target.value;
 
-    const newPacientes = products.filter((product) =>
-      product.name.toLowerCase().includes(value.toLowerCase())
-    );
-
-    setFilteredArray(newPacientes);
+    setSearchProductValue(value);
   };
+
+  useEffect(() => {
+    setLoagingUsers(true);
+
+    const getSingleUserData = async () => {
+      try {
+        const response = await axios.get(
+          // `https://fullstack-backend-pm5t.onrender.com/users/${id}`,
+          `http://localhost:8080/users/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${currentUser.token}`,
+            },
+          }
+        );
+
+        const usersData = await axios.get(
+          // `https://fullstack-backend-pm5t.onrender.com/users/`,
+          "http://localhost:8080/users/",
+          {
+            headers: {
+              Authorization: `Bearer ${currentUser.token}`,
+            },
+          }
+        );
+
+        const data = await response.data;
+        // setSingleUserData(data);
+        localStorage.setItem("singleUserDataLocal", JSON.stringify(data));
+
+        const newPacientes = data.user.products?.filter((product) =>
+          product.name.toLowerCase().includes(searchProductValue.toLowerCase())
+        );
+
+        setFilteredProducts(newPacientes);
+        setLoagingUsers(false);
+
+        // console.log("ProfilePage-data", data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getSingleUserData();
+
+    return () => {
+      getSingleUserData();
+    };
+  }, [id, searchProductValue]);
 
   //function for edit modal
   const handleOpen = (product) => {
@@ -80,7 +130,7 @@ export const ProfileProducts = (props) => {
         <Flex align="center" justify="start">
           <Input
             onChange={handleInputSearch}
-            // value={searchValue}
+            value={searchProductValue}
             placeholder="Search by name"
             style={{
               height: "45px",
@@ -104,16 +154,19 @@ export const ProfileProducts = (props) => {
             <div />
           )}
         </Flex>
-        <Flex gap="middle" align="start" justify="start" wrap="wrap">
-          {filteredArray?.map((product, index) => (
+        <Flex gap="middle" align="start" justify="center" wrap="wrap">
+          {filteredProducts?.map((product, index) => (
             <Card
+              loading={loagingUsers}
               key={index}
               style={{
                 width: 200,
+                // display: id === product.user?._id ? "none" : "",
               }}
               cover={
                 <Image
                   preview={false}
+                  style={{}}
                   alt="example"
                   src={product.image}
                   onClick={() => navigate(`/products/${product._id}`)}

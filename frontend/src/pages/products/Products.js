@@ -1,25 +1,16 @@
-import { Button, Flex, Image, Input, Tag, Tooltip } from "antd";
+import { Button, Flex, Input } from "antd";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Header } from "../../component/header/Header";
-import { MatrixBG } from "../../component/matrix";
-import { CreateProductModal } from "./CreateProductModal";
-import "./Product.css";
-import {
-  EditOutlined,
-  DeleteOutlined,
-  EditFilled,
-  DeleteFilled,
-} from "@ant-design/icons";
-import { DeleteProductModal } from "../product/modal/DeleteProductModal";
-import { EditProductModal2 } from "../product/modal/EditProductModal2";
 import {
   useProductsContext,
   useThemeContext,
   useUserContext,
 } from "../../context";
-import { Card } from "antd";
+import { DeleteProductModal } from "../product/modal/DeleteProductModal";
+import { EditProductModal2 } from "../product/modal/EditProductModal2";
 import { AllProducts } from "./AllProducts";
+import { CreateProductModal } from "./CreateProductModal";
+import "./Product.css";
 
 const gridStyle = {
   width: "25%",
@@ -31,7 +22,14 @@ export const Products = () => {
   const handleOpenCreate = () => setOpenCreate(true);
   const handleCloseCreate = () => setOpenCreate(false);
 
-  const { products, productContextLoading } = useProductsContext();
+  const {
+    products,
+    productContextLoading,
+    filteredArray,
+    searchValue,
+    setSearchValue,
+    loadingProducts,
+  } = useProductsContext();
   const { theme, textStyle } = useThemeContext();
   const { currentUser } = useUserContext();
   // console.log("Products-currentUser=", currentUser);
@@ -42,20 +40,14 @@ export const Products = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const [newImageUrl, setNewImageUrl] = useState("");
 
-  // search
-  const [filteredArray, setFilteredArray] = useState(products);
-
-  // console.log("Products-filteredArray", filteredArray);
+  const productsLocal = JSON.parse(localStorage.getItem("products"));
+  console.log("Products: productsLocal", productsLocal);
 
   const handleInputSearch = (e) => {
     const value = e.target.value;
-
-    const newPacientes = products.filter((product) =>
-      product.name.toLowerCase().includes(value.toLowerCase())
-    );
-
-    setFilteredArray(newPacientes);
+    setSearchValue(value);
   };
+
   // console.log("Products-> products", products);
 
   //function for edit modal
@@ -82,7 +74,7 @@ export const Products = () => {
     setSelectedProduct({});
   };
 
-  if (productContextLoading) {
+  if (productContextLoading && loadingProducts) {
     return <div>...Loading Products</div>;
   }
   if (!productContextLoading && !products) {
@@ -119,7 +111,7 @@ export const Products = () => {
           <Flex align="center" justify="center">
             <Input
               onChange={handleInputSearch}
-              // value={searchValue}
+              value={searchValue}
               placeholder="Search by name"
               style={{
                 height: "45px",
@@ -151,6 +143,8 @@ export const Products = () => {
           }}
         >
           <AllProducts
+            productContextLoading={productContextLoading}
+            loadingProducts={loadingProducts}
             handleOpenDelete={handleOpenDelete}
             filteredArray={filteredArray}
             handleOpen={handleOpen}
