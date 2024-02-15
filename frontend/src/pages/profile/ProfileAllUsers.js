@@ -75,7 +75,7 @@ export const ProfileAllUsers = (props) => {
                   style={{
                     cursor: "pointer",
                     display:
-                      singleUserData.user._id === user._id ? "none" : "flex",
+                      singleUserData?.user?._id === user._id ? "none" : "flex",
                   }}
                   horizental="true"
                   align="center"

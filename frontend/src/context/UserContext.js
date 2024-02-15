@@ -11,7 +11,7 @@ export const UserProvider = (props) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [singleUser, setSingleUser] = useState(null);
 
-  // console.log("UserProvider-currentUser ", currentUser);
+  console.log("UserProvider-currentUser ", currentUser);
   // console.log("UserProvider-singleUser ", singleUser);
 
   const [userContextLoading, setUserContextLoading] = useState(true);

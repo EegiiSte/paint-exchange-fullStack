@@ -3,7 +3,8 @@ const ProductComment = require("../../models/productComment");
 const Product = require("../../models/product");
 
 const deleteProductComment = async (req, res) => {
-  const { commentId, productId } = req.params;
+  const { productId } = req.params;
+  const { commentId } = req.body;
 
   if (
     !mongoose.Types.ObjectId.isValid(productId) ||
@@ -13,7 +14,6 @@ const deleteProductComment = async (req, res) => {
   }
 
   const productComment = await ProductComment.findByIdAndDelete(commentId);
-
   if (!productComment) {
     return res.status(404).json({ message: "Comment not found" });
   }
@@ -27,7 +27,6 @@ const deleteProductComment = async (req, res) => {
   const filteredComments = product.comments.filter(
     (comment) => comment != commentId
   );
-
   const updatedProduct = await Product.findByIdAndUpdate(
     productId,
     { ...req.body, comments: filteredComments },

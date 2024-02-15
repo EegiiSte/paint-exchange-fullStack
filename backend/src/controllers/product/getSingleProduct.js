@@ -13,7 +13,7 @@ const getSingleProduct = async (req, res) => {
 
   const product = await Product.findById(id).populate({
     path: "comments",
-    populate: { path: "user", select: "email" },
+    populate: { path: "user", select: ["email", "profilePicUrl", "name"] },
   });
 
   if (!product) {

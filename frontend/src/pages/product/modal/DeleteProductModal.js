@@ -47,7 +47,7 @@ export const DeleteProductModal = (props) => {
       <Modal handleClose={handleCloseDelete} open={openDelete}>
         <div className="d-flex flex-direction-c gap-10">
           <div className="d-flex just-c align-c">
-            <h3>Are you sure to delete {name} ?</h3>
+            <h3>Are you sure you want to delete this {name} ?</h3>
           </div>
           <div className="d-flex just-s-evenly margin-top-10 gap-10">
             <Button

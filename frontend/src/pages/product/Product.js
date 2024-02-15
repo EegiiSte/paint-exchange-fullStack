@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Divider, Flex, Form, Image, Input } from "antd";
+import { Avatar, Card, Divider, Flex, Image } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -10,11 +10,12 @@ import { useUserContext } from "../../context/UserContext";
 import { DeleteProductModal } from "./modal/DeleteProductModal";
 import { EditProductModal2 } from "./modal/EditProductModal2";
 
-import { DeleteOutlined, EditOutlined, SendOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
-import "./Product.css";
 import { NotFound } from "../../component/NotFound";
+import { Comment } from "./Comment/Comment";
+import "./Product.css";
 const { Meta } = Card;
 
 export const Product = () => {
@@ -194,63 +195,7 @@ export const Product = () => {
           }}
         >
           <Divider />
-          <Form
-            name="trigger"
-            onFinish={(values) => {
-              createComment(values);
-            }}
-            onFinishFailed={(errorInfo) => {
-              console.log(errorInfo);
-            }}
-            style={{
-              maxWidth: 600,
-            }}
-            layout="horizental"
-            autoComplete="off"
-          >
-            <Form.Item
-              layout="horizental"
-              name="comment"
-              rules={[{ required: true, message: "Required" }]}
-            >
-              <Flex horizental="true">
-                <Input />
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  block
-                  icon={<SendOutlined />}
-                />
-              </Flex>
-            </Form.Item>
-          </Form>
-
-          {sortedComments.map((comment, index) => (
-            <Flex
-              key={index}
-              horizental="true"
-              gap="middle"
-              style={{
-                padding: "10px",
-              }}
-            >
-              <Flex vertical="true">
-                <Avatar src={comment.user.profilePicUrl} />
-                <span>{comment.user.name}</span>
-              </Flex>
-              <Flex
-                align="center"
-                justify="start"
-                style={{
-                  border: "1px solid lightgray",
-                  width: "100%",
-                  borderRadius: "5px",
-                }}
-              >
-                <p>{comment.comment}</p>
-              </Flex>
-            </Flex>
-          ))}
+          <Comment id={id} />
         </Flex>
       </Flex>
 

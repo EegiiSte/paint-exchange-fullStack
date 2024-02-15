@@ -11,11 +11,11 @@ import { CreateProductModal } from "../products/CreateProductModal";
 const { Meta } = Card;
 
 export const ProfileProducts = (props) => {
-  const { singleUser, id } = props;
-  const products = singleUser?.user.products;
+  const { singleUserData, id } = props;
+  const products = singleUserData?.user?.products;
 
-  // console.log("ProfileProducts-singleUser", singleUser);
-  // console.log("ProfileProducts-products", singleUser.user.products);
+  // console.log("ProfileProducts-singleUserData", singleUserData);
+  // console.log("ProfileProducts-products", singleUserData.user.products);
 
   const { theme, textStyle } = useThemeContext();
   const navigate = useNavigate();
@@ -137,7 +137,7 @@ export const ProfileProducts = (props) => {
             }}
           ></Input>
 
-          {currentUser.user?.email === singleUser.user?.email ? (
+          {currentUser.user?.email === singleUserData?.user?.email ? (
             <Button
               block
               onClick={handleOpenCreate}
@@ -173,7 +173,7 @@ export const ProfileProducts = (props) => {
                 />
               }
               actions={[
-                currentUser.user.email === singleUser.user.email ? (
+                currentUser?.user?.email === singleUserData?.user?.email ? (
                   <Flex justify="space-evenly">
                     <EditOutlined
                       key="edit"

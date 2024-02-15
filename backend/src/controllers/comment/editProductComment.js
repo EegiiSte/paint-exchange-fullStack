@@ -2,8 +2,7 @@ const mongoose = require("mongoose");
 const ProductComment = require("../../models/productComment");
 
 const updateProductComment = async (req, res) => {
-  const { commentId } = req.params;
-  const { comment } = req.body;
+  const { comment, commentId } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(commentId)) {
     return res.status(404).json({ message: "Id is not valid" });

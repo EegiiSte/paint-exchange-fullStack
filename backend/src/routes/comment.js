@@ -19,9 +19,9 @@ router.use(auth);
 router.post("/:productId/comments", createProductComment);
 
 // DELETE /products/:workoutId/comments/:commentId
-router.delete("/:productId/comments/:commentId", deleteProductComment);
+router.delete("/:productId/comments", deleteProductComment);
 
 // PUT /products/:workoutId/comments/:commentId
-router.put("/:productId/comments/:commentId", updateProductComment);
+router.put("/:productId/comments/", updateProductComment);
 
 module.exports = router;
