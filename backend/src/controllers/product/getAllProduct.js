@@ -9,6 +9,10 @@ const getAllProduct = async (req, res) => {
       $or: [{ user: userId }, { type: "public" }],
     })
       .populate({
+        path: "comments",
+        populate: { path: "user", select: ["email", "profilePicUrl", "name"] },
+      })
+      .populate({
         path: "user",
         select: ["email", "profilePicUrl", "name"],
       })

@@ -11,7 +11,10 @@ const getSingleProduct = async (req, res) => {
     });
   }
 
-  const product = await Product.findById(id);
+  const product = await Product.findById(id).populate({
+    path: "comments",
+    populate: { path: "user", select: "email" },
+  });
 
   if (!product) {
     res.status(404).json({

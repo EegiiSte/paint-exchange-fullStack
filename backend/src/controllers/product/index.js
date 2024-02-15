@@ -4,5 +4,4 @@ module.exports = {
   ...require("./getAllProduct"),
   ...require("./getSingleProduct"),
   ...require("./updateProduct"),
-  ...require("./getUserProducts"),
 };

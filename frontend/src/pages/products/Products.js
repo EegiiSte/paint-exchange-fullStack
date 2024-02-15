@@ -41,7 +41,7 @@ export const Products = () => {
   const [newImageUrl, setNewImageUrl] = useState("");
 
   const productsLocal = JSON.parse(localStorage.getItem("products"));
-  console.log("Products: productsLocal", productsLocal);
+  // console.log("Products: productsLocal", productsLocal);
 
   const handleInputSearch = (e) => {
     const value = e.target.value;
