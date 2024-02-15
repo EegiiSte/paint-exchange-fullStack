@@ -56,8 +56,6 @@ export const Product = () => {
     }
   );
 
-  //////
-
   const createComment = async (values) => {
     console.log("Product-->values", values);
 
