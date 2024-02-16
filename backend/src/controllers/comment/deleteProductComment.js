@@ -31,7 +31,15 @@ const deleteProductComment = async (req, res) => {
     productId,
     { ...req.body, comments: filteredComments },
     { new: true }
-  );
+  )
+    .populate({
+      path: "comments",
+      populate: { path: "user", select: ["email", "name", "profilePicUrl"] },
+    })
+    .populate({
+      path: "user",
+      select: ["email", "name", "profilePicUrl"],
+    });
 
   res.status(200).json(updatedProduct);
 };

@@ -2,15 +2,17 @@ import { Avatar, Card, Divider, Flex, Image, Input, Skeleton } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useThemeContext, useUserContext } from "../../context";
+import { useProfileContext } from "../../context/ProfileContext";
 
 export const ProfileAllUsers = (props) => {
-  const { allUsersData, loagingUsers, singleUserData } = props;
+  const { loagingUsers, singleUserData, setSingleUserId } = props;
 
   //   console.log("ProfileProducts-singleUser", singleUser);
+  const navigate = useNavigate();
 
   const { theme, textStyle } = useThemeContext();
-  const navigate = useNavigate();
   const { currentUser } = useUserContext();
+  const { allUsersData } = useProfileContext();
 
   const [filteredUsers, setFilteredUsers] = useState(allUsersData);
 
@@ -81,7 +83,8 @@ export const ProfileAllUsers = (props) => {
                   align="center"
                   justify="start"
                   gap="middle"
-                  onClick={() => navigate(`/profile/${user._id}`)}
+                  onClick={() => setSingleUserId(user._id)}
+                  // onClick={() => navigate(`/profile/${user._id}`)}
                 >
                   <Avatar src={user.profilePicUrl} />
                   <Flex vertical>

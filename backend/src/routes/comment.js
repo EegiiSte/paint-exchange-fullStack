@@ -13,7 +13,7 @@ const router = express.Router();
 
 //get auth//
 
-router.use(auth);
+// router.use(auth);
 
 //GET/ products/  ---> get all product
 router.post("/:productId/comments", createProductComment);

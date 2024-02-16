@@ -8,32 +8,16 @@ export const ProfileContextProvider = (props) => {
   const { children } = props;
   const { currentUser } = useUserContext();
 
-  const [selectedUserId, setSelectedUserId] = useState(currentUser?.user?._id);
-  // console.log("ProfileContextProvider-selectedUserId ", selectedUserId);
-
-  const [singleUserData, setSingleUserData] = useState({});
-  // console.log("ProfileContextProvider-singleUserData ", singleUserData);
-
-  const [loagingUsers, setLoagingUsers] = useState(true);
-  // console.log("ProfileContextProvider-loagingUsers ", loagingUsers);
-
   const [allUsersData, setAllUsersData] = useState([]);
+
+  const [loadingUsers, setLoadingUsers] = useState(true);
+
   // console.log("ProfileContextProvider-allUserData ", allUsersData);
 
   useEffect(() => {
-    setLoagingUsers(true);
-    const getSingleUserData = async () => {
+    setLoadingUsers(true);
+    const getUsersData = async () => {
       try {
-        const response = await axios.get(
-          // `https://fullstack-backend-pm5t.onrender.com/users/${id}`,
-          `http://localhost:8080/users/${selectedUserId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${currentUser.token}`,
-            },
-          }
-        );
-
         const usersData = await axios.get(
           // `https://fullstack-backend-pm5t.onrender.com/users/`,
           "http://localhost:8080/users/",
@@ -44,36 +28,41 @@ export const ProfileContextProvider = (props) => {
           }
         );
 
-        const data = await response.data;
-        setSingleUserData(data);
-        localStorage.setItem("singleUserDataLocal", JSON.stringify(data));
-
-        // setProfilePicUrl(data.user.profilePicUrl);
-
         const allUsersData = await usersData.data;
         setAllUsersData(allUsersData);
-        localStorage.setItem("allUsers", JSON.stringify(allUsersData));
 
-        setLoagingUsers(false);
+        setLoadingUsers(false);
 
         // console.log("ProfilePage-data", data);
       } catch (error) {
         console.log(error);
       }
     };
-    getSingleUserData();
+    getUsersData();
 
     return () => {
-      getSingleUserData();
+      getUsersData();
     };
-  }, [selectedUserId]);
+  }, []);
+
+  const Update_Profile = async (updatedUser) => {
+    const updatedUsers = allUsersData.map((user) => {
+      if (user._id === updatedUser._id) {
+        return updatedUser;
+      } else {
+        return user;
+      }
+    });
+    setAllUsersData(updatedUsers);
+  };
 
   // console.log("ProfilePage-singleUser2", singleUserData);
 
   return (
     <ProfileContext.Provider
       value={{
-        setSelectedUserId,
+        allUsersData,
+        Update_Profile,
       }}
     >
       {children}

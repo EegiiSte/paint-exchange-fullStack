@@ -20,8 +20,12 @@ const { Meta } = Card;
 
 export const Product = () => {
   const { id } = useParams();
-
   const navigate = useNavigate();
+
+  const { products, productContextLoading, Update_Product } =
+    useProductsContext();
+  const { theme } = useThemeContext();
+  const { currentUser } = useUserContext();
 
   //state for edit modal
   const [open, setOpen] = useState(false);
@@ -36,50 +40,33 @@ export const Product = () => {
   const handleCloseDelete = () => setOpenDelete(false);
   const [newImageUrl, setNewImageUrl] = useState("");
 
-  //   console.log(`Product -> id ${id}`);
-  const { products, productContextLoading, Update_Product } =
-    useProductsContext();
-  const { theme } = useThemeContext();
-  const { currentUser } = useUserContext();
-
   // console.log("Product-->products", products);
 
   const selectedProduct = products.find((product) => product._id === id);
-  // const [selectedProduct, setSelectedProduct] = useState(foundProduct);
 
-  // console.log("Product-->selectedProduct", selectedProduct);
+  // const createComment = async (values) => {
+  //   console.log("Product-->values", values);
 
-  ///////sort
+  //   try {
+  //     const response = await axios.post(
+  //       // "https://fullstack-backend-pm5t.onrender.com/products",
+  //       `http://localhost:8080/products/${id}/comments`,
+  //       { comment: values.comment },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${currentUser.token}`,
+  //         },
+  //       }
+  //     );
 
-  const sortedComments = selectedProduct?.comments?.sort(
-    (comment1, comment2) => {
-      return comment2.timeStamp - comment1.timeStamp;
-    }
-  );
+  //     const data = await response.data;
+  //     console.log("createComment: data", data);
 
-  const createComment = async (values) => {
-    console.log("Product-->values", values);
-
-    try {
-      const response = await axios.post(
-        // "https://fullstack-backend-pm5t.onrender.com/products",
-        `http://localhost:8080/products/${id}/comments`,
-        { comment: values.comment },
-        {
-          headers: {
-            Authorization: `Bearer ${currentUser.token}`,
-          },
-        }
-      );
-
-      const data = await response.data;
-
-      // setCommentsProduct(data.updatedProduct?.comments);
-      Update_Product(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     Update_Product(data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   // console.log(`Product -> currentUser.email ${currentUser.user.email}`);
   // console.log(`Product -> selectedProduct.email ${selectedProduct.userEmail}`);
