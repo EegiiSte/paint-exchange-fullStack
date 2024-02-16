@@ -8,10 +8,10 @@ export const ProductContexProvider = ({ children }) => {
   const { currentUser, userContextLoading } = useUserContext();
 
   const [products, setProducts] = useState([]);
+
   const [productContextLoading, setProductContextLoading] = useState(true);
 
-  const [isUpdeted, setIsUpdeted] = useState(0);
-  const [loadingProducts, setoadingProducts] = useState(true);
+  const [loadingProducts, setLoadingProducts] = useState(true);
   const [filteredArray, setFilteredArray] = useState([]);
 
   // console.log("ProductContexProvider:isUpdeted", isUpdeted);
@@ -48,7 +48,7 @@ export const ProductContexProvider = ({ children }) => {
     } else {
       setProducts([]);
     }
-  }, [currentUser, userContextLoading, isUpdeted]);
+  }, [currentUser, userContextLoading]);
 
   const Set_Products = (products) => {
     setProducts(products);
@@ -56,7 +56,7 @@ export const ProductContexProvider = ({ children }) => {
 
   const Create_Product = async (product) => {
     setProducts([product, ...products]);
-    setIsUpdeted(isUpdeted + 1);
+    setFilteredArray([product, ...products]);
   };
 
   const Update_Product = async (updatedProduct) => {
@@ -68,26 +68,28 @@ export const ProductContexProvider = ({ children }) => {
       }
     });
     setProducts(updatedProducts);
-    setIsUpdeted(isUpdeted + 1);
+    setFilteredArray(updatedProducts);
   };
 
   const Delete_Product = async (id) => {
     const updatedProducts = products.filter((product) => product._id !== id);
     setProducts(updatedProducts);
+    setFilteredArray(updatedProducts);
   };
 
   // console.log("Products-filteredArray", filteredArray);
   const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
-    setoadingProducts(true);
+    setLoadingProducts(true);
     const newPacientes = products.filter((product) =>
       product.name.toLowerCase().includes(searchValue.toLowerCase())
     );
 
     setFilteredArray(newPacientes);
-    setoadingProducts(false);
+    setLoadingProducts(false);
   }, [searchValue]);
+
   return (
     <ProductsContext.Provider
       value={{

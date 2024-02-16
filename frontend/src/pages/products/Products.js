@@ -40,9 +40,6 @@ export const Products = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const [newImageUrl, setNewImageUrl] = useState("");
 
-  const productsLocal = JSON.parse(localStorage.getItem("products"));
-  // console.log("Products: productsLocal", productsLocal);
-
   const handleInputSearch = (e) => {
     const value = e.target.value;
     setSearchValue(value);
@@ -87,15 +84,6 @@ export const Products = () => {
       <div
         className=" d-flex flex-direction-c just-start width-100pr padding-top-10"
         style={{
-          // backgroundImage:
-          //   theme === "light"
-          //     ? // ? "url(https://img.freepik.com/premium-photo/paint-cans-paint-brushes-how-choose-perfect-interior-paint-color-good-health_109549-2530.jpg)"
-          //       "url(https://hydeparkpaintandpaper.com/wp-content/uploads/2019/01/Paint-brush-sitting-on-top-of-paint-can.jpg)"
-          //     : // ? "url()"
-          //       "url(https://media.istockphoto.com/id/643650778/photo/white-paint-and-brush.jpg?s=612x612&w=0&k=20&c=14fe78GgCBDEyIGUhW2ZB9Hvv7KK_w4ZssEjd_I9KS0=)",
-          // //: "url()",
-          // backgroundPosition: "center",
-          // backgroundSize: "cover",
           height: "calc(100vh - 80px)",
         }}
       >

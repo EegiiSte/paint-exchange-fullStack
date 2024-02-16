@@ -30,11 +30,10 @@ export const Comment = (props) => {
 
   ///////sort
 
-  const sortedComments = selectedProduct?.comments?.sort(
-    (comment1, comment2) => {
-      return comment2.timeStamp - comment1.timeStamp;
-    }
-  );
+  const sortedComments =
+    selectedProduct?.comments?.sort((comment1, comment2) => {
+      return comment1.timeStamp - comment2.timeStamp;
+    }) || [];
 
   const createComment = async (values) => {
     console.log("Product-->values", values);
@@ -52,9 +51,9 @@ export const Comment = (props) => {
       );
 
       const data = await response.data;
+      // console.log("createComment: data.updatedProduct", data.updatedProduct);
 
-      // setCommentsProduct(data.updatedProduct?.comments);
-      Update_Product(data);
+      Update_Product(data.updatedProduct);
     } catch (error) {
       console.log(error);
     }

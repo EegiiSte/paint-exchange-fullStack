@@ -16,7 +16,15 @@ const updateProduct = async (req, res) => {
     { _id: id },
     { ...req.body },
     { new: true }
-  );
+  )
+    .populate({
+      path: "comments",
+      populate: { path: "user", select: ["email", "profilePicUrl", "name"] },
+    })
+    .populate({
+      path: "user",
+      select: ["email", "profilePicUrl", "name"],
+    });
 
   if (!updatedProduct) {
     res.status(404).json({

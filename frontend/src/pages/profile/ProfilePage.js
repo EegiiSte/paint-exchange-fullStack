@@ -19,26 +19,25 @@ const ProfilePage = () => {
   const { currentUser } = useUserContext();
 
   const [singleUserData, setSingleUserData] = useState(currentUser);
+  const [singleUserId, setSingleUserId] = useState(id);
   // console.log("ProfilePage-singleUserData ", singleUserData);
 
   const [loagingUsers, setLoagingUsers] = useState(true);
   // console.log("ProfilePage-loagingUsers ", loagingUsers);
 
-  const { setSelectedUserId } = useProfileContext();
+  const { allUsersData } = useProfileContext();
 
-  const [allUsersData, setAllUsersData] = useState([]);
+  // const [allUsersData, setAllUsersData] = useState([]);
   console.log("ProfilePage-allUserData ", allUsersData);
 
   useEffect(() => {
     setLoagingUsers(true);
 
-    setSelectedUserId(id);
-
     const getSingleUserData = async () => {
       try {
         const response = await axios.get(
           // `https://fullstack-backend-pm5t.onrender.com/users/${id}`,
-          `http://localhost:8080/users/${id}`,
+          `http://localhost:8080/users/${singleUserId}`,
           {
             headers: {
               Authorization: `Bearer ${currentUser.token}`,
@@ -46,15 +45,15 @@ const ProfilePage = () => {
           }
         );
 
-        const usersData = await axios.get(
-          // `https://fullstack-backend-pm5t.onrender.com/users/`,
-          "http://localhost:8080/users/",
-          {
-            headers: {
-              Authorization: `Bearer ${currentUser.token}`,
-            },
-          }
-        );
+        // const usersData = await axios.get(
+        //   // `https://fullstack-backend-pm5t.onrender.com/users/`,
+        //   "http://localhost:8080/users/",
+        //   {
+        //     headers: {
+        //       Authorization: `Bearer ${currentUser.token}`,
+        //     },
+        //   }
+        // );
 
         const data = await response.data;
         setSingleUserData(data);
@@ -62,9 +61,9 @@ const ProfilePage = () => {
 
         // setProfilePicUrl(data.user.profilePicUrl);
 
-        const allUsersData = await usersData.data;
-        setAllUsersData(allUsersData);
-        localStorage.setItem("allUsers", JSON.stringify(allUsersData));
+        // const allUsersData = await usersData.data;
+        // setAllUsersData(allUsersData);
+        // localStorage.setItem("allUsers", JSON.stringify(allUsersData));
 
         // const singleUserDataFiltered = allUsersData.filter((user) =>
         //   user._id.includes(id)
@@ -83,7 +82,7 @@ const ProfilePage = () => {
     return () => {
       getSingleUserData();
     };
-  }, [id]);
+  }, [singleUserId]);
 
   // const singleUserDataFiltered = allUsersData.filter((user) =>
   //   user._id.includes(id)
@@ -137,7 +136,6 @@ const ProfilePage = () => {
           >
             <Profile
               id={id}
-              allUsersData={allUsersData}
               loagingUsers={loagingUsers}
               user={singleUserData}
             />
@@ -150,10 +148,9 @@ const ProfilePage = () => {
               }}
             >
               <ProfileAllUsers
+                setSingleUserId={setSingleUserId}
                 singleUserData={singleUserData}
                 loagingUsers={loagingUsers}
-                allUsersData={allUsersData}
-                singleUser={singleUserData}
               />
             </section>
           </Flex>
@@ -169,10 +166,10 @@ const ProfilePage = () => {
             {" "}
             <ProfileProducts
               id={id}
+              singleUserId={singleUserId}
               singleUserData={singleUserData}
               loagingUsers={loagingUsers}
               setLoagingUsers={setLoagingUsers}
-              singleUser={singleUserData}
             />
           </section>
         </Flex>

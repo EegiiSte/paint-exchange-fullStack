@@ -7,7 +7,10 @@ import {
   useThemeContext,
   useUserContext,
 } from "../../context";
-import { useProfileIconContext } from "../../context/ProfileContext";
+import {
+  useProfileContext,
+  useProfileIconContext,
+} from "../../context/ProfileContext";
 import { uploadImage } from "../../utils";
 const formItemLayout = {
   labelCol: {
@@ -48,6 +51,7 @@ export const ProfileEditModal = (props) => {
   const [disabledSubmitButton, setDisabledSubmitButton] = useState(true);
   const { theme } = useThemeContext();
   const { updateUser, currentUser } = useUserContext();
+  const { Update_Profile } = useProfileContext();
 
   const [form] = Form.useForm();
 
@@ -92,9 +96,8 @@ export const ProfileEditModal = (props) => {
       );
 
       const data = await response.data;
-      localStorage.setItem("user", JSON.stringify(data));
 
-      // console.log("ProfileEditModal--data", data);
+      console.log("ProfileEditModal: data", data);
 
       if (data) {
         successNotification(
@@ -102,6 +105,8 @@ export const ProfileEditModal = (props) => {
         );
         setSigninLoading(false);
         updateUser(data);
+
+        Update_Profile(data);
         handleClose();
       } else {
         errorNotification("Edit Profile failed, please try again");

@@ -11,7 +11,7 @@ import { CreateProductModal } from "../products/CreateProductModal";
 const { Meta } = Card;
 
 export const ProfileProducts = (props) => {
-  const { singleUserData, id } = props;
+  const { singleUserData, id, singleUserId } = props;
   const products = singleUserData?.user?.products;
 
   // console.log("ProfileProducts-singleUserData", singleUserData);
@@ -47,50 +47,13 @@ export const ProfileProducts = (props) => {
   useEffect(() => {
     setLoagingUsers(true);
 
-    const getSingleUserData = async () => {
-      try {
-        const response = await axios.get(
-          // `https://fullstack-backend-pm5t.onrender.com/users/${id}`,
-          `http://localhost:8080/users/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${currentUser.token}`,
-            },
-          }
-        );
+    const newPacientes = products?.filter((product) =>
+      product.name.toLowerCase().includes(searchProductValue.toLowerCase())
+    );
 
-        const usersData = await axios.get(
-          // `https://fullstack-backend-pm5t.onrender.com/users/`,
-          "http://localhost:8080/users/",
-          {
-            headers: {
-              Authorization: `Bearer ${currentUser.token}`,
-            },
-          }
-        );
-
-        const data = await response.data;
-        // setSingleUserData(data);
-        localStorage.setItem("singleUserDataLocal", JSON.stringify(data));
-
-        const newPacientes = data.user.products?.filter((product) =>
-          product.name.toLowerCase().includes(searchProductValue.toLowerCase())
-        );
-
-        setFilteredProducts(newPacientes);
-        setLoagingUsers(false);
-
-        // console.log("ProfilePage-data", data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getSingleUserData();
-
-    return () => {
-      getSingleUserData();
-    };
-  }, [id, searchProductValue]);
+    setFilteredProducts(newPacientes);
+    setLoagingUsers(false);
+  }, [singleUserId, searchProductValue]);
 
   //function for edit modal
   const handleOpen = (product) => {

@@ -6,11 +6,9 @@ import { SendOutlined } from "@ant-design/icons";
 export const DeleteComment = (props) => {
   const { comment } = props;
 
-  const editComment = async (values) => {
-    console.log("DeleteComment-->values", values);
-
+  const deleteComment = async (values) => {
     try {
-      const response = await axios.put(
+      const response = await axios.delete(
         // "https://fullstack-backend-pm5t.onrender.com/products",
         `http://localhost:8080/products/${id}/comments`,
         { comment: values.comment },
@@ -22,9 +20,9 @@ export const DeleteComment = (props) => {
       );
 
       const data = await response.data;
+      console.log("DeleteComment", data);
 
-      // setCommentsProduct(data.updatedProduct?.comments);
-      Update_Product(data);
+      // Update_Product(data);
     } catch (error) {
       console.log(error);
     }

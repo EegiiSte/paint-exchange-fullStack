@@ -11,17 +11,12 @@ import { ProfileEditModal } from "./ProfileEditModal";
 export const Profile = (props) => {
   const { user, loagingUsers } = props;
 
-  console.log("Profile-user", user);
-  // console.log("Profile-user.name", user.user?.name);
-  // console.log("Profile-user.products", user.user.products);
+  // console.log("Profile-user", user);
 
   const { theme } = useThemeContext();
   const { currentUser } = useUserContext();
 
-  const {} = useProfileContext();
-
-  //   selectProfilePic(currentUser.user.profilePicUrl);
-  // console.log("Profile-currentUser", currentUser);
+  const { allUsersData } = useProfileContext();
 
   const [editProfilePicModal, setEditProfilePicModal] = useState(false);
 
@@ -39,6 +34,7 @@ export const Profile = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
+
   return (
     <Flex align="start">
       <Skeleton loading={loagingUsers} avatar active>

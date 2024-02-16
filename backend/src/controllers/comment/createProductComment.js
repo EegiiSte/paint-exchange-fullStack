@@ -37,11 +37,11 @@ const createProductComment = async (req, res) => {
     )
       .populate({
         path: "comments",
-        populate: { path: "user", select: "email" },
+        populate: { path: "user", select: ["email", "name", "profilePicUrl"] },
       })
       .populate({
         path: "user",
-        select: "email",
+        select: ["email", "name", "profilePicUrl"],
       });
 
     res.status(201).json({

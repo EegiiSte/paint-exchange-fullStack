@@ -33,7 +33,9 @@ export const DeleteProductModal = (props) => {
       const data = await response.data;
 
       Delete_Product(data._id);
-      successNotification(`(${name}) - Product Deleted successfully`);
+      successNotification(
+        `Product named "${name}" has been deleted successfully`
+      );
       handleCloseDelete();
       navigate("/products");
     } catch (err) {

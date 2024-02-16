@@ -13,7 +13,10 @@ export const EditComment = (props) => {
 
   const { Update_Product } = useProductsContext();
   const { currentUser } = useUserContext();
-  //   console.log("EditComment: currentUser", currentUser);
+
+  // console.log("EditComment: comment._id", comment._id);
+
+  console.log("EditComment: currentUser.token", currentUser.token);
 
   const [editedComment, setEditedComment] = useState(comment.comment);
 
@@ -22,6 +25,30 @@ export const EditComment = (props) => {
   const handleInputComment = (e) => {
     const inputComment = e.target.value;
     setEditedComment(inputComment);
+  };
+
+  const deleteComment = async () => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8080/products/${id}/comments`,
+        { commentId: comment._id },
+        {
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YzFiM2I1NDk3ODQyODIxODQyM2I1ZiIsImlhdCI6MTcwNzk4MjU4OSwiZXhwIjoxNzA4MDY4OTg5fQ.u2xpvWk1y7J5mghBGzBZbbmDFyRAGddrSKqAL4haZRE`,
+            // Authorization: `Bearer ${currentUser.token}`,
+          },
+        }
+      );
+      const data = await response.data;
+
+      console.log("DeleteComment", data);
+
+      handleEditComment(true);
+
+      // Update_Product(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const updateComment = async () => {
@@ -37,25 +64,10 @@ export const EditComment = (props) => {
       );
 
       const data = await response.data;
-      Update_Product(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+      console.log("updateComment", data);
 
-  const deleteComment = async () => {
-    try {
-      const response = await axios.delete(
-        `http://localhost:8080/products/${id}/comments`,
-        { commentId: comment._id },
-        {
-          headers: {
-            Authorization: `Bearer ${currentUser.token}`,
-          },
-        }
-      );
-      const data = await response.data;
       Update_Product(data);
+      handleEditComment(true);
     } catch (error) {
       console.log(error);
     }
@@ -121,7 +133,11 @@ export const EditComment = (props) => {
                 okText="Yes"
                 cancelText="No"
               >
-                <Button icon={<DeleteOutlined />} danger>
+                <Button
+                  onClick={deleteComment}
+                  icon={<DeleteOutlined />}
+                  danger
+                >
                   Delete
                 </Button>
               </Popconfirm>
