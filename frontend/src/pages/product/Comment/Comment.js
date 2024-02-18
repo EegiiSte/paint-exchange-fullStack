@@ -1,12 +1,12 @@
 import { Avatar, Button, Card, Flex, Form, Input } from "antd";
 import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { useProductsContext } from "../../../context/ProductsContext";
 import { useThemeContext } from "../../../context/ThemeContext";
 import { useUserContext } from "../../../context/UserContext";
 
-import { EditOutlined, SendOutlined } from "@ant-design/icons";
+import { SendOutlined } from "@ant-design/icons";
 import { EditComment } from "./EditComment";
 
 const { Meta } = Card;
@@ -35,7 +35,9 @@ export const Comment = (props) => {
       return comment1.timeStamp - comment2.timeStamp;
     }) || [];
 
-  const createComment = async (values) => {
+  const [form] = Form.useForm();
+
+  const createComment = async (values, form) => {
     console.log("Product-->values", values);
 
     try {
@@ -54,6 +56,8 @@ export const Comment = (props) => {
       // console.log("createComment: data.updatedProduct", data.updatedProduct);
 
       Update_Product(data.updatedProduct);
+
+      form.resetFields();
     } catch (error) {
       console.log(error);
     }
@@ -62,10 +66,9 @@ export const Comment = (props) => {
   return (
     <div>
       <Form
+        form={form}
         name="trigger"
-        onFinish={(values) => {
-          createComment(values);
-        }}
+        onFinish={createComment}
         onFinishFailed={(errorInfo) => {
           console.log(errorInfo);
         }}

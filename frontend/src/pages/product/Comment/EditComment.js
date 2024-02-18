@@ -16,7 +16,7 @@ export const EditComment = (props) => {
 
   // console.log("EditComment: comment._id", comment._id);
 
-  console.log("EditComment: currentUser.token", currentUser.token);
+  // console.log("EditComment: currentUser.token", currentUser.token);
 
   const [editedComment, setEditedComment] = useState(comment.comment);
 
@@ -34,8 +34,8 @@ export const EditComment = (props) => {
         { commentId: comment._id },
         {
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YzFiM2I1NDk3ODQyODIxODQyM2I1ZiIsImlhdCI6MTcwNzk4MjU4OSwiZXhwIjoxNzA4MDY4OTg5fQ.u2xpvWk1y7J5mghBGzBZbbmDFyRAGddrSKqAL4haZRE`,
-            // Authorization: `Bearer ${currentUser.token}`,
+            // Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YzFiM2I1NDk3ODQyODIxODQyM2I1ZiIsImlhdCI6MTcwNzk4MjU4OSwiZXhwIjoxNzA4MDY4OTg5fQ.u2xpvWk1y7J5mghBGzBZbbmDFyRAGddrSKqAL4haZRE`,
+            Authorization: `Bearer ${currentUser.token}`,
           },
         }
       );
@@ -65,6 +65,7 @@ export const EditComment = (props) => {
 
       const data = await response.data;
       console.log("updateComment", data);
+      setDisabledSubmitButton(true);
 
       Update_Product(data);
       handleEditComment(true);
@@ -84,6 +85,8 @@ export const EditComment = (props) => {
   };
 
   const [disabledSubmitButton, setDisabledSubmitButton] = useState(true);
+
+  console.log("EditComment: disabledSubmitButton ", disabledSubmitButton);
 
   const inputPress = (e) => {
     const editComment = e.target.value;
