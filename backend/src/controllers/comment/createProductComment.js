@@ -37,6 +37,7 @@ const createProductComment = async (req, res) => {
     )
       .populate({
         path: "comments",
+        options: { sort: { createdAt: "desc" } },
         populate: { path: "user", select: ["email", "name", "profilePicUrl"] },
       })
       .populate({

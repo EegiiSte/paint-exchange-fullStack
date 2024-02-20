@@ -19,9 +19,9 @@ const router = express.Router();
 router.post("/:productId/comments", createProductComment);
 
 // DELETE /products/:workoutId/comments/:commentId
-router.delete("/:productId/comments", deleteProductComment);
+router.delete("/:productId/comments/:commentId", deleteProductComment);
 
 // PUT /products/:workoutId/comments/:commentId
-router.put("/:productId/comments/", updateProductComment);
+router.put("/:productId/comments/:commentId", updateProductComment);
 
 module.exports = router;

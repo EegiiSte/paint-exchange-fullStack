@@ -3,8 +3,7 @@ const ProductComment = require("../../models/productComment");
 const Product = require("../../models/product");
 
 const deleteProductComment = async (req, res) => {
-  const { productId } = req.params;
-  const { commentId } = req.body;
+  const { productId, commentId } = req.params;
 
   if (
     !mongoose.Types.ObjectId.isValid(productId) ||

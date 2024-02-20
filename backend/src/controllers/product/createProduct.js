@@ -23,6 +23,7 @@ const createProduct = async (req, res) => {
     const product = await Product.findById(createdProduct._id)
       .populate({
         path: "comments",
+        options: { sort: { createdAt: "desc" } },
         populate: { path: "user", select: ["email", "profilePicUrl", "name"] },
       })
       .populate({

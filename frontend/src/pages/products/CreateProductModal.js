@@ -60,7 +60,7 @@ export const CreateProductModal = (props) => {
 
     const data = await response.data;
 
-    console.log("CreateProductModal: data", data);
+    // console.log("CreateProductModal: data", data);
 
     Create_Product(data.product);
     handleCloseCreate();

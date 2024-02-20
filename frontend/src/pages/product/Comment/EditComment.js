@@ -1,11 +1,20 @@
-import { Button, Flex, Input, Popconfirm } from "antd";
+import { Button, Flex, Popconfirm } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useProductsContext } from "../../../context/ProductsContext";
 import { useUserContext } from "../../../context/UserContext";
 
-import { DeleteOutlined, EditOutlined, SendOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  DislikeTwoTone,
+  EditOutlined,
+  LikeTwoTone,
+  RollbackOutlined,
+  SendOutlined,
+} from "@ant-design/icons";
+import TextArea from "antd/es/input/TextArea";
+import { useNotificationContext } from "../../../context";
 
 export const EditComment = (props) => {
   const { comment } = props;
@@ -13,10 +22,7 @@ export const EditComment = (props) => {
 
   const { Update_Product } = useProductsContext();
   const { currentUser } = useUserContext();
-
-  // console.log("EditComment: comment._id", comment._id);
-
-  // console.log("EditComment: currentUser.token", currentUser.token);
+  const { successNotification, errorNotification } = useNotificationContext();
 
   const [editedComment, setEditedComment] = useState(comment.comment);
 
@@ -30,8 +36,7 @@ export const EditComment = (props) => {
   const deleteComment = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:8080/products/${id}/comments`,
-        { commentId: comment._id },
+        `http://localhost:8080/products/${id}/comments/${comment._id}`,
         {
           headers: {
             // Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YzFiM2I1NDk3ODQyODIxODQyM2I1ZiIsImlhdCI6MTcwNzk4MjU4OSwiZXhwIjoxNzA4MDY4OTg5fQ.u2xpvWk1y7J5mghBGzBZbbmDFyRAGddrSKqAL4haZRE`,
@@ -41,11 +46,10 @@ export const EditComment = (props) => {
       );
       const data = await response.data;
 
-      console.log("DeleteComment", data);
-
       handleEditComment(true);
 
-      // Update_Product(data);
+      Update_Product(data);
+      successNotification("Deleted comment successfully");
     } catch (error) {
       console.log(error);
     }
@@ -54,8 +58,8 @@ export const EditComment = (props) => {
   const updateComment = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/products/${id}/comments`,
-        { comment: editedComment, commentId: comment._id },
+        `http://localhost:8080/products/${id}/comments/${comment._id}`,
+        { comment: editedComment },
         {
           headers: {
             Authorization: `Bearer ${currentUser.token}`,
@@ -68,6 +72,8 @@ export const EditComment = (props) => {
       setDisabledSubmitButton(true);
 
       Update_Product(data);
+      successNotification("Updeted comment successfully");
+
       handleEditComment(true);
     } catch (error) {
       console.log(error);
@@ -86,8 +92,6 @@ export const EditComment = (props) => {
 
   const [disabledSubmitButton, setDisabledSubmitButton] = useState(true);
 
-  console.log("EditComment: disabledSubmitButton ", disabledSubmitButton);
-
   const inputPress = (e) => {
     const editComment = e.target.value;
     setDisabledSubmitButton(editComment === comment.comment);
@@ -97,61 +101,86 @@ export const EditComment = (props) => {
     <Flex
       style={{
         width: "100%",
+        padding: "0.5em",
       }}
     >
       <Flex
         align="center"
-        horizental="true"
+        vertical="true"
+        gap="small"
         justify="space-between"
         style={{
           width: "100%",
         }}
       >
-        {editInput === true ? (
-          <p>{comment.comment}</p>
-        ) : (
-          <Input
-            value={editedComment}
-            onChange={(e) => {
-              setEditedComment(e.target.value);
-              inputPress(e);
-            }}
-          />
-        )}
-        <Flex gap="smaill" horizental="true">
+        <Flex
+          // align="center"
+          // horizental="true"
+          // justify="space-between"
+
+          style={{
+            paddingBottom: "10px",
+            borderBottom: "1px solid lightgray",
+            width: "100%",
+          }}
+        >
           {editInput === true ? (
-            <div />
+            <p>{comment.comment}</p>
           ) : (
-            <Flex>
-              <Button
-                onClick={updateComment}
-                icon={<SendOutlined />}
-                disabled={disabledSubmitButton}
-              >
-                Update
-              </Button>
-              <Popconfirm
-                title="Are you sure you want to delete this comment?"
-                onConfirm={deleteComment}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button
-                  onClick={deleteComment}
-                  icon={<DeleteOutlined />}
-                  danger
-                >
-                  Delete
-                </Button>
-              </Popconfirm>
-            </Flex>
+            <TextArea
+              value={editedComment}
+              onChange={(e) => {
+                setEditedComment(e.target.value);
+                inputPress(e);
+              }}
+            />
           )}
-          <Button
-            icon={<EditOutlined />}
-            onClick={() => handleEditComment(!editInput)}
-          >
-            {editInput ? "Edit" : "Cancel"}
-          </Button>
+        </Flex>
+        <Flex
+          align="center"
+          horizental="true"
+          justify="space-between"
+          style={{
+            width: "100%",
+          }}
+        >
+          <Flex gap="small">
+            <Button icon={<LikeTwoTone />}></Button>
+            <Button icon={<DislikeTwoTone />}></Button>
+            <Button icon={<RollbackOutlined />}></Button>
+          </Flex>
+          <Flex gap="smaill" horizental="true">
+            {editInput === true ? (
+              <div />
+            ) : (
+              <Flex>
+                <Button
+                  onClick={updateComment}
+                  icon={<SendOutlined />}
+                  disabled={disabledSubmitButton}
+                >
+                  Update
+                </Button>
+                <Popconfirm
+                  title="Are you sure you want to delete this comment?"
+                  onConfirm={deleteComment}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button icon={<DeleteOutlined />} danger>
+                    Delete
+                  </Button>
+                </Popconfirm>
+              </Flex>
+            )}
+
+            <Button
+              icon={<EditOutlined />}
+              onClick={() => handleEditComment(!editInput)}
+            >
+              {editInput ? "Edit" : "Cancel"}
+            </Button>
+          </Flex>
         </Flex>
       </Flex>
     </Flex>
