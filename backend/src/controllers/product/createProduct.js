@@ -27,6 +27,18 @@ const createProduct = async (req, res) => {
         populate: { path: "user", select: ["email", "profilePicUrl", "name"] },
       })
       .populate({
+        path: "comments",
+        options: { sort: { createdAt: "desc" } },
+        populate: {
+          path: "replyComments",
+          options: { sort: { createdAt: "desc" } },
+          populate: {
+            path: "user",
+            select: ["email", "name", "profilePicUrl"],
+          },
+        },
+      })
+      .populate({
         path: "user",
         select: ["email", "profilePicUrl", "name"],
       });

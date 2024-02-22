@@ -7,7 +7,6 @@ import { useUserContext } from "../../../context/UserContext";
 
 import {
   DeleteOutlined,
-  DislikeTwoTone,
   EditOutlined,
   LikeTwoTone,
   RollbackOutlined,
@@ -15,6 +14,7 @@ import {
 } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import { useNotificationContext } from "../../../context";
+import { ReplyComment } from "./ReplyComment/ReplyComment";
 
 export const EditComment = (props) => {
   const { comment } = props;
@@ -33,10 +33,14 @@ export const EditComment = (props) => {
     setEditedComment(inputComment);
   };
 
+  const [inputReplyComment, setInputReplyComment] = useState(false);
+  // console.log("Comment: inputReplyComment", inputReplyComment);
+
   const deleteComment = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:8080/products/${id}/comments/${comment._id}`,
+        `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}`,
+        // `http://localhost:8080/products/${id}/comments/${comment._id}`,
         {
           headers: {
             // Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YzFiM2I1NDk3ODQyODIxODQyM2I1ZiIsImlhdCI6MTcwNzk4MjU4OSwiZXhwIjoxNzA4MDY4OTg5fQ.u2xpvWk1y7J5mghBGzBZbbmDFyRAGddrSKqAL4haZRE`,
@@ -58,7 +62,8 @@ export const EditComment = (props) => {
   const updateComment = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/products/${id}/comments/${comment._id}`,
+        `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}`,
+        // `http://localhost:8080/products/${id}/comments/${comment._id}`,
         { comment: editedComment },
         {
           headers: {
@@ -145,9 +150,15 @@ export const EditComment = (props) => {
           }}
         >
           <Flex gap="small">
-            <Button icon={<LikeTwoTone />}></Button>
-            <Button icon={<DislikeTwoTone />}></Button>
-            <Button icon={<RollbackOutlined />}></Button>
+            <Button icon={<LikeTwoTone />}>Like</Button>
+            <Button
+              onClick={() =>
+                setInputReplyComment(inputReplyComment === false ? true : false)
+              }
+              icon={<RollbackOutlined />}
+            >
+              Reply
+            </Button>
           </Flex>
           <Flex gap="smaill" horizental="true">
             {editInput === true ? (
@@ -174,14 +185,29 @@ export const EditComment = (props) => {
               </Flex>
             )}
 
-            <Button
-              icon={<EditOutlined />}
-              onClick={() => handleEditComment(!editInput)}
-            >
-              {editInput ? "Edit" : "Cancel"}
-            </Button>
+            {currentUser.user.email === comment.user.email ? (
+              <Button
+                icon={<EditOutlined />}
+                onClick={() => handleEditComment(!editInput)}
+              >
+                {editInput ? "Edit" : "Cancel"}
+              </Button>
+            ) : (
+              <div />
+            )}
           </Flex>
         </Flex>
+
+        {comment.replyComments ? (
+          <ReplyComment
+            inputReplyComment={inputReplyComment}
+            setInputReplyComment={setInputReplyComment}
+            replyComments={comment.replyComments}
+            comment={comment}
+          />
+        ) : (
+          <div />
+        )}
       </Flex>
     </Flex>
   );

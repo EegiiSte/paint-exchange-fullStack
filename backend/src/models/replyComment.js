@@ -1,23 +1,29 @@
-const replyComment = {
-  name: {
-    type: String,
-    // required: [false, "Name is required!"],
-    trim: true,
-    lowercase: true,
+const mongoose = require("mongoose");
+
+const replyCommentSchema = new mongoose.Schema(
+  {
+    comment: {
+      type: String,
+      required: [true, "Comment is required!"],
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    productComment: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ProductComment",
+      required: [true, "Comment is required!"],
+    },
+    like: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "CommentLike",
+      },
+    ],
   },
-  email: {
-    type: String,
-    unique: true,
-    trim: true,
-    lowercase: true,
-  },
-  comment: {
-    type: String,
-  },
-  profilePicUrl: {
-    type: String,
-  },
-  phoneNumber: {
-    type: String,
-  },
-};
+  {
+    timestamps: true,
+  }
+);
+module.exports = mongoose.model("ReplyComment", replyCommentSchema);

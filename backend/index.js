@@ -21,6 +21,7 @@ const usersRouter = require("./src/routes/users");
 const productsRouter = require("./src/routes/products");
 const accountsRouter = require("./src/routes/accounts");
 const commentsRouter = require("./src/routes/comment");
+const replyCommentsRouter = require("./src/routes/replyComment");
 
 const port = process.env.PORT || 3000;
 
@@ -43,6 +44,7 @@ app.use("/users", usersRouter);
 app.use("/account", accountsRouter);
 app.use("/products", productsRouter);
 app.use("/products/", commentsRouter);
+app.use("/products/", replyCommentsRouter);
 
 // middleware ---> error handling
 app.use((req, res, next) => {

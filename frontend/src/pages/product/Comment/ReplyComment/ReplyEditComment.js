@@ -1,0 +1,186 @@
+import { Button, Flex, Popconfirm } from "antd";
+import axios from "axios";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+
+import {
+  DeleteOutlined,
+  EditOutlined,
+  LikeTwoTone,
+  RollbackOutlined,
+  SendOutlined,
+} from "@ant-design/icons";
+import TextArea from "antd/es/input/TextArea";
+import {
+  useNotificationContext,
+  useProductsContext,
+  useUserContext,
+} from "../../../../context";
+
+export const ReplyEditComment = (props) => {
+  const { comment } = props;
+  const { id } = useParams();
+
+  const { Update_Product } = useProductsContext();
+  const { currentUser } = useUserContext();
+  const { successNotification, errorNotification } = useNotificationContext();
+
+  const [editedComment, setEditedComment] = useState(comment.comment);
+
+  //   console.log("EditComment: editedComment", editedComment);
+
+  const handleInputComment = (e) => {
+    const inputComment = e.target.value;
+    setEditedComment(inputComment);
+  };
+
+  const deleteComment = async () => {
+    try {
+      const response = await axios.delete(
+        `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}`,
+        // `http://localhost:8080/products/${id}/comments/${comment._id}`,
+        {
+          headers: {
+            // Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YzFiM2I1NDk3ODQyODIxODQyM2I1ZiIsImlhdCI6MTcwNzk4MjU4OSwiZXhwIjoxNzA4MDY4OTg5fQ.u2xpvWk1y7J5mghBGzBZbbmDFyRAGddrSKqAL4haZRE`,
+            Authorization: `Bearer ${currentUser.token}`,
+          },
+        }
+      );
+      const data = await response.data;
+
+      handleEditComment(true);
+
+      Update_Product(data);
+      successNotification("Deleted comment successfully");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateComment = async () => {
+    try {
+      const response = await axios.put(
+        `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}`,
+        // `http://localhost:8080/products/${id}/comments/${comment._id}`,
+        { comment: editedComment },
+        {
+          headers: {
+            Authorization: `Bearer ${currentUser.token}`,
+          },
+        }
+      );
+
+      const data = await response.data;
+      console.log("updateComment", data);
+      setDisabledSubmitButton(true);
+
+      Update_Product(data);
+      successNotification("Updeted comment successfully");
+
+      handleEditComment(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const [editInput, setEditInput] = useState(true);
+
+  const handleEditComment = (value) => {
+    setEditInput(value);
+
+    if (value === false) {
+      setEditedComment(comment.comment);
+    }
+  };
+
+  const [disabledSubmitButton, setDisabledSubmitButton] = useState(true);
+
+  const inputPress = (e) => {
+    const editComment = e.target.value;
+    setDisabledSubmitButton(editComment === comment.comment);
+  };
+
+  return (
+    <Flex
+      //   align="center"
+      //   horizental="true"
+      //   gap="small"
+      //   justify="space-between"
+      style={{
+        width: "100%",
+        padding: "0.5em",
+      }}
+    >
+      <Flex
+        align="center"
+        // horizental="true"
+        gap="small"
+        // justify="end"
+        style={{
+          width: "100%",
+        }}
+      >
+        <Flex
+          align="center"
+          horizental="true"
+          //   justify="space-between"
+          style={{
+            paddingBottom: "10px",
+            borderBottom: "1px solid lightgray",
+            width: "100%",
+          }}
+        >
+          {editInput === true ? (
+            <p>{comment.comment}</p>
+          ) : (
+            <TextArea
+              value={editedComment}
+              onChange={(e) => {
+                setEditedComment(e.target.value);
+                inputPress(e);
+              }}
+            />
+          )}
+        </Flex>
+        <Flex align="center" horizental="true">
+          <Flex gap="smaill" horizental="true">
+            {editInput === true ? (
+              <div />
+            ) : (
+              <Flex>
+                <Button
+                  onClick={updateComment}
+                  icon={<SendOutlined />}
+                  disabled={disabledSubmitButton}
+                >
+                  Update
+                </Button>
+                <Popconfirm
+                  title="Are you sure you want to delete this comment?"
+                  onConfirm={deleteComment}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button icon={<DeleteOutlined />} danger>
+                    Delete
+                  </Button>
+                </Popconfirm>
+              </Flex>
+            )}
+
+            {currentUser.user.email === comment.user.email ? (
+              <Button
+                icon={<EditOutlined />}
+                onClick={() => handleEditComment(!editInput)}
+              >
+                {editInput ? "Edit" : "Cancel"}
+              </Button>
+            ) : (
+              <div />
+            )}
+          </Flex>
+        </Flex>
+      </Flex>
+    </Flex>
+  );
+};

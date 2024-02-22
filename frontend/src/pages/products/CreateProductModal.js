@@ -44,8 +44,8 @@ export const CreateProductModal = (props) => {
     // console.log("CreateProductModal", { ...values, image: imageUrl });
 
     const response = await axios.post(
-      // "https://fullstack-backend-pm5t.onrender.com/products",
-      "http://localhost:8080/products/",
+      "https://paint-exchange-fullstack-1.onrender.com/products/",
+      // "http://localhost:8080/products/",
       {
         ...values,
         image: imageUrl,

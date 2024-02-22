@@ -74,8 +74,8 @@ export const ProfileEditModal = (props) => {
     setSigninLoading(true);
     try {
       const response = await axios.put(
-        // "https://fullstack-backend-pm5t.onrender.com/users/sign-up",
-        "http://localhost:8080/account/changeProfile",
+        "https://paint-exchange-fullstack-1.onrender.com/account/changeProfile",
+        // "http://localhost:8080/account/changeProfile",
         {
           name: values.name,
           email: currentUser.user.email,

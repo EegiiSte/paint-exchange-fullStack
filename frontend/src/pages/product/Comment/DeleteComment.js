@@ -9,8 +9,8 @@ export const DeleteComment = (props) => {
   const deleteComment = async (values) => {
     try {
       const response = await axios.delete(
-        // "https://fullstack-backend-pm5t.onrender.com/products",
-        `http://localhost:8080/products/${id}/comments`,
+        `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments`,
+        // `http://localhost:8080/products/${id}/comments`,
         { comment: values.comment },
         {
           headers: {

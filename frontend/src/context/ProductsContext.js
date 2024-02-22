@@ -22,8 +22,8 @@ export const ProductContexProvider = ({ children }) => {
       const fetchProducts = async () => {
         try {
           const response = await axios.get(
-            // "https://fullstack-backend-pm5t.onrender.com/products",
-            "http://localhost:8080/products",
+            "https://paint-exchange-fullstack-1.onrender.com/products",
+            // "http://localhost:8080/products",
             {
               headers: {
                 Authorization: `Bearer ${currentUser.token}`,
