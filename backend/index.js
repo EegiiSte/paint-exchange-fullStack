@@ -10,7 +10,10 @@ app.use(express.json());
 //Use to enabke CORS
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: [
+      "https://paint-exchange-full-stack-r3kx.vercel.app",
+      "http://localhost:3000",
+    ],
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     optionsSuccessStatus: 204,
