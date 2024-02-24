@@ -61,7 +61,7 @@ export const ReplyEditComment = (props) => {
     try {
       const response = await axios.put(
         `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}`,
-        // `http://localhost:8080/products/${id}/comments/${comment._id}`,
+        // `http://localhost:/products/${id}/comments/${comment._id}`,
         { comment: editedComment },
         {
           headers: {

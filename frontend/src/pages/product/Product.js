@@ -7,6 +7,7 @@ import {
   FloatButton,
   Image,
   Switch,
+  Tag,
 } from "antd";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -107,6 +108,7 @@ export const Product = () => {
           <Card
             style={{
               width: 440,
+              fontSize: "18px",
             }}
           >
             <Meta
@@ -126,6 +128,15 @@ export const Product = () => {
               }
             />
             <Divider dashed />
+            <Tag
+              style={{
+                marginBottom: 20,
+                fontSize: "16px",
+              }}
+              color={selectedProduct.type === "public" ? "success" : "cyan"}
+            >
+              {selectedProduct.type}
+            </Tag>
             <Meta
               title={selectedProduct.name}
               description={
@@ -150,13 +161,17 @@ export const Product = () => {
                         key="edit"
                         onClick={() => handleOpen(selectedProduct)}
                         icon={<EditOutlined />}
-                      />
+                      >
+                        Edit
+                      </Button>
                       <Button
                         size="large"
                         key="delete"
                         onClick={() => handleOpenDelete(selectedProduct)}
                         icon={<DeleteOutlined />}
-                      />
+                      >
+                        Delete
+                      </Button>
                     </Flex>
                   ) : (
                     <div />
