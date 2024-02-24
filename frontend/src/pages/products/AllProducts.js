@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Avatar, Card, Divider, Flex, Skeleton } from "antd";
+import { Avatar, Card, Divider, Flex, Skeleton, Tag } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -84,6 +84,14 @@ export const AllProducts = (props) => {
                   }
                 />
                 <Divider dashed />
+                <Tag
+                  style={{
+                    marginBottom: 20,
+                  }}
+                  color={product.type === "public" ? "success" : "cyan"}
+                >
+                  {product.type}
+                </Tag>
                 <Meta
                   title={product.name}
                   description={

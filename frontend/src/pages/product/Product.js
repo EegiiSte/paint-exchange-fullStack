@@ -1,5 +1,14 @@
-import { Avatar, Card, Divider, Flex, Image } from "antd";
-import axios from "axios";
+import {
+  Avatar,
+  Button,
+  Card,
+  Divider,
+  Flex,
+  FloatButton,
+  Image,
+  Switch,
+  Tag,
+} from "antd";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Header } from "../../component";
@@ -10,7 +19,12 @@ import { useUserContext } from "../../context/UserContext";
 import { DeleteProductModal } from "./modal/DeleteProductModal";
 import { EditProductModal2 } from "./modal/EditProductModal2";
 
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  CommentOutlined,
+  CustomerServiceOutlined,
+  DeleteOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
 import { NotFound } from "../../component/NotFound";
@@ -22,8 +36,7 @@ export const Product = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { products, productContextLoading, Update_Product } =
-    useProductsContext();
+  const { products, productContextLoading } = useProductsContext();
   const { theme } = useThemeContext();
   const { currentUser } = useUserContext();
 
@@ -42,45 +55,18 @@ export const Product = () => {
 
   // console.log("Product-->products", products);
 
+  const [openSwitch, setOpenSwitch] = useState(true);
+  const onChangeSwitch = (checked) => {
+    setOpen(checked);
+  };
+
   const selectedProduct = products.find((product) => product._id === id);
-
-  // const createComment = async (values) => {
-  //   console.log("Product-->values", values);
-
-  //   try {
-  //     const response = await axios.post(
-  //       // "https://fullstack-backend-pm5t.onrender.com/products",
-  //       `http://localhost:8080/products/${id}/comments`,
-  //       { comment: values.comment },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${currentUser.token}`,
-  //         },
-  //       }
-  //     );
-
-  //     const data = await response.data;
-  //     console.log("createComment: data", data);
-
-  //     Update_Product(data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // console.log(`Product -> currentUser.email ${currentUser.user.email}`);
-  // console.log(`Product -> selectedProduct.email ${selectedProduct.userEmail}`);
 
   if (productContextLoading) return <div>...Loading Products</div>;
   if (!productContextLoading && !selectedProduct) return <NotFound />;
 
   return (
-    <Flex
-      gap="middle"
-      vertical="true"
-      align="center"
-      className="align-c d-flex "
-    >
+    <Flex gap="middle" vertical="true" align="center">
       <Header />
       {theme === "light" ? (
         <div style={{ backgroundColor: "#cbdaf0a8" }} />
@@ -94,8 +80,9 @@ export const Product = () => {
           borderRadius: "10px",
           backgroundColor: "white",
           borderRadius: "10px",
-          border: "1px solid red",
+          // border: "1px solid red",
           width: "60%",
+          padding: "15px 0px",
         }}
       >
         <Flex
@@ -114,32 +101,15 @@ export const Product = () => {
                 borderRadius: "10px",
               }}
               alt="example"
-              src={selectedProduct?.image}
+              src={selectedProduct.image}
               height={"300px"}
             />
           </Flex>
           <Card
             style={{
               width: 440,
+              fontSize: "18px",
             }}
-            // cover={<img alt="example" src={selectedProduct.image} />}
-            actions={[
-              selectedProduct.user?.email === currentUser.user?.email ? (
-                <Flex justify="space-evenly">
-                  <EditOutlined
-                    key="edit"
-                    onClick={() => handleOpen(selectedProduct)}
-                  />
-
-                  <DeleteOutlined
-                    key="delete"
-                    onClick={() => handleOpenDelete(selectedProduct)}
-                  />
-                </Flex>
-              ) : (
-                <div />
-              ),
-            ]}
           >
             <Meta
               avatar={
@@ -149,26 +119,63 @@ export const Product = () => {
                   gap="middle"
                   style={{ cursor: "pointer" }}
                   onClick={() =>
-                    navigate(`/profile/${selectedProduct.user?._id}`)
+                    navigate(`/profile/${selectedProduct.user._id}`)
                   }
                 >
-                  <Avatar src={selectedProduct.user?.profilePicUrl} />
-                  <p>{selectedProduct.user?.email}</p>
+                  <Avatar src={selectedProduct.user.profilePicUrl} />
+                  <p>{selectedProduct.user.email}</p>
                 </Flex>
               }
             />
             <Divider dashed />
+            <Tag
+              style={{
+                marginBottom: 20,
+                fontSize: "16px",
+              }}
+              color={selectedProduct.type === "public" ? "success" : "cyan"}
+            >
+              {selectedProduct.type}
+            </Tag>
             <Meta
               title={selectedProduct.name}
               description={
-                <div
-                  onClick={() => navigate(`/products/${selectedProduct._id}`)}
-                >
+                <div>
                   <p>Price : ${selectedProduct.price}</p>
                   <p style={{ height: "10" }}>
                     Description : {selectedProduct.description}
                   </p>
                   <p>Category : {selectedProduct.category}</p>
+                </div>
+              }
+            />
+            <Divider />
+            <Meta
+              // title={selectedProduct.name}
+              description={
+                <div>
+                  {selectedProduct.user.email === currentUser.user.email ? (
+                    <Flex justify="space-evenly">
+                      <Button
+                        size="large"
+                        key="edit"
+                        onClick={() => handleOpen(selectedProduct)}
+                        icon={<EditOutlined />}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        size="large"
+                        key="delete"
+                        onClick={() => handleOpenDelete(selectedProduct)}
+                        icon={<DeleteOutlined />}
+                      >
+                        Delete
+                      </Button>
+                    </Flex>
+                  ) : (
+                    <div />
+                  )}
                 </div>
               }
             />

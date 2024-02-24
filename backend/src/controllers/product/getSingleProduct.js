@@ -11,10 +11,24 @@ const getSingleProduct = async (req, res) => {
     });
   }
 
-  const product = await Product.findById(id).populate({
-    path: "comments",
-    populate: { path: "user", select: ["email", "profilePicUrl", "name"] },
-  });
+  const product = await Product.findById(id)
+    .populate({
+      path: "comments",
+      options: { sort: { createdAt: "desc" } },
+      populate: { path: "user", select: ["email", "profilePicUrl", "name"] },
+    })
+    .populate({
+      path: "comments",
+      options: { sort: { createdAt: "desc" } },
+      populate: {
+        path: "replyComments",
+        options: { sort: { createdAt: "desc" } },
+        populate: {
+          path: "user",
+          select: ["email", "name", "profilePicUrl"],
+        },
+      },
+    });
 
   if (!product) {
     res.status(404).json({

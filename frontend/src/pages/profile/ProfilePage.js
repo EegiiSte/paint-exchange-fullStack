@@ -36,24 +36,14 @@ const ProfilePage = () => {
     const getSingleUserData = async () => {
       try {
         const response = await axios.get(
-          // `https://fullstack-backend-pm5t.onrender.com/users/${id}`,
-          `http://localhost:8080/users/${singleUserId}`,
+          `https://paint-exchange-fullstack-1.onrender.com/users/${singleUserId}`,
+          // `http://localhost:8080/users/${singleUserId}`,
           {
             headers: {
               Authorization: `Bearer ${currentUser.token}`,
             },
           }
         );
-
-        // const usersData = await axios.get(
-        //   // `https://fullstack-backend-pm5t.onrender.com/users/`,
-        //   "http://localhost:8080/users/",
-        //   {
-        //     headers: {
-        //       Authorization: `Bearer ${currentUser.token}`,
-        //     },
-        //   }
-        // );
 
         const data = await response.data;
         setSingleUserData(data);

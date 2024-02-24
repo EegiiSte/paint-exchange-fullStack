@@ -3,8 +3,8 @@ const ProductComment = require("../../models/productComment");
 const Product = require("../../models/product");
 
 const updateProductComment = async (req, res) => {
-  const { productId } = req.params;
-  const { comment, commentId } = req.body;
+  const { productId, commentId } = req.params;
+  const { comment } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(commentId)) {
     return res.status(404).json({ message: "Id is not valid" });
@@ -26,7 +26,20 @@ const updateProductComment = async (req, res) => {
     const existingProduct = await Product.findById(productId)
       .populate({
         path: "comments",
+        options: { sort: { createdAt: "desc" } },
         populate: { path: "user", select: ["email", "name", "profilePicUrl"] },
+      })
+      .populate({
+        path: "comments",
+        options: { sort: { createdAt: "desc" } },
+        populate: {
+          path: "replyComments",
+          options: { sort: { createdAt: "desc" } },
+          populate: {
+            path: "user",
+            select: ["email", "name", "profilePicUrl"],
+          },
+        },
       })
       .populate({
         path: "user",

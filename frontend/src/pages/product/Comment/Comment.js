@@ -1,18 +1,20 @@
-import { Avatar, Button, Card, Flex, Form, Input } from "antd";
+import { Avatar, Button, Card, Flex, Form, Typography } from "antd";
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useProductsContext } from "../../../context/ProductsContext";
 import { useThemeContext } from "../../../context/ThemeContext";
 import { useUserContext } from "../../../context/UserContext";
 
 import { SendOutlined } from "@ant-design/icons";
+import TextArea from "antd/es/input/TextArea";
+import { useNotificationContext } from "../../../context";
 import { EditComment } from "./EditComment";
+import { ReplyComment } from "./ReplyComment/ReplyComment";
 
 const { Meta } = Card;
 
 export const Comment = (props) => {
-  // const {id} = props;
   const { id } = useParams();
 
   //   console.log(`Product -> id ${id}`);
@@ -20,30 +22,23 @@ export const Comment = (props) => {
     useProductsContext();
   const { currentUser } = useUserContext();
   const { theme } = useThemeContext();
+  const { successNotification, errorNotification } = useNotificationContext();
 
   // console.log("Product-->products", products);
 
   const selectedProduct = products.find((product) => product._id === id);
   // const [selectedProduct, setSelectedProduct] = useState(foundProduct);
 
-  // console.log("Product-->selectedProduct", selectedProduct);
-
-  ///////sort
-
-  const sortedComments =
-    selectedProduct?.comments?.sort((comment1, comment2) => {
-      return comment1.timeStamp - comment2.timeStamp;
-    }) || [];
-
   const [form] = Form.useForm();
 
-  const createComment = async (values, form) => {
-    console.log("Product-->values", values);
+  const [loading, setLoading] = useState(false);
 
+  const createComment = async (values, form) => {
+    setLoading(true);
     try {
       const response = await axios.post(
-        // "https://fullstack-backend-pm5t.onrender.com/products",
-        `http://localhost:8080/products/${id}/comments`,
+        `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments`,
+        // `http://localhost:8080/products/${id}/comments`,
         { comment: values.comment },
         {
           headers: {
@@ -53,70 +48,144 @@ export const Comment = (props) => {
       );
 
       const data = await response.data;
-      // console.log("createComment: data.updatedProduct", data.updatedProduct);
+      console.log("createComment: data", data);
 
       Update_Product(data.updatedProduct);
+      successNotification("Added comment successfully");
+      setLoading(false);
 
-      form.resetFields();
+      form.setFieldsValue({ comment: "" });
     } catch (error) {
       console.log(error);
+      errorNotification(error.message);
     }
   };
 
   return (
-    <div>
-      <Form
-        form={form}
-        name="trigger"
-        onFinish={createComment}
-        onFinishFailed={(errorInfo) => {
-          console.log(errorInfo);
-        }}
-        style={{
-          maxWidth: 600,
-        }}
-        layout="horizental"
-        autoComplete="off"
+    <Flex vertical="true" gap="small" justify="center">
+      <Typography.Title level={5} style={{ marginBottom: 5 }}>
+        Add comment
+      </Typography.Title>
+      <Flex
+        horizental="true"
+        gap="small"
+        justify={"center"}
+        align={"center"}
+        style={{ width: "100%" }}
       >
-        <Form.Item
+        <Form
+          form={form}
+          name="trigger"
+          // onFinish={createComment}
+          onFinish={(values) => createComment(values, form)}
+          onFinishFailed={(errorInfo) => {
+            console.log(errorInfo);
+          }}
+          style={{
+            width: "100%",
+            // maxWidth: 600,
+          }}
           layout="horizental"
-          name="comment"
-          rules={[{ required: true, message: "Required" }]}
+          autoComplete="off"
         >
-          <Flex horizental="true">
-            <Input />
-            <Button type="primary" htmlType="submit" icon={<SendOutlined />} />
+          <Flex
+            horizental="true"
+            gap="small"
+            // justify={"center"}
+            // align={"center"}
+            style={{ paddingRight: "0px" }}
+          >
+            <Form.Item
+              align={"center"}
+              justify={"center"}
+              layout="horizental"
+              name="comment"
+              rules={[{ required: true, message: "Required" }]}
+              style={{
+                width: "80%",
+              }}
+            >
+              <TextArea />
+            </Form.Item>
+            <Button
+              loading={loading}
+              type="primary"
+              htmlType="submit"
+              icon={<SendOutlined />}
+              size="large"
+            >
+              Send
+            </Button>
           </Flex>
-        </Form.Item>
-      </Form>
+        </Form>
+      </Flex>
+      <Typography.Title level={5} style={{ marginBottom: 5 }}>
+        Comments
+      </Typography.Title>
 
-      {sortedComments.map((comment, index) => (
+      {selectedProduct.comments.map((comment, index) => (
         <Flex
           key={index}
-          horizental="true"
+          vertical="true"
           gap="middle"
           style={{
-            padding: "10px",
+            border: "1px solid lightgray",
+            // backgroundColor: "#eef0f0d5",
+            borderRadius: "10px",
+            padding: "5px 10px",
+            // width: "100%",
           }}
         >
-          <Flex vertical="true">
-            <Avatar src={comment.user.profilePicUrl} />
-            <span>{comment.user.name}</span>
-          </Flex>
           <Flex
-            align="center"
-            justify="start"
+            key={index}
+            horizental="true"
+            gap="middle"
             style={{
-              padding: "0px 10px",
-              border: "1px solid lightgray",
-              width: "100%",
-              borderRadius: "5px",
+              // border: "1px solid lightgray",
+              // backgroundColor: "#eef0f0d5",
+              borderRadius: "10px",
+              padding: "5px 10px",
+              // width: "100%",
             }}
           >
-            <EditComment comment={comment} />
+            <Flex vertical="true" justify={"start"} align={"center"}>
+              <Avatar size="large" src={comment.user.profilePicUrl} />
+              <span>{comment.user.name}</span>
+            </Flex>
+            <Flex
+              key={index}
+              vertical="true"
+              gap="small"
+              style={{
+                width: "100%",
+                padding: "10px",
+                // border: "1px solid red",
+              }}
+            >
+              <Flex
+                key={index}
+                horizental="true"
+                gap="middle"
+                style={{
+                  width: "100%",
+                }}
+              >
+                <Flex
+                  align="center"
+                  justify="start"
+                  style={{
+                    padding: "0px 10px",
+                    width: "100%",
+                    borderRadius: "5px",
+                  }}
+                >
+                  <EditComment comment={comment} />
+                </Flex>
+              </Flex>
+            </Flex>
           </Flex>
         </Flex>
       ))}
-    </div>
+    </Flex>
   );
 };

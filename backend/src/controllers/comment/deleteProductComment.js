@@ -3,8 +3,7 @@ const ProductComment = require("../../models/productComment");
 const Product = require("../../models/product");
 
 const deleteProductComment = async (req, res) => {
-  const { productId } = req.params;
-  const { commentId } = req.body;
+  const { productId, commentId } = req.params;
 
   if (
     !mongoose.Types.ObjectId.isValid(productId) ||
@@ -34,7 +33,20 @@ const deleteProductComment = async (req, res) => {
   )
     .populate({
       path: "comments",
+      options: { sort: { createdAt: "desc" } },
       populate: { path: "user", select: ["email", "name", "profilePicUrl"] },
+    })
+    .populate({
+      path: "comments",
+      options: { sort: { createdAt: "desc" } },
+      populate: {
+        path: "replyComments",
+        options: { sort: { createdAt: "desc" } },
+        populate: {
+          path: "user",
+          select: ["email", "name", "profilePicUrl"],
+        },
+      },
     })
     .populate({
       path: "user",

@@ -5,7 +5,6 @@ const createProductComment = async (req, res) => {
   const { comment } = req.body;
   const { productId } = req.params;
   const userId = req.user._id;
-  const userEmail = req.user.email;
 
   console.log("createProductComment", productId);
 
@@ -37,7 +36,20 @@ const createProductComment = async (req, res) => {
     )
       .populate({
         path: "comments",
+        options: { sort: { createdAt: "desc" } },
         populate: { path: "user", select: ["email", "name", "profilePicUrl"] },
+      })
+      .populate({
+        path: "comments",
+        options: { sort: { createdAt: "desc" } },
+        populate: {
+          path: "replyComments",
+          options: { sort: { createdAt: "desc" } },
+          populate: {
+            path: "user",
+            select: ["email", "name", "profilePicUrl"],
+          },
+        },
       })
       .populate({
         path: "user",

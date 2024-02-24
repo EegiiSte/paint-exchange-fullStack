@@ -15,6 +15,18 @@ const productCommentSchema = new mongoose.Schema(
       ref: "Product",
       required: [true, "Product is required!"],
     },
+    replyComments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ReplyComment",
+      },
+    ],
+    like: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "CommentLike",
+      },
+    ],
   },
   {
     timestamps: true,
