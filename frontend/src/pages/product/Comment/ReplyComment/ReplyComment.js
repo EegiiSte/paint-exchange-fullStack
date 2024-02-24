@@ -35,7 +35,7 @@ export const ReplyComment = (props) => {
 
     try {
       const response = await axios.post(
-        `hhttps://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}`,
+        `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}`,
         // `http://localhost:8080/products/${id}/comments/${comment._id}`,
         { replyComment: values.replyComment },
         {
