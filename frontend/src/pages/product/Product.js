@@ -59,7 +59,7 @@ export const Product = () => {
     setLoadingTag(true);
     try {
       const response = await axios.put(
-        `https://paint-exchange-fullstack-1.onrender.com/products/${id/type`,
+        `https://paint-exchange-fullstack-1.onrender.com/products/${selectedProduct._id}/type`,
         // `http://localhost:8080/products/${selectedProduct._id}/type`,
         { type: value },
         {
