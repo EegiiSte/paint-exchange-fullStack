@@ -1,6 +1,15 @@
-import { Image, Switch } from "antd";
+import {
+  HomeOutlined,
+  LoginOutlined,
+  LogoutOutlined,
+  ProductOutlined,
+  SignatureOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import { Button, Flex, Image, Switch } from "antd";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useResponsiveContext } from "../../context";
 import { useNotificationContext } from "../../context/NotificationContext";
 import { useProductsContext } from "../../context/ProductsContext";
 import { useThemeContext } from "../../context/ThemeContext";
@@ -18,6 +27,7 @@ export const Header = () => {
   const { setProducts } = useProductsContext();
 
   const { setTheme, theme, textStyle, backgroundStyle } = useThemeContext();
+  const { mobile, tablet, desktop } = useResponsiveContext();
 
   const navigate = useNavigate();
 
@@ -60,74 +70,78 @@ export const Header = () => {
               theme === "light"
                 ? "https://firebasestorage.googleapis.com/v0/b/fullstack-leap.appspot.com/o/B98FC9C9-A603-44B7-B4AA-568942F44225.PNG?alt=media&token=d1a6a0ba-d0aa-4848-925a-740a6bf7dfe0"
                 : "https://firebasestorage.googleapis.com/v0/b/fullstack-leap.appspot.com/o/4C884CB0-7FA6-49F5-91E2-EF94CE7AD167.PNG?alt=media&token=675700ab-d8b5-430f-b1fa-c175b559889c"
-              // ? "https://firebasestorage.googleapis.com/v0/b/fullstack-leap.appspot.com/o/red-logo.jpeg?alt=media&token=d92b73b7-f416-486b-b9cd-897e529bf7b2"
             }
           />
           <br />
           P2Paint
         </div>
         <div className="HeaderMenuBox">
-          <div className="Header-Left">
-            <Link to="/" style={textStyle}>
-              Home
-            </Link>
-          </div>
-          {currentUser ? (
-            <div
-              className="HeaderMenuLeft"
-              style={(textStyle, backgroundStyle)}
-            >
-              <div className="Header-Right">
-                <div className="Header-Right_Item">
-                  <Link to="/products" style={textStyle}>
-                    Products
-                  </Link>
+          <Flex horizental="true" gap="30px">
+            <div className="Header-Left">
+              <Link to="/" style={textStyle}>
+                {mobile ? <HomeOutlined /> : "Home"}
+              </Link>
+            </div>
+            {currentUser ? (
+              <div
+                className="HeaderMenuLeft"
+                style={(textStyle, backgroundStyle)}
+              >
+                <div className="Header-Right">
+                  <div className="Header-Right_Item">
+                    <Link to="/products" style={textStyle}>
+                      {mobile ? <ProductOutlined /> : "Products"}
+                    </Link>
+                  </div>
                 </div>
-              </div>
 
-              <div className="Header-Right">
-                <div className="Header-Right_Item">
-                  <div
-                    onClick={() => navigate(`/profile/${currentUser.user._id}`)}
-                    style={{ ...textStyle, cursor: "pointer" }}
-                  >
-                    {currentUser.user.email}
+                <div className="Header-Right">
+                  <div className="Header-Right_Item">
+                    <div
+                      onClick={() =>
+                        navigate(`/profile/${currentUser.user._id}`)
+                      }
+                      style={{ ...textStyle, cursor: "pointer" }}
+                    >
+                      {mobile ? <UserOutlined /> : currentUser.user.email}
+                    </div>
+                  </div>
+                </div>
+                <div className="Header-Right">
+                  <div className="Header-Right_Item">
+                    <Link onClick={handleLogOut} style={textStyle}>
+                      {mobile ? <LogoutOutlined /> : " Sign Out"}
+                    </Link>
                   </div>
                 </div>
               </div>
-              <div className="Header-Right">
-                <div className="Header-Right_Item">
-                  <Link onClick={handleLogOut} style={textStyle}>
-                    Sign Out
-                  </Link>
+            ) : (
+              <div
+                className="HeaderMenuLeft"
+                style={(textStyle, backgroundStyle)}
+              >
+                <div className="Header-Right">
+                  <div className="Header-Right_Item">
+                    <Link to="/sign-in" style={textStyle}>
+                      {mobile ? <LoginOutlined /> : "Sign In"}
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ) : (
-            <div
-              className="HeaderMenuLeft"
-              style={(textStyle, backgroundStyle)}
-            >
-              <div className="Header-Right">
-                <div className="Header-Right_Item">
-                  <Link to="/sign-in" style={textStyle}>
-                    Sign In
-                  </Link>
-                </div>
-              </div>
 
-              <div className="Header-Right">
-                <div className="Header-Right_Item">
-                  <Link to="/sign-up" style={textStyle}>
-                    Sign Up
-                  </Link>
+                <div className="Header-Right">
+                  <div className="Header-Right_Item">
+                    <Link to="/sign-up" style={textStyle}>
+                      {mobile ? <SignatureOutlined /> : "Sign Up"}
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </Flex>
+
           <Switch
-            checkedChildren="Black Theme"
-            unCheckedChildren="Light Theme"
+            checkedChildren={mobile ? "" : "Black Theme"}
+            unCheckedChildren={mobile ? "" : "Light Theme"}
             checked={theme === "dark" ? true : false}
             onChange={handleChange}
             // size="small"

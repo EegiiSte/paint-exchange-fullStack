@@ -6,5 +6,10 @@
   /*   background-image: url(https://indigopaints.com/wp-content/uploads/2021/02/shutterstock_625921016.jpg); */
   /*   background-image: url(https://www.jswcement.in/images/blogs/blog-a-guide-to-paint.jpg); */
 
-  background-size: cover;
+  background-size: auto;
+  background-position: center;
+  background-repeat: ;
+  background-size: ;
+  background-clip: content-box;
+
 }

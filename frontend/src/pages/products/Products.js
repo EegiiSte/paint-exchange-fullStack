@@ -84,6 +84,7 @@ export const Products = () => {
       <div
         className=" d-flex flex-direction-c just-start width-100pr padding-top-10"
         style={{
+          backgroundColor: theme === "light" ? "" : "#2e3134",
           height: "calc(100vh - 80px)",
         }}
       >
@@ -156,6 +157,7 @@ export const Products = () => {
         id={selectedProduct._id}
       />
       <CreateProductModal
+        width={100}
         handleCloseCreate={handleCloseCreate}
         openCreate={openCreate}
       />

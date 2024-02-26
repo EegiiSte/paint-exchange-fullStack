@@ -3,8 +3,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../../component";
+import { useResponsiveContext } from "../../context";
 import { useNotificationContext } from "../../context/NotificationContext";
-import { useProfileContext } from "../../context/ProfileContext";
 import { useThemeContext } from "../../context/ThemeContext";
 import { useUserContext } from "../../context/UserContext";
 import { uploadImage } from "../../utils";
@@ -45,7 +45,7 @@ const tailFormItemLayout = {
 export const SignUp = () => {
   const { signUp } = useUserContext();
   const { successNotification, errorNotification } = useNotificationContext();
-  const { profileIcons, profilePicUrl, selectProfilePic } = useProfileContext();
+  const { mobile, tablet, desktop } = useResponsiveContext();
 
   // console.log("SugnUp: signUp", signUp);
 
@@ -64,13 +64,18 @@ export const SignUp = () => {
 
   const onFinish = async (values) => {
     setSigninLoading(true);
-    const imageUrl = await uploadImage(file);
 
     try {
       // throw new Error("test error");
+      if (!file) {
+        errorNotification("Please choose a profile image");
+        setSigninLoading(false);
+      }
+      const imageUrl = await uploadImage(file);
+
       const response = await axios.post(
-        "https://paint-exchange-fullstack-1.onrender.com/users/sign-up",
-        // "http://localhost:8080/users/sign-up",
+        // "https://paint-exchange-fullstack-1.onrender.com/users/sign-up",
+        "http://localhost:8080/users/sign-up",
         {
           name: values.name,
           email: values.email,
@@ -99,7 +104,7 @@ export const SignUp = () => {
         errorNotification(err.response.data);
         setSigninLoading(false);
       } else {
-        errorNotification("Unkown error");
+        // errorNotification("Unkown error");
         setSigninLoading(false);
       }
 
@@ -109,14 +114,24 @@ export const SignUp = () => {
   return (
     <div className="d-flex align-c flex-direction-c just-c">
       <Header />
-      <div className="signupBox">
+      <div
+        className="signupBox"
+        style={{
+          backgroundImage:
+            theme === "light"
+              ? "url(https://romandecoratingproducts.com/wp-content/uploads/2021/01/Paint-Painting-Wall-1024x445.jpeg)"
+              : "url(https://firebasestorage.googleapis.com/v0/b/foodrev-crud.appspot.com/o/SignUpGray.PNG?alt=media&token=f79a659b-40c9-4943-a280-a5895c2bbe6b)",
+
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         <div
           className="d-flex just-c align-c flex-direction-c "
           style={
             (textStyle,
             {
-              height: "60%",
-              width: "60%",
+              height: mobile ? "100%" : "60%",
+              width: mobile ? "100%" : "60%",
             })
           }
         >
@@ -137,14 +152,28 @@ export const SignUp = () => {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                paddingTop: "100px",
+                paddingTop: mobile ? "0px" : "100px",
                 paddingBottom: "10px",
                 color: theme === "light" ? "black" : "white",
               }}
             >
               Sign Up
             </h1>
-            <Form.Item label="Profile Picture" name="image">
+            <Form.Item
+              label={
+                <span
+                  style={{
+                    color: theme === "light" ? "black" : "white",
+                  }}
+                >
+                  Profile Picture
+                </span>
+              }
+              name="image"
+              style={{
+                color: theme === "light" ? "black" : "white",
+              }}
+            >
               <input
                 name="Image"
                 onChange={handleFileChange}

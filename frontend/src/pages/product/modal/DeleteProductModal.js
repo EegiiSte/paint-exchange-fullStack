@@ -22,8 +22,8 @@ export const DeleteProductModal = (props) => {
   const handleDeleteButton = async () => {
     try {
       const response = await axios.delete(
-        `https://paint-exchange-fullstack-1.onrender.com/products/${id}`,
-        // `http://localhost:8080/products/${id}`,
+        // `https://paint-exchange-fullstack-1.onrender.com/products/${id}`,
+        `http://localhost:8080/products/${id}`,
         {
           headers: {
             Authorization: `Bearer ${currentUser.token}`,

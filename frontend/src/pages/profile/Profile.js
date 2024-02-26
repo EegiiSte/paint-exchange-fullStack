@@ -3,6 +3,7 @@ import { Button, Flex, Image, Modal, Skeleton } from "antd";
 import React, { useState } from "react";
 import {
   useProfileContext,
+  useResponsiveContext,
   useThemeContext,
   useUserContext,
 } from "../../context";
@@ -17,6 +18,8 @@ export const Profile = (props) => {
   const { currentUser } = useUserContext();
 
   const { allUsersData } = useProfileContext();
+
+  const { mobile, tablet, desktop } = useResponsiveContext();
 
   const [editProfilePicModal, setEditProfilePicModal] = useState(false);
 
@@ -45,12 +48,6 @@ export const Profile = (props) => {
             style={{
               border: "1px solid black",
               borderRadius: "10px",
-              // height: "100%",
-              // // width: "100%",
-              // display: "flex",
-              // justifyContent: "center",
-              // alignItems: "center",
-              // flexDirection: "column",
             }}
           >
             <div
@@ -67,7 +64,6 @@ export const Profile = (props) => {
                 style={{
                   height: "100%",
                   margin: "1%",
-                  // borderRadius: "20%",
                   overflow: "hidden",
                   display: "flex",
                   justifyContent: "center",

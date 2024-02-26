@@ -13,7 +13,7 @@ import {
   SendOutlined,
 } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
-import { useNotificationContext } from "../../../context";
+import { useNotificationContext, useResponsiveContext } from "../../../context";
 import { ReplyComment } from "./ReplyComment/ReplyComment";
 
 export const EditComment = (props) => {
@@ -23,6 +23,7 @@ export const EditComment = (props) => {
   const { Update_Product } = useProductsContext();
   const { currentUser } = useUserContext();
   const { successNotification, errorNotification } = useNotificationContext();
+  const { mobile, tablet, desktop } = useResponsiveContext();
 
   const [editedComment, setEditedComment] = useState(comment.comment);
 
@@ -39,8 +40,8 @@ export const EditComment = (props) => {
   const deleteComment = async () => {
     try {
       const response = await axios.delete(
-        `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}`,
-        // `http://localhost:8080/products/${id}/comments/${comment._id}`,
+        // `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}`,
+        `http://localhost:8080/products/${id}/comments/${comment._id}`,
         {
           headers: {
             // Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YzFiM2I1NDk3ODQyODIxODQyM2I1ZiIsImlhdCI6MTcwNzk4MjU4OSwiZXhwIjoxNzA4MDY4OTg5fQ.u2xpvWk1y7J5mghBGzBZbbmDFyRAGddrSKqAL4haZRE`,
@@ -62,8 +63,8 @@ export const EditComment = (props) => {
   const updateComment = async () => {
     try {
       const response = await axios.put(
-        `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}`,
-        // `http://localhost:8080/products/${id}/comments/${comment._id}`,
+        // `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}`,
+        `http://localhost:8080/products/${id}/comments/${comment._id}`,
         { comment: editedComment },
         {
           headers: {
@@ -105,7 +106,8 @@ export const EditComment = (props) => {
   return (
     <Flex
       style={{
-        width: "100%",
+        width: mobile ? "70%" : "100%",
+        fontSize: "15px",
         padding: "0.5em",
       }}
     >
@@ -150,8 +152,8 @@ export const EditComment = (props) => {
           }}
         >
           <Flex gap="small">
-            <Button icon={<LikeTwoTone />}>Like</Button>
             <Button
+              size={mobile ? "small" : "large"}
               onClick={() =>
                 setInputReplyComment(inputReplyComment === false ? true : false)
               }
@@ -160,12 +162,24 @@ export const EditComment = (props) => {
               Reply
             </Button>
           </Flex>
-          <Flex gap="smaill" horizental="true">
+          <Flex
+            gap="smaill"
+            style={{
+              display: "flex",
+              flexDirection: mobile ? "column" : "row",
+            }}
+          >
             {editInput === true ? (
               <div />
             ) : (
-              <Flex>
+              <Flex
+                style={{
+                  display: "flex",
+                  flexDirection: mobile ? "column" : "row",
+                }}
+              >
                 <Button
+                  size={mobile ? "small" : "large"}
                   onClick={updateComment}
                   icon={<SendOutlined />}
                   disabled={disabledSubmitButton}
@@ -178,7 +192,11 @@ export const EditComment = (props) => {
                   okText="Yes"
                   cancelText="No"
                 >
-                  <Button icon={<DeleteOutlined />} danger>
+                  <Button
+                    size={mobile ? "small" : "large"}
+                    icon={<DeleteOutlined />}
+                    danger
+                  >
                     Delete
                   </Button>
                 </Popconfirm>
@@ -187,6 +205,7 @@ export const EditComment = (props) => {
 
             {currentUser.user.email === comment.user.email ? (
               <Button
+                size={mobile ? "small" : "large"}
                 icon={<EditOutlined />}
                 onClick={() => handleEditComment(!editInput)}
               >

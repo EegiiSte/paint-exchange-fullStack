@@ -4,22 +4,18 @@ const Product = require("../../models/product");
 const ReplyComment = require("../../models/replyComment");
 
 const deleteReplyComment = async (req, res) => {
-  const { productId, commentId, replyCommentId } = req.params;
+  const { productId, commentId, replyId } = req.params;
 
   if (
     !mongoose.Types.ObjectId.isValid(productId) ||
     !mongoose.Types.ObjectId.isValid(commentId) ||
-    !mongoose.Types.ObjectId.isValid(replyCommentId)
+    !mongoose.Types.ObjectId.isValid(replyId)
   ) {
     return res.status(404).json({ message: "Id is not valid" });
   }
 
-  const productComment = await ProductComment.findByIdAndDelete(commentId);
-  if (!productComment) {
-    return res.status(404).json({ message: "Comment not found" });
-  }
-  const replyComment = await ReplyComment.findByIdAndDelete(replyCommentId);
-  if (!productComment) {
+  const replyComment = await ReplyComment.findByIdAndDelete(replyId);
+  if (!replyComment) {
     return res.status(404).json({ message: "Reply comment not found" });
   }
 
@@ -29,11 +25,13 @@ const deleteReplyComment = async (req, res) => {
     return res.status(404).json({ message: "product not found" });
   }
 
+  const productComment = await ProductComment.findById(commentId);
+
   const filteredReplyComments = productComment.replyComments.filter(
-    (comment) => comment != replyCommentId
+    (comment) => comment != replyId
   );
 
-  const updatedComments = await ProductComment.findByIdAndUpdate(
+  await ProductComment.findByIdAndUpdate(
     commentId,
     { ...req.body, replyComments: filteredReplyComments },
     { new: true }

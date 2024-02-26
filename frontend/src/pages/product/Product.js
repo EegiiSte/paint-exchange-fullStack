@@ -1,14 +1,4 @@
-import {
-  Avatar,
-  Button,
-  Card,
-  Divider,
-  Flex,
-  FloatButton,
-  Image,
-  Switch,
-  Tag,
-} from "antd";
+import { Avatar, Button, Card, Divider, Flex, Image, Tag } from "antd";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Header } from "../../component";
@@ -20,14 +10,17 @@ import { DeleteProductModal } from "./modal/DeleteProductModal";
 import { EditProductModal2 } from "./modal/EditProductModal2";
 
 import {
-  CommentOutlined,
-  CustomerServiceOutlined,
+  CheckCircleOutlined,
   DeleteOutlined,
   EditOutlined,
+  SyncOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
+import axios from "axios";
 import { NotFound } from "../../component/NotFound";
+import { useNotificationContext } from "../../context";
+import { useResponsiveContext } from "../../context/ResponsiveContext";
 import { Comment } from "./Comment/Comment";
 import "./Product.css";
 const { Meta } = Card;
@@ -37,8 +30,12 @@ export const Product = () => {
   const navigate = useNavigate();
 
   const { products, productContextLoading } = useProductsContext();
+  const { mobile, tablet, desktop } = useResponsiveContext();
+
   const { theme } = useThemeContext();
   const { currentUser } = useUserContext();
+  const { Update_Product } = useProductsContext();
+  const { successNotification } = useNotificationContext();
 
   //state for edit modal
   const [open, setOpen] = useState(false);
@@ -53,20 +50,47 @@ export const Product = () => {
   const handleCloseDelete = () => setOpenDelete(false);
   const [newImageUrl, setNewImageUrl] = useState("");
 
+  const selectedProduct = products.find((product) => product._id === id);
   // console.log("Product-->products", products);
 
-  const [openSwitch, setOpenSwitch] = useState(true);
-  const onChangeSwitch = (checked) => {
-    setOpen(checked);
-  };
+  const [loadingTag, setLoadingTag] = useState(false);
 
-  const selectedProduct = products.find((product) => product._id === id);
+  const handleTag = async (value) => {
+    setLoadingTag(true);
+    try {
+      const response = await axios.put(
+        // `https://paint-exchange-fullstack-1.onrender.com/products/${id/type`,
+        `http://localhost:8080/products/${selectedProduct._id}/type`,
+        { type: value },
+        {
+          headers: {
+            Authorization: `Bearer ${currentUser.token}`,
+          },
+        }
+      );
+
+      const data = await response.data;
+
+      Update_Product(data);
+      setLoadingTag(false);
+      successNotification("Product type changed successfully");
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   if (productContextLoading) return <div>...Loading Products</div>;
   if (!productContextLoading && !selectedProduct) return <NotFound />;
 
   return (
-    <Flex gap="middle" vertical="true" align="center">
+    <Flex
+      gap="middle"
+      vertical="true"
+      align="center"
+      style={{
+        width: "100%",
+      }}
+    >
       <Header />
       {theme === "light" ? (
         <div style={{ backgroundColor: "#cbdaf0a8" }} />
@@ -81,7 +105,9 @@ export const Product = () => {
           backgroundColor: "white",
           borderRadius: "10px",
           // border: "1px solid red",
-          width: "60%",
+
+          width: mobile ? "90%" : tablet ? "80%" : "60%",
+
           padding: "15px 0px",
         }}
       >
@@ -102,12 +128,12 @@ export const Product = () => {
               }}
               alt="example"
               src={selectedProduct.image}
-              height={"300px"}
+              height={mobile ? "200px" : tablet ? "260px" : "300px"}
             />
           </Flex>
           <Card
             style={{
-              width: 440,
+              width: mobile ? 220 : 440,
               fontSize: "18px",
             }}
           >
@@ -116,8 +142,11 @@ export const Product = () => {
                 <Flex
                   horizental="true"
                   align="center"
-                  gap="middle"
-                  style={{ cursor: "pointer" }}
+                  gap={mobile ? "small" : "middle"}
+                  style={{
+                    cursor: "pointer",
+                    fontSize: mobile ? "12px" : "16px",
+                  }}
                   onClick={() =>
                     navigate(`/profile/${selectedProduct.user._id}`)
                   }
@@ -129,9 +158,21 @@ export const Product = () => {
             />
             <Divider dashed />
             <Tag
+              icon={
+                loadingTag === false ? (
+                  <CheckCircleOutlined />
+                ) : (
+                  <SyncOutlined spin />
+                )
+              }
+              onClick={() =>
+                handleTag(
+                  selectedProduct.type === "public" ? "private" : "public"
+                )
+              }
               style={{
+                cursor: "pointer",
                 marginBottom: 20,
-                fontSize: "16px",
               }}
               color={selectedProduct.type === "public" ? "success" : "cyan"}
             >
@@ -157,7 +198,7 @@ export const Product = () => {
                   {selectedProduct.user.email === currentUser.user.email ? (
                     <Flex justify="space-evenly">
                       <Button
-                        size="large"
+                        size={mobile ? "small" : "large"}
                         key="edit"
                         onClick={() => handleOpen(selectedProduct)}
                         icon={<EditOutlined />}
@@ -165,7 +206,7 @@ export const Product = () => {
                         Edit
                       </Button>
                       <Button
-                        size="large"
+                        size={mobile ? "small" : "large"}
                         key="delete"
                         onClick={() => handleOpenDelete(selectedProduct)}
                         icon={<DeleteOutlined />}

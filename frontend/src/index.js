@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { App } from "./App";
+import { ResponsiveContextProvider } from "./context";
 import { NotificationProvider } from "./context/NotificationContext";
 import { ProductContexProvider } from "./context/ProductsContext";
 import {
@@ -21,7 +22,9 @@ root.render(
         <UserProvider>
           <ProductContexProvider>
             <ProfileContextProvider>
-              <App />
+              <ResponsiveContextProvider>
+                <App />
+              </ResponsiveContextProvider>
             </ProfileContextProvider>
           </ProductContexProvider>
         </UserProvider>

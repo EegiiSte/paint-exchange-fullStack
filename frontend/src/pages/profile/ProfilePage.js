@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { Header } from "../../component";
 import {
   useProfileContext,
+  useResponsiveContext,
   useThemeContext,
   useUserContext,
 } from "../../context";
@@ -17,27 +18,39 @@ const ProfilePage = () => {
 
   const { theme } = useThemeContext();
   const { currentUser } = useUserContext();
-
-  const [singleUserData, setSingleUserData] = useState(currentUser);
-  const [singleUserId, setSingleUserId] = useState(id);
-  // console.log("ProfilePage-singleUserData ", singleUserData);
-
-  const [loagingUsers, setLoagingUsers] = useState(true);
-  // console.log("ProfilePage-loagingUsers ", loagingUsers);
-
+  const { mobile, tablet, desktop } = useResponsiveContext();
   const { allUsersData } = useProfileContext();
 
-  // const [allUsersData, setAllUsersData] = useState([]);
-  console.log("ProfilePage-allUserData ", allUsersData);
+  const [singleUserData, setSingleUserData] = useState(currentUser);
+  console.log("ProfilePag:1-singleUserData ", singleUserData);
+
+  const [selectedUserData, setSelectedUserData] = useState(currentUser);
+  // console.log("ProfilePage:2-selectedUserData ", selectedUserData);
+
+  const [singleUserId, setSingleUserId] = useState(id);
+
+  const [loadingUsers, setLoadingUsers] = useState(true);
 
   useEffect(() => {
-    setLoagingUsers(true);
+    setLoadingUsers(true);
+    const selectedUser = allUsersData.filter((user) =>
+      user._id.includes(singleUserId)
+    );
+    // console.log("ProfilePage:3-selectedUser ", { user: selectedUser[0] });
+
+    setSelectedUserData({ user: selectedUser[0] });
+    setSingleUserData({ user: selectedUser[0] });
+    setLoadingUsers(false);
+  }, [singleUserId]);
+
+  useEffect(() => {
+    setLoadingUsers(true);
 
     const getSingleUserData = async () => {
       try {
         const response = await axios.get(
-          `https://paint-exchange-fullstack-1.onrender.com/users/${singleUserId}`,
-          // `http://localhost:8080/users/${singleUserId}`,
+          // `https://paint-exchange-fullstack-1.onrender.com/users/${singleUserId}`,
+          `http://localhost:8080/users/${id}`,
           {
             headers: {
               Authorization: `Bearer ${currentUser.token}`,
@@ -49,18 +62,7 @@ const ProfilePage = () => {
         setSingleUserData(data);
         localStorage.setItem("singleUserDataLocal", JSON.stringify(data));
 
-        // setProfilePicUrl(data.user.profilePicUrl);
-
-        // const allUsersData = await usersData.data;
-        // setAllUsersData(allUsersData);
-        // localStorage.setItem("allUsers", JSON.stringify(allUsersData));
-
-        // const singleUserDataFiltered = allUsersData.filter((user) =>
-        //   user._id.includes(id)
-        // );
-        // setSingleUserData(singleUserDataFiltered);
-
-        setLoagingUsers(false);
+        setLoadingUsers(false);
 
         // console.log("ProfilePage-data", data);
       } catch (error) {
@@ -72,18 +74,13 @@ const ProfilePage = () => {
     return () => {
       getSingleUserData();
     };
-  }, [singleUserId]);
-
-  // const singleUserDataFiltered = allUsersData.filter((user) =>
-  //   user._id.includes(id)
-  // );
-
-  // console.log("ProfilePage-singleUser2", singleUserData);
+  }, [id]);
 
   return (
     <div
       className="align-c d-flex "
       style={{
+        backgroundColor: theme === "light" ? "" : "#2e3134",
         flexDirection: "column",
       }}
     >
@@ -92,18 +89,10 @@ const ProfilePage = () => {
       <div
         className="padding-top-10  "
         style={{
-          width: "100%",
+          width: "90%",
           display: "flex",
           justifyContent: "space-evenly",
           color: theme === "light" ? "black" : "white",
-          // backgroundImage:
-          //   // "url(https://www.paintingcontractorsneworleansla.com/cloud/Slideshow/3b.jpg)",
-          //   // "url(https://assets-global.website-files.com/5f3ba8af4d346a5337f0d782/604f6599c1ed39f645f71787_footer-back.jpg)",
-          //   "url(https://img.freepik.com/premium-photo/top-view-paint-can_23-2149705374.jpg)",
-          // // "url(https://img.freepik.com/premium-photo/cans-paints-brushes-yellow-surface_185193-11722.jpg?size=626&ext=jpg)",
-          // backgroundPosition: "center",
-          // backgroundSize: "cover",
-          // height: "calc(100vh - 80px)",
           padding: "20px",
         }}
       >
@@ -111,6 +100,8 @@ const ProfilePage = () => {
           gap="middle"
           justify="center"
           style={{
+            display: "flex",
+            flexDirection: mobile ? "column" : "row",
             width: "100%",
           }}
         >
@@ -118,15 +109,13 @@ const ProfilePage = () => {
             gap="middle"
             vertical
             style={{
-              // border: "1px solid black",
+              // border: "1px solid red",
               borderRadius: "10px",
-              // padding: "20px",
-              // width: "50%",
             }}
           >
             <Profile
               id={id}
-              loagingUsers={loagingUsers}
+              loadingUsers={loadingUsers}
               user={singleUserData}
             />
             <section
@@ -138,9 +127,10 @@ const ProfilePage = () => {
               }}
             >
               <ProfileAllUsers
+                setSelectedUserData={setSelectedUserData}
                 setSingleUserId={setSingleUserId}
                 singleUserData={singleUserData}
-                loagingUsers={loagingUsers}
+                loadingUsers={loadingUsers}
               />
             </section>
           </Flex>
@@ -149,7 +139,7 @@ const ProfilePage = () => {
               border: "1px solid black",
               borderRadius: "10px",
               padding: "20px",
-              width: "50%",
+              width: mobile ? "90%" : "50%",
               // backdropFilter: "saturate(180%) blur(15px)",
             }}
           >
@@ -158,8 +148,8 @@ const ProfilePage = () => {
               id={id}
               singleUserId={singleUserId}
               singleUserData={singleUserData}
-              loagingUsers={loagingUsers}
-              setLoagingUsers={setLoagingUsers}
+              loadingUsers={loadingUsers}
+              setLoadingUsers={setLoadingUsers}
             />
           </section>
         </Flex>

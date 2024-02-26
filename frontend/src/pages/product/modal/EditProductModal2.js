@@ -5,6 +5,7 @@ import { Modal } from "../../../component/modal";
 import {
   useNotificationContext,
   useProductsContext,
+  useResponsiveContext,
   useUserContext,
 } from "../../../context";
 import { uploadImage } from "../../../utils";
@@ -22,6 +23,7 @@ export const EditProductModal2 = (props) => {
   const { successNotification } = useNotificationContext();
   const { Update_Product } = useProductsContext();
   const { currentUser } = useUserContext();
+  const { mobile, tablet, desktop } = useResponsiveContext();
 
   const [disabledSubmitButton, setDisabledSubmitButton] = useState(true);
   const [selectedType, setSelectedType] = useState(selectedProduct?.type);
@@ -66,8 +68,8 @@ export const EditProductModal2 = (props) => {
 
     try {
       const response = await axios.put(
-        `https://paint-exchange-fullstack-1.onrender.com/products/${id}`,
-        // `http://localhost:8080/products/${id}`,
+        // `https://paint-exchange-fullstack-1.onrender.com/products/${id}`,
+        `http://localhost:8080/products/${id}`,
         updatedProduct,
         {
           headers: {
@@ -78,7 +80,7 @@ export const EditProductModal2 = (props) => {
 
       const data = await response.data;
 
-      console.log("EditProductModal2: response", data);
+      // console.log("EditProductModal2: response", data);
 
       Update_Product(data);
 
@@ -91,7 +93,13 @@ export const EditProductModal2 = (props) => {
   };
   return (
     <div>
-      <Modal handleClose={handleClose} open={open}>
+      <Modal
+        handleClose={handleClose}
+        open={open}
+        style={{
+          width: "20px",
+        }}
+      >
         {selectedProduct && (
           <Form
             initialValues={{
@@ -127,7 +135,7 @@ export const EditProductModal2 = (props) => {
             <Form.Item
               label="Price"
               name="price"
-              rules={[{ min: 1, required: true, type: "number" }]}
+              rules={[{ min: 1, type: "number" }]}
             >
               <Input
                 type="number"

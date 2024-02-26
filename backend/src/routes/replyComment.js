@@ -7,6 +7,9 @@ const {
 const {
   deleteReplyComment,
 } = require("../controllers/replyComment/deleteReplyComment");
+const {
+  editReplyComment,
+} = require("../controllers/replyComment/editReplyComment");
 
 const router = express.Router();
 
@@ -15,15 +18,18 @@ const router = express.Router();
 // router.use(auth);
 
 //GET/ products/  ---> get all product
-router.post("/:productId/comments/:commentId", createReplyComment);
+router.post("/:productId/comments/:commentId/replies", createReplyComment);
 
-// DELETE /products/:workoutId/comments/:commentId/:replyCommentId
+// DELETE /products/:workoutId/comments/:commentId/replies/:replyId
 router.delete(
-  "/:productId/comments/:commentId/:replyCommentId",
+  "/:productId/comments/:commentId/replies/:replyId",
   deleteReplyComment
 );
 
-// // PUT /products/:workoutId/comments/:commentId
-// router.put("/:productId/comments/:commentId", updateProductComment);
+// PUT /products/:workoutId/comments/:commentId
+router.put(
+  "/:productId/comments/:commentId/replies/:replyId",
+  editReplyComment
+);
 
 module.exports = router;

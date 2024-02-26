@@ -6,7 +6,7 @@
   align-items: center;
   width: 100vw;
   height: calc(100vh - 80px);
-  background-image: url(https://romandecoratingproducts.com/wp-content/uploads/2021/01/Paint-Painting-Wall-1024x445.jpeg);
+  /* background-image: url(https://romandecoratingproducts.com/wp-content/uploads/2021/01/Paint-Painting-Wall-1024x445.jpeg); */
   /* "url(https://assets-global.website-files.com/5f3ba8af4d346a5337f0d782/604f6599c1ed39f645f71787_footer-back.jpg)", */
   /* background-clip: content-box; */
 }

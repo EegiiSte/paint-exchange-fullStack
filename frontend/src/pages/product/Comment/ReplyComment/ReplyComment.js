@@ -9,7 +9,10 @@ import { SendOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import Typography from "antd/es/typography/Typography";
 import axios from "axios";
-import { useNotificationContext } from "../../../../context";
+import {
+  useNotificationContext,
+  useResponsiveContext,
+} from "../../../../context";
 import { ReplyEditComment } from "./ReplyEditComment";
 
 const { Meta } = Card;
@@ -19,11 +22,11 @@ export const ReplyComment = (props) => {
     props;
   const { id } = useParams();
 
-  const { products, productContextLoading, Update_Product } =
-    useProductsContext();
+  const { Update_Product } = useProductsContext();
   const { currentUser } = useUserContext();
   const { theme } = useThemeContext();
   const { successNotification, errorNotification } = useNotificationContext();
+  const { mobile, tablet, desktop } = useResponsiveContext();
 
   // console.log("Product-->products", products);
   const [form] = Form.useForm();
@@ -35,8 +38,8 @@ export const ReplyComment = (props) => {
 
     try {
       const response = await axios.post(
-        `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}`,
-        // `http://localhost:8080/products/${id}/comments/${comment._id}`,
+        // `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}/replies`,
+        `http://localhost:8080/products/${id}/comments/${comment._id}/replies`,
         { replyComment: values.replyComment },
         {
           headers: {
@@ -74,7 +77,7 @@ export const ReplyComment = (props) => {
           gap="small"
           align="end"
           style={{
-            width: "90%",
+            width: "100%",
           }}
         >
           <Flex
@@ -123,13 +126,13 @@ export const ReplyComment = (props) => {
                   <TextArea />
                 </Form.Item>
                 <Button
+                  size={mobile ? "small" : "large"}
                   loading={loading}
                   type="primary"
                   htmlType="submit"
                   icon={<SendOutlined />}
-                  size="large"
                 >
-                  Send
+                  {mobile ? "" : "Send"}
                 </Button>
               </Flex>
             </Form>
@@ -138,7 +141,7 @@ export const ReplyComment = (props) => {
       ) : (
         <div />
       )}
-      {replyComments.map((comment, index) => (
+      {replyComments.map((replyComment, index) => (
         <Flex
           key={index}
           vertical="true"
@@ -148,7 +151,7 @@ export const ReplyComment = (props) => {
             // backgroundColor: "#eef0f0d5",
             borderRadius: "10px",
             padding: "5px 10px",
-            width: "90%",
+            width: "100%",
           }}
         >
           <Flex
@@ -164,8 +167,11 @@ export const ReplyComment = (props) => {
             }}
           >
             <Flex vertical="true" justify={"center"} align={"center"}>
-              <Avatar size="large" src={comment.user.profilePicUrl} />
-              <span>{comment.user.name}</span>
+              <Avatar
+                size={mobile ? "small" : "large"}
+                src={replyComment.user.profilePicUrl}
+              />
+              <span>{replyComment.user.name}</span>
             </Flex>
             <Flex
               key={index}
@@ -199,6 +205,7 @@ export const ReplyComment = (props) => {
                     inputReplyComment={inputReplyComment}
                     setInputReplyComment={setInputReplyComment}
                     comment={comment}
+                    replyComment={replyComment}
                   />
                 </Flex>
               </Flex>

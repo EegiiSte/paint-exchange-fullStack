@@ -3,7 +3,11 @@ import { Avatar, Button, Card, Flex, Image, Input, Tag } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useThemeContext, useUserContext } from "../../context";
+import {
+  useResponsiveContext,
+  useThemeContext,
+  useUserContext,
+} from "../../context";
 import { useProductsContext } from "../../context/ProductsContext";
 import { DeleteProductModal } from "../product/modal/DeleteProductModal";
 import { EditProductModal2 } from "../product/modal/EditProductModal2";
@@ -15,11 +19,12 @@ export const ProfileProducts = (props) => {
   const products = singleUserData?.user?.products;
 
   // console.log("ProfileProducts-singleUserData", singleUserData);
-  // console.log("ProfileProducts-products", singleUserData.user.products);
+  console.log("ProfileProducts-products", singleUserData);
 
   const { theme, textStyle } = useThemeContext();
   const navigate = useNavigate();
   const { currentUser } = useUserContext();
+  const { mobile, tablet, desktop } = useResponsiveContext();
   // console.log("ProfileProducts-currentUser", currentUser);
 
   const [openCreate, setOpenCreate] = React.useState(false);
@@ -31,7 +36,7 @@ export const ProfileProducts = (props) => {
   const [openDelete, setOpenDelete] = useState(false);
   const [newImageUrl, setNewImageUrl] = useState("");
 
-  const [loagingUsers, setLoagingUsers] = useState(true);
+  const [loadingUsers, setLoadingUsers] = useState(true);
   // console.log("ProfilePage-loagingUsers ", loagingUsers);
 
   const [filteredProducts, setFilteredProducts] = useState(products);
@@ -45,15 +50,26 @@ export const ProfileProducts = (props) => {
   };
 
   useEffect(() => {
-    setLoagingUsers(true);
+    setLoadingUsers(true);
+    if (!singleUserData.user.products) {
+      setFilteredProducts("");
+    }
+    setFilteredProducts(products);
+
+    setLoadingUsers(false);
+  }, [singleUserId]);
+
+  useEffect(() => {
+    setLoadingUsers(true);
 
     const newPacientes = products?.filter((product) =>
       product.name.toLowerCase().includes(searchProductValue.toLowerCase())
     );
 
     setFilteredProducts(newPacientes);
-    setLoagingUsers(false);
-  }, [singleUserId, searchProductValue]);
+
+    setLoadingUsers(false);
+  }, [searchProductValue]);
 
   //function for edit modal
   const handleOpen = (product) => {
@@ -79,6 +95,8 @@ export const ProfileProducts = (props) => {
     setSelectedProduct({});
   };
 
+  if (!singleUserData) return <div>Loading...</div>;
+  if (!singleUserData?.user?.products) return <div>Not product</div>;
   return (
     <div>
       <Flex
@@ -100,13 +118,13 @@ export const ProfileProducts = (props) => {
             }}
           ></Input>
 
-          {currentUser.user?.email === singleUserData?.user?.email ? (
+          {currentUser.user.email === singleUserData.user.email ? (
             <Button
               block
               onClick={handleOpenCreate}
               style={{
                 height: "46px",
-                width: "200px ",
+                width: mobile ? "150px" : "200px ",
                 ...textStyle,
                 backgroundColor: theme === "light" ? "white" : "#0000007c",
               }}
@@ -119,61 +137,13 @@ export const ProfileProducts = (props) => {
         </Flex>
         <Flex gap="middle" align="start" justify="center" wrap="wrap">
           {filteredProducts?.map((product, index) => (
-            <Card
-              loading={loagingUsers}
-              key={index}
-              style={{
-                width: 200,
-                // display: id === product.user?._id ? "none" : "",
-              }}
-              cover={
-                <Image
-                  preview={false}
-                  style={{}}
-                  alt="example"
-                  src={product.image}
-                  onClick={() => navigate(`/products/${product._id}`)}
-                />
-              }
-              actions={[
-                currentUser?.user?.email === singleUserData?.user?.email ? (
-                  <Flex justify="space-evenly">
-                    <EditOutlined
-                      key="edit"
-                      onClick={() => handleOpen(product)}
-                    />
-
-                    <DeleteOutlined
-                      key="delete"
-                      onClick={() => handleOpenDelete(product)}
-                    />
-                  </Flex>
-                ) : (
-                  <div />
-                ),
-              ]}
-            >
-              <Tag
-                style={{
-                  marginBottom: 20,
-                }}
-                color={product.type === "public" ? "success" : "cyan"}
-              >
-                {product.type}
-              </Tag>
-              <Meta
-                title={product.name}
-                description={
-                  <div onClick={() => navigate(`/products/${product._id}`)}>
-                    <p>Price : ${product.price}</p>
-                    <p style={{ height: "10" }}>
-                      Description : {product.description}
-                    </p>
-                    <p>Category : {product.category}</p>
-                  </div>
-                }
-              ></Meta>
-            </Card>
+            <ProductCard
+              handleOpen={handleOpen}
+              loadingProducts={loadingProducts}
+              handleOpenDelete={handleOpenDelete}
+              product={product}
+              index={index}
+            />
           ))}
         </Flex>
       </Flex>

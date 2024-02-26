@@ -8,7 +8,7 @@ import { useUserContext } from "../../../context/UserContext";
 
 import { SendOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
-import { useNotificationContext } from "../../../context";
+import { useNotificationContext, useResponsiveContext } from "../../../context";
 import { EditComment } from "./EditComment";
 import { ReplyComment } from "./ReplyComment/ReplyComment";
 
@@ -23,6 +23,7 @@ export const Comment = (props) => {
   const { currentUser } = useUserContext();
   const { theme } = useThemeContext();
   const { successNotification, errorNotification } = useNotificationContext();
+  const { mobile, tablet, desktop } = useResponsiveContext();
 
   // console.log("Product-->products", products);
 
@@ -37,8 +38,8 @@ export const Comment = (props) => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments`,
-        // `http://localhost:8080/products/${id}/comments`,
+        // `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments`,
+        `http://localhost:8080/products/${id}/comments`,
         { comment: values.comment },
         {
           headers: {
@@ -114,7 +115,7 @@ export const Comment = (props) => {
               icon={<SendOutlined />}
               size="large"
             >
-              Send
+              {mobile ? "" : "Send"}
             </Button>
           </Flex>
         </Form>
@@ -149,7 +150,10 @@ export const Comment = (props) => {
             }}
           >
             <Flex vertical="true" justify={"start"} align={"center"}>
-              <Avatar size="large" src={comment.user.profilePicUrl} />
+              <Avatar
+                size={mobile ? "small" : "large"}
+                src={comment.user.profilePicUrl}
+              />
               <span>{comment.user.name}</span>
             </Flex>
             <Flex

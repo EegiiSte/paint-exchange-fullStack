@@ -5,6 +5,7 @@ const {
   deleteProduct,
   getSingleProduct,
   updateProduct,
+  updateProductType,
 } = require("../controllers/product");
 
 const auth = require("../middleware/auth");
@@ -28,6 +29,9 @@ router.post("/", createProduct);
 
 //PUT/ products  ---> update single product
 router.put("/:id", updateProduct);
+
+//PUT/ products  ---> update single product
+router.put("/:id/type", updateProductType);
 
 //DELETE/ products  ---> delete single product
 router.delete("/:id", deleteProduct);

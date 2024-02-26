@@ -5,7 +5,7 @@ import { useThemeContext, useUserContext } from "../../context";
 import { useProfileContext } from "../../context/ProfileContext";
 
 export const ProfileAllUsers = (props) => {
-  const { loagingUsers, singleUserData, setSingleUserId } = props;
+  const { loagingUsers, setSingleUserId } = props;
 
   //   console.log("ProfileProducts-singleUser", singleUser);
   const navigate = useNavigate();
@@ -13,10 +13,9 @@ export const ProfileAllUsers = (props) => {
   const { theme, textStyle } = useThemeContext();
   const { currentUser } = useUserContext();
   const { allUsersData } = useProfileContext();
+  // console.log("ProfileAllUsers-allUserData ", allUsersData);
 
   const [filteredUsers, setFilteredUsers] = useState(allUsersData);
-
-  const allUsersLocal = JSON.parse(localStorage.getItem("allUsers"));
 
   const [searchUserValue, setSearchUserValue] = useState("");
 
@@ -27,12 +26,12 @@ export const ProfileAllUsers = (props) => {
   };
 
   useEffect(() => {
-    const newUsers = allUsersLocal.filter((user) =>
+    const newUsers = allUsersData.filter((user) =>
       user.name.toLowerCase().includes(searchUserValue.toLowerCase())
     );
 
     setFilteredUsers(newUsers);
-  }, [searchUserValue]);
+  }, [searchUserValue, currentUser]);
 
   return (
     <div>
@@ -64,7 +63,7 @@ export const ProfileAllUsers = (props) => {
             align="start"
             justify="start"
           >
-            {filteredUsers?.map((user, index) => (
+            {filteredUsers.map((user, index) => (
               <Skeleton
                 key={index}
                 loading={loagingUsers}
@@ -76,8 +75,8 @@ export const ProfileAllUsers = (props) => {
                   key={index}
                   style={{
                     cursor: "pointer",
-                    display:
-                      singleUserData?.user?._id === user._id ? "none" : "flex",
+                    // display:
+                    //   singleUserData?.user?._id === user._id ? "none" : "flex",
                   }}
                   horizental="true"
                   align="center"

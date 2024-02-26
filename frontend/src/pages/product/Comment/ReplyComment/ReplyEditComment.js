@@ -14,18 +14,20 @@ import TextArea from "antd/es/input/TextArea";
 import {
   useNotificationContext,
   useProductsContext,
+  useResponsiveContext,
   useUserContext,
 } from "../../../../context";
 
 export const ReplyEditComment = (props) => {
-  const { comment } = props;
+  const { comment, replyComment } = props;
   const { id } = useParams();
 
   const { Update_Product } = useProductsContext();
   const { currentUser } = useUserContext();
   const { successNotification, errorNotification } = useNotificationContext();
+  const { mobile, tablet, desktop } = useResponsiveContext();
 
-  const [editedComment, setEditedComment] = useState(comment.comment);
+  const [editedComment, setEditedComment] = useState(replyComment.comment);
 
   //   console.log("EditComment: editedComment", editedComment);
 
@@ -37,8 +39,8 @@ export const ReplyEditComment = (props) => {
   const deleteComment = async () => {
     try {
       const response = await axios.delete(
-        `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}`,
-        // `http://localhost:8080/products/${id}/comments/${comment._id}`,
+        // `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}/replies/${replyComment._id}`,
+        `http://localhost:8080/products/${id}/comments/${comment._id}/replies/${replyComment._id}`,
         {
           headers: {
             // Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YzFiM2I1NDk3ODQyODIxODQyM2I1ZiIsImlhdCI6MTcwNzk4MjU4OSwiZXhwIjoxNzA4MDY4OTg5fQ.u2xpvWk1y7J5mghBGzBZbbmDFyRAGddrSKqAL4haZRE`,
@@ -60,8 +62,8 @@ export const ReplyEditComment = (props) => {
   const updateComment = async () => {
     try {
       const response = await axios.put(
-        `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}`,
-        // `http://localhost:/products/${id}/comments/${comment._id}`,
+        // `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/replies/${replyComment._id}`,
+        `http://localhost:8080/products/${id}/comments/${comment._id}/replies/${replyComment._id}`,
         { comment: editedComment },
         {
           headers: {
@@ -89,7 +91,7 @@ export const ReplyEditComment = (props) => {
     setEditInput(value);
 
     if (value === false) {
-      setEditedComment(comment.comment);
+      setEditedComment(replyComment.comment);
     }
   };
 
@@ -97,15 +99,11 @@ export const ReplyEditComment = (props) => {
 
   const inputPress = (e) => {
     const editComment = e.target.value;
-    setDisabledSubmitButton(editComment === comment.comment);
+    setDisabledSubmitButton(editComment === replyComment.comment);
   };
 
   return (
     <Flex
-      //   align="center"
-      //   horizental="true"
-      //   gap="small"
-      //   justify="space-between"
       style={{
         width: "100%",
         padding: "0.5em",
@@ -114,6 +112,7 @@ export const ReplyEditComment = (props) => {
       <Flex
         align="center"
         // horizental="true"
+        vertical
         gap="small"
         // justify="end"
         style={{
@@ -122,8 +121,6 @@ export const ReplyEditComment = (props) => {
       >
         <Flex
           align="center"
-          horizental="true"
-          //   justify="space-between"
           style={{
             paddingBottom: "10px",
             borderBottom: "1px solid lightgray",
@@ -131,7 +128,7 @@ export const ReplyEditComment = (props) => {
           }}
         >
           {editInput === true ? (
-            <p>{comment.comment}</p>
+            <p>{replyComment.comment}</p>
           ) : (
             <TextArea
               value={editedComment}
@@ -142,13 +139,32 @@ export const ReplyEditComment = (props) => {
             />
           )}
         </Flex>
-        <Flex align="center" horizental="true">
-          <Flex gap="smaill" horizental="true">
+        <Flex
+          align="center"
+          horizental="true"
+          justify="end"
+          style={{
+            width: "100%",
+          }}
+        >
+          <Flex
+            gap="smaill"
+            style={{
+              display: "flex",
+              flexDirection: mobile ? "column" : "row",
+            }}
+          >
             {editInput === true ? (
               <div />
             ) : (
-              <Flex>
+              <Flex
+                style={{
+                  display: "flex",
+                  flexDirection: mobile ? "column" : "row",
+                }}
+              >
                 <Button
+                  size={mobile ? "small" : "large"}
                   onClick={updateComment}
                   icon={<SendOutlined />}
                   disabled={disabledSubmitButton}
@@ -161,15 +177,20 @@ export const ReplyEditComment = (props) => {
                   okText="Yes"
                   cancelText="No"
                 >
-                  <Button icon={<DeleteOutlined />} danger>
+                  <Button
+                    size={mobile ? "small" : "large"}
+                    icon={<DeleteOutlined />}
+                    danger
+                  >
                     Delete
                   </Button>
                 </Popconfirm>
               </Flex>
             )}
 
-            {currentUser.user.email === comment.user.email ? (
+            {currentUser.user.email === replyComment.user.email ? (
               <Button
+                size={mobile ? "small" : "large"}
                 icon={<EditOutlined />}
                 onClick={() => handleEditComment(!editInput)}
               >

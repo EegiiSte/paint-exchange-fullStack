@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../../component";
 import { MatrixBG } from "../../component/matrix";
+import { useResponsiveContext } from "../../context";
 import { useNotificationContext } from "../../context/NotificationContext";
 import { useThemeContext } from "../../context/ThemeContext";
 import { useUserContext } from "../../context/UserContext";
@@ -13,6 +14,7 @@ export const SignIn = (props) => {
   const { signIn } = useUserContext();
   const { successNotification, errorNotification } = useNotificationContext();
   const { theme, textStyle } = useThemeContext();
+  const { mobile, tablet, desktop } = useResponsiveContext();
 
   const [signinLoading, setSigninLoading] = useState(false);
 
@@ -23,8 +25,8 @@ export const SignIn = (props) => {
     try {
       // throw new Error("test error");
       const response = await axios.post(
-        "https://paint-exchange-fullstack-1.onrender.com/users/sign-in",
-        // "http://localhost:8080/users/sign-in",
+        // "https://paint-exchange-fullstack-1.onrender.com/users/sign-in",
+        "http://localhost:8080/users/sign-in",
         {
           email: values.email,
           password: values.password,
@@ -77,7 +79,11 @@ export const SignIn = (props) => {
           width: "100%",
           height: "calc(100vh - 80px)",
           backgroundImage:
-            "url(https://www.paintingcontractorsneworleansla.com/cloud/Slideshow/3b.jpg)",
+            theme === "light"
+              ? "url(https://www.paintingcontractorsneworleansla.com/cloud/Slideshow/3b.jpg)"
+              : "url(https://firebasestorage.googleapis.com/v0/b/foodrev-crud.appspot.com/o/SignInGray.PNG?alt=media&token=9e8ea97a-97a3-4c3c-8d5f-8d550f060ec4)",
+
+          backgroundRepeat: "no-repeat",
         }}
       >
         <div
@@ -85,8 +91,8 @@ export const SignIn = (props) => {
           style={
             (textStyle,
             {
-              height: "60%",
-              width: "60%",
+              height: mobile ? "100%" : "60%",
+              width: mobile ? "100%" : "60%",
             })
           }
         >
