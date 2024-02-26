@@ -49,8 +49,8 @@ const ProfilePage = () => {
     const getSingleUserData = async () => {
       try {
         const response = await axios.get(
-          // `https://paint-exchange-fullstack-1.onrender.com/users/${singleUserId}`,
-          `http://localhost:8080/users/${id}`,
+          `https://paint-exchange-fullstack-1.onrender.com/users/${singleUserId}`,
+          // `http://localhost:8080/users/${id}`,
           {
             headers: {
               Authorization: `Bearer ${currentUser.token}`,

@@ -74,8 +74,8 @@ export const SignUp = () => {
       const imageUrl = await uploadImage(file);
 
       const response = await axios.post(
-        // "https://paint-exchange-fullstack-1.onrender.com/users/sign-up",
-        "http://localhost:8080/users/sign-up",
+        "https://paint-exchange-fullstack-1.onrender.com/users/sign-up",
+        // "http://localhost:8080/users/sign-up",
         {
           name: values.name,
           email: values.email,

@@ -38,8 +38,8 @@ export const ReplyComment = (props) => {
 
     try {
       const response = await axios.post(
-        // `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}/replies`,
-        `http://localhost:8080/products/${id}/comments/${comment._id}/replies`,
+        `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}/replies`,
+        // `http://localhost:8080/products/${id}/comments/${comment._id}/replies`,
         { replyComment: values.replyComment },
         {
           headers: {

@@ -39,8 +39,8 @@ export const ReplyEditComment = (props) => {
   const deleteComment = async () => {
     try {
       const response = await axios.delete(
-        // `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}/replies/${replyComment._id}`,
-        `http://localhost:8080/products/${id}/comments/${comment._id}/replies/${replyComment._id}`,
+        `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/${comment._id}/replies/${replyComment._id}`,
+        // `http://localhost:8080/products/${id}/comments/${comment._id}/replies/${replyComment._id}`,
         {
           headers: {
             // Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YzFiM2I1NDk3ODQyODIxODQyM2I1ZiIsImlhdCI6MTcwNzk4MjU4OSwiZXhwIjoxNzA4MDY4OTg5fQ.u2xpvWk1y7J5mghBGzBZbbmDFyRAGddrSKqAL4haZRE`,
@@ -62,8 +62,8 @@ export const ReplyEditComment = (props) => {
   const updateComment = async () => {
     try {
       const response = await axios.put(
-        // `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/replies/${replyComment._id}`,
-        `http://localhost:8080/products/${id}/comments/${comment._id}/replies/${replyComment._id}`,
+        `https://paint-exchange-fullstack-1.onrender.com/products/${id}/comments/replies/${replyComment._id}`,
+        // `http://localhost:8080/products/${id}/comments/${comment._id}/replies/${replyComment._id}`,
         { comment: editedComment },
         {
           headers: {

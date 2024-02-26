@@ -1,6 +1,5 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Avatar, Button, Card, Flex, Image, Input, Tag } from "antd";
-import axios from "axios";
+import { Button, Card, Flex, Image, Input, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -8,7 +7,6 @@ import {
   useThemeContext,
   useUserContext,
 } from "../../context";
-import { useProductsContext } from "../../context/ProductsContext";
 import { DeleteProductModal } from "../product/modal/DeleteProductModal";
 import { EditProductModal2 } from "../product/modal/EditProductModal2";
 import { CreateProductModal } from "../products/CreateProductModal";
@@ -137,13 +135,62 @@ export const ProfileProducts = (props) => {
         </Flex>
         <Flex gap="middle" align="start" justify="center" wrap="wrap">
           {filteredProducts?.map((product, index) => (
-            <ProductCard
-              handleOpen={handleOpen}
-              loadingProducts={loadingProducts}
-              handleOpenDelete={handleOpenDelete}
-              product={product}
-              index={index}
-            />
+            <Card
+              loading={loadingUsers}
+              key={index}
+              style={{
+                width: mobile ? 326 : 200,
+
+                // display: id === product.user?._id ? "none" : "",
+              }}
+              cover={
+                <Image
+                  preview={false}
+                  style={{}}
+                  alt="example"
+                  src={product.image}
+                  onClick={() => navigate(`/products/${product._id}`)}
+                />
+              }
+              actions={[
+                currentUser.user.email === singleUserData.user.email ? (
+                  <Flex justify="space-evenly">
+                    <EditOutlined
+                      key="edit"
+                      onClick={() => handleOpen(product)}
+                    />
+
+                    <DeleteOutlined
+                      key="delete"
+                      onClick={() => handleOpenDelete(product)}
+                    />
+                  </Flex>
+                ) : (
+                  <div />
+                ),
+              ]}
+            >
+              <Tag
+                style={{
+                  marginBottom: 20,
+                }}
+                color={product.type === "public" ? "success" : "cyan"}
+              >
+                {product.type}
+              </Tag>
+              <Meta
+                title={product.name}
+                description={
+                  <div onClick={() => navigate(`/products/${product._id}`)}>
+                    <p>Price : ${product.price}</p>
+                    <p style={{ height: "10" }}>
+                      Description : {product.description}
+                    </p>
+                    <p>Category : {product.category}</p>
+                  </div>
+                }
+              ></Meta>
+            </Card>
           ))}
         </Flex>
       </Flex>

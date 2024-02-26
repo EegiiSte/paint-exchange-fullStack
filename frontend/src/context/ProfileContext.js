@@ -19,8 +19,8 @@ export const ProfileContextProvider = (props) => {
     const getUsersData = async () => {
       try {
         const usersData = await axios.get(
-          // `https://paint-exchange-fullstack-1.onrender.com/users/`,
-          "http://localhost:8080/users/",
+          `https://paint-exchange-fullstack-1.onrender.com/users/`,
+          // "http://localhost:8080/users/",
           {
             headers: {
               Authorization: `Bearer ${currentUser.token}`,
