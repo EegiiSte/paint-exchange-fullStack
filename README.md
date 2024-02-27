@@ -85,17 +85,4 @@ NOTE: on abstract class
 
 ```
 
-## Signin Flow
-<img src='https://user-images.githubusercontent.com/53744971/155291547-7f02a078-e1c3-497f-9334-b244f8e73c89.jpg' width='600' /> <br/>
 
-## Current User Flow
-- This route is used to check if the user accessing the resources is logged in <br/>
-<img src='https://user-images.githubusercontent.com/53744971/155298665-d5729d18-8290-4f32-81db-1cf3cb8ac908.jpg' width='600' /> <br/>
-
-## Testing
-### Workflow
-<img src='https://user-images.githubusercontent.com/53744971/155828813-ac239c90-b571-47aa-8b8c-c6dd89a957d2.jpg' width='600' /> <br/>
-
-## Client
-### Component tree
-<img src='https://user-images.githubusercontent.com/53744971/156011878-e45edbb2-2bf4-4115-88c2-d6b4f6b67ad2.jpg' width='600' /> <br/>
