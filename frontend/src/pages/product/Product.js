@@ -88,15 +88,13 @@ export const Product = () => {
       vertical="true"
       align="center"
       style={{
-        width: "100%",
+        // width: "100%",
+        height: mobile ? "100vh" : "100vh",
+        backgroundColor: theme === "light" ? "" : "#2e3134",
       }}
     >
       <Header />
-      {theme === "light" ? (
-        <div style={{ backgroundColor: "#cbdaf0a8" }} />
-      ) : (
-        <MatrixBG />
-      )}
+
       <Flex
         vertical="true"
         gap="middle"
@@ -109,6 +107,7 @@ export const Product = () => {
           width: mobile ? "90%" : tablet ? "80%" : "60%",
 
           padding: "15px 0px",
+          marginTop: "20px",
         }}
       >
         <Flex

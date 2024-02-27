@@ -57,10 +57,10 @@ export const Header = () => {
         className="Header box-shadow-gray"
         style={(textStyle, backgroundStyle)}
       >
-        <div style={{ ...textStyle, fontSize: "20px" }}>
+        <div style={{ ...textStyle, fontSize: mobile ? "12px" : "20px" }}>
           <Image
             preview={false}
-            height={"40px"}
+            height={mobile ? "30px" : "40px"}
             style={{
               borderRadius: "50%",
               border: "1px solid black",
@@ -77,9 +77,23 @@ export const Header = () => {
         </div>
         <div className="HeaderMenuBox">
           <Flex horizental="true" gap="30px">
-            <div className="Header-Left">
-              <Link to="/" style={textStyle}>
-                {mobile ? <HomeOutlined /> : "Home"}
+            <div
+              className="Header-Left"
+              style={{
+                tooltip: "Home",
+              }}
+            >
+              <Link to="/" style={textStyle} tooltip={"click to edit text"}>
+                {mobile ? (
+                  <HomeOutlined
+                    style={{
+                      tooltip: "hover",
+                      tooltipText: "Home",
+                    }}
+                  />
+                ) : (
+                  "Home"
+                )}
               </Link>
             </div>
             {currentUser ? (

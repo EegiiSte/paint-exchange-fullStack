@@ -1,3 +1,4 @@
+import { Flex } from "antd";
 import React from "react";
 import { Header } from "../../component";
 import { useResponsiveContext } from "../../context";
@@ -36,23 +37,40 @@ export const Home = () => {
           backgroundColor: theme === "light" ? "#F6F9FD" : "#BFBFBF",
         }}
       >
-        <div
+        <Flex
           style={{
-            width: "50%",
+            paddingLeft: "50px",
+            paddingTop: mobile ? "40px" : "100px",
+            width: mobile ? "60%" : "50%",
           }}
         >
-          <h1
+          <Flex
+            vertical
             style={{
-              fontSize: "50px",
+              fontSize: mobile ? "20px" : "60px",
             }}
           >
-            Welcome to our platform where you can easily exchange leftover
-            paints with others and find great deals on quality paints at
-            discounted prices. Don't let your unused paints collect dust in the
-            garage; sell or exchange them with fellow users and contribute to a
-            sustainable community while saving money!
-          </h1>
-        </div>
+            <span
+              style={{
+                fontWeight: 500,
+              }}
+            >
+              Welcome to P2Paint
+            </span>
+            <span
+              style={{
+                fontSize: mobile ? "10px" : "20px",
+                paddingTop: mobile ? "10px" : "30px",
+                fontStyle: "",
+                color: "",
+                width: mobile ? "60%" : "50%",
+              }}
+            >
+              Where you can easily exchange leftover paints with others and find
+              great deals on quality paints at discounted prices.
+            </span>
+          </Flex>
+        </Flex>
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Header } from "../../component/header/Header";
 import {
   useProductsContext,
+  useResponsiveContext,
   useThemeContext,
   useUserContext,
 } from "../../context";
@@ -32,6 +33,8 @@ export const Products = () => {
   } = useProductsContext();
   const { theme, textStyle } = useThemeContext();
   const { currentUser } = useUserContext();
+
+  const { mobile, tablet, desktop } = useResponsiveContext();
   // console.log("Products-currentUser=", currentUser);
   // console.log("Products-singleUser=", singleUser);
 
@@ -85,7 +88,7 @@ export const Products = () => {
         className=" d-flex flex-direction-c just-start width-100pr padding-top-10"
         style={{
           backgroundColor: theme === "light" ? "" : "#2e3134",
-          height: "calc(100vh - 80px)",
+          height: mobile ? "100%" : "calc(100vh - 80px)",
         }}
       >
         <Flex
