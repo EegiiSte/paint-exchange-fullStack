@@ -1,4 +1,5 @@
 # P2Paint App
+#Welcome to our platform where you can easily exchange leftover paints with others and find great deals on quality paints at discounted prices. Don't let your unused paints collect dust in the garage; sell or exchange them with fellow users and contribute to a sustainable community while saving money!
 
 https://paint-exchange-full-stack-r3kx.vercel.app/
 
