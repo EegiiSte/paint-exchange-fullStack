@@ -1,88 +1,73 @@
-# P2Paint App
-#Welcome to our platform where you can easily exchange leftover paints with others and find great deals on quality paints at discounted prices. Don't let your unused paints collect dust in the garage; sell or exchange them with fellow users and contribute to a sustainable community while saving money!
+<p align="center">
+  <h1>🚀 Welcome to P2Paint App! 🌟</h1>
+  <a href="https://paint-exchange-full-stack-r3kx.vercel.app/">
+    <img src="https://firebasestorage.googleapis.com/v0/b/foodrev-crud.appspot.com/o/Screen%20Shot%202024-02-28%20at%2019.18.17.png?alt=media&token=33faa3cf-0c47-41e1-8ce5-b3b2299bf9dd" alt="Home" width="800">
+  </a>
+  <a href="https://paint-exchange-full-stack-r3kx.vercel.app/">
+    <img src="https://firebasestorage.googleapis.com/v0/b/foodrev-crud.appspot.com/o/Screen%20Shot%202024-02-28%20at%2019.50.42.png?alt=media&token=3760d29d-ebdb-4fb9-b384-b5cd8cdcfc3f" alt="Home" width="800">
+  </a>
+</p>
 
-https://paint-exchange-full-stack-r3kx.vercel.app/
+<p align="center">
+  <img src="https://img.shields.io/badge/contributions-welcome-brightgreen?logo=github" alt="Contributions Welcome">
+  <img src="https://img.shields.io/website?url=https%3A%2F%2Fpaint-exchange-full-stack-r3kx.vercel.app%2F&logo=hoppscotch" alt="Website">
+  <img src="https://img.shields.io/badge/Made%20with-React-blue?logo=react" alt="React Logo">
+  <img src="https://img.shields.io/badge/Powered%20by-Firebase-orange?logo=firebase" alt="Firebase Logo">
+  <img src="https://img.shields.io/badge/Language-Javascript-yellow?logo=javascript" alt="JavaScript Logo">
+</p>
 
+# Welcome to P2Paint App! 🚀
+
+Unlock the value of your leftover paints on our community-driven exchange platform. Experience the joy of revitalizing your unused paints and discover affordable options for your upcoming projects.
 
 ## Features
-- Production grade authentication service
-- Sellers can list their paints and supplies
-- Sellers can update the price of the listed product
-- Buyers are buy products
+- **Intuitive User Interface:**
+  - Navigate seamlessly through our platform with an intuitive design focused on ease of use.
+- **Community-Driven Exchange:**
+  - Connect with like-minded individuals for hassle-free paint exchanges.
+- **Quality Deals at Your Fingertips:**
+  - Explore great deals on high-quality paints, fostering a sustainable and cost-effective community.
 
+## Security Measures
+Your security is our priority. We've implemented robust measures to ensure a safe environment for all paint exchanges:
+- **Secure User Authentication:**
+  - Industry-standard authentication practices to safeguard user accounts.
+- **Encrypted Exchange Transactions:**
+  - Built-in security protocols for secure and worry-free paint transactions.
 
-## Tech Stack
-- `React Node.js`
-- `Express.js`
-- `Mongodb`
-- `Javascript`
+## Future Enhancements
+Exciting plans are underway to enhance your paint exchange experience:
+- **Advanced Paint Categorization:**
+  - Introduce a systematic categorization system for efficient paint discovery.
+- **User Ratings and Feedback System:**
+  - Empower users with the ability to leave ratings and feedback for transparent exchanges.
+- **Mobile App Integration:**
+  - Seamlessly exchange paints on-the-go with our upcoming mobile application.
 
-## Services
-- `auth`: Everything related to user signup/signin/signout
-- `products`: Products creation/editing. Knows whether a product can be updated
+## Technologies Used
+- React
+- Firebase
+- JavaScript
+- Other cutting-edge libraries/frameworks
 
-*Auth*
-|Route|Method|Body|Purpose|
-|:--------:|:--------:|:--------:|:--------:|
-|api/users/signup|POST|{email: string, password: string}|Signup for an account|
-|api/users/signin|POST|{email: string, password: string}|Signin to an existing account|
-|api/users/signout|POST|{}|Signout of an account|
-|api/users/currentuser|GET|-|Return info about the user|
+## Roadmap
+Our commitment to improvement includes:
+- **Enhanced User Engagement Features:**
+  - Implement features to boost user interaction and satisfaction.
+- **Mobile App Development:**
+  - Bring the P2Paint experience to your mobile device for unparalleled convenience.
+- **Feedback and Rating System:**
+  - Integrate a comprehensive system for user feedback and ratings.
+- **Responsive Design Overhaul:**
+  - Elevate user experience with a responsive design for varied devices.
 
-## Schema
-- *User*
-  |   Name   |   Type   |
-  |:--------:|:--------:|
-  |  email   |  string  |
-  | password |  string  |
+## **Author** 📝
 
-- *Product*
-  |   Name   |   Type   |
-  |:--------:|:--------:|
-  |  name   |  string  |
-  |  price   |  number  |
-  |  category   |  Ref to User  |
-  |  description   |  Ref to product  |
-
-
-## Events
-- `UserCreated` `UserUpdated`
-- `ProductCreated` `ProductUpdated`
-
-
-### Error Response
-- All error response that we send out from our server will have this structure
-```
-{
-  errors: {
-    message: string,
-    field?: string
-  }[]
-}
-```
-
-### Custom Errors Verification
-- All the error classes like `RequestValidationError` and `DatabaseConnectionError` should contain a `statusCode` variable and a `serializeErrors` method.
-- To ensure all error classes *stick to the rule* we will make a **CustomError Abstract Class**
-```
-NOTE: on abstract class
-- cannot be instantiated
-- used to setup requirements for subclasses
-- when we compile TS to JS, we end up with a class definition in JS from abstract class in TS unlike an interface as it does not exist in JS 
-```
-
-## Signup Flow
-<img src='https://user-images.githubusercontent.com/53744971/154844948-9d9079c9-6fbc-4d59-b956-cfa830ccfee9.jpg' width='800' /> <br/>
-
-## MongoDB User Collection
-- `Mongoose User Model` represents the entire collection of users
-- `Mongoose User Document` represents one single user <br/>
-<img src='https://user-images.githubusercontent.com/53744971/154901624-8539d931-1a3f-4baf-9c2d-6e6ca2880d6f.jpg' width='600' /> <br/>
-
-## Auth Mechanism
-- We will be using JWT with cookies for our auth mechanism <br/>
-<img src='https://user-images.githubusercontent.com/53744971/155264598-315fd270-a753-4590-8a05-eb87048fb86a.jpg' width='600' /> <br/>
-
-```
-
-
+<div align="center">
+  <a href="https://github.com/ultim4te4life">
+    <img src="https://avatars.githubusercontent.com/u/140849441?s=400&u=6ba36888854c76e4e19b5c5f0f5209693358c6d8&v=4"
+      alt="Author Avatar"
+      width="100px"
+      height="100px" />
+  </a>
+</div>
